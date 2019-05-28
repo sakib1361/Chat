@@ -16,6 +16,14 @@ namespace ChatClient.Engine
         public MessageType MessageType { get; set; }
         public bool Delivered { get; set; } = false;
 
+        public ChatObject()
+        {
+
+        }
+        public ChatObject(MessageType messageType)
+        {
+            MessageType = messageType;
+        }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Acr.UserDialogs;
+using Chat.Pages.Login;
+using Chat.Services;
+using GalaSoft.MvvmLight.Ioc;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Chat
 {
@@ -9,22 +11,25 @@ namespace Chat
         public App()
         {
             InitializeComponent();
-
-            MainPage = new MainPage();
+            NavigationHelper.Instance.Initialize(new LoginPage());
         }
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            chatService.Start("192.168.1.118", 1200);
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
+            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            chatService.Stop();
         }
 
         protected override void OnResume()
         {
+            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            chatService.Start("192.168.1.118", 1200);
             // Handle when your app resumes
         }
     }

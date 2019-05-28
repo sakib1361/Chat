@@ -16,5 +16,10 @@ namespace ChatServer.Engine.Database
         {
             optionsBuilder.UseSqlite("Data Source=chatData.db");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().Ignore(c => c.Password);
+        }
     }
 }

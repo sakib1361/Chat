@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ChatClient.Engine;
+using ChatServer.Engine.Database;
+using ChatServer.Engine.Network;
+using System;
 
 namespace ServerConsole
 {
@@ -6,7 +9,18 @@ namespace ServerConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            LogEngine.ErrorOccured += (s, e) => Console.WriteLine(e);
+            Start();
+            Console.ReadLine();
+        }
+
+        private static void Start()
+        {
+            var db = new DBHandler();
+            var messageHandler = new MessageHandler(db);
+            var server = new ServerHandler(messageHandler, 1200);
+            server.Start();
+            Console.WriteLine("Server Started");
         }
     }
 }

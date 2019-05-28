@@ -19,7 +19,10 @@ namespace Chat.Droid
 
             base.OnCreate(savedInstanceState);
 
+            Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
+            Acr.UserDialogs.UserDialogs.Init(this);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }

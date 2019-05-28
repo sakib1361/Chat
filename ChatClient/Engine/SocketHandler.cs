@@ -25,15 +25,25 @@ namespace ChatClient.Engine
 
         public async void StartReceive()
         {
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 var formatter = new BinaryFormatter();
                 var datastream = TcpClient.GetStream();
                 while (TcpClient.Connected)
                 {
-                    var message = (ChatObject)formatter.Deserialize(datastream);
-                    MessageReceived?.Invoke(this, message);
+                    IsActive = true;
+                    try
+                    {
+                        var message = (ChatObject)formatter.Deserialize(datastream);
+                        MessageReceived?.Invoke(this, message);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogEngine.Error(ex);
+                        break;
+                    }
                 }
+                IsActive = false;
                 ClientDisconnected?.Invoke(this, "General Disconnect");
             });
         }
@@ -41,6 +51,7 @@ namespace ChatClient.Engine
         public void Dispose()
         {
             TcpClient?.Close();
+            TcpClient?.Dispose();
         }
     }
 }

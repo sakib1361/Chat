@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:GradientPage xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       mc:Ignorable="d"
+                       Title="Simple Chat"
+                       xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                       xmlns:tr="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+                       StartColor="{StaticResource primaryColor}"
+                       EndColor="{StaticResource primaryDarkColor}"
+                       xmlns:controls="clr-namespace:Chat.Controls"
+                       xmlns:converters="clr-namespace:Chat.Converters"
+                       BindingContext="{Binding Source={StaticResource Locator}, Path=HomePageModel}"
+                       x:Class="Chat.Pages.Home.HomePage">
+    <ContentPage.Resources>
+        <converters:ProfileImageConverter x:Key="imageConverter" />
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ListView HasUnevenRows="True"
+                  Grid.Row="1"
+                  SelectionMode="None"
+                  SeparatorColor="{StaticResource asphaltLight}"
+                  ItemsSource="{Binding Users}">
+            <ListView.Header>
+                <StackLayout>
+                    <Grid Margin="10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ff:CachedImage WidthRequest="60"
+                                        Source="{Binding CurrentUser.Username, 
+                                    Converter={StaticResource imageConverter}}">
+                            <ff:CachedImage.Transformations>
+                                <tr:CircleTransformation />
+                            </ff:CachedImage.Transformations>
+                        </ff:CachedImage>
+                        <StackLayout Grid.Column="1"
+                                     Margin="15,0">
+                            <Label Text="{Binding CurrentUser.FullName}"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding CurrentUser.Username}" />
+                        </StackLayout>
+                    </Grid>
+                    <Grid HeightRequest="2"
+                          BackgroundColor="{StaticResource asphaltPrimary}" />
+                    <Grid BackgroundColor="{StaticResource primaryColorLight}">
+                        <Label Text="Recent Texts"
+                               Margin="10,0" />
+                    </Grid>
+                </StackLayout>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ff:CachedImage WidthRequest="60"
+                                            Source="{Binding Username, Converter={StaticResource imageConverter}}">
+                                <ff:CachedImage.Transformations>
+                                    <tr:CircleTransformation />
+                                </ff:CachedImage.Transformations>
+                            </ff:CachedImage>
+                            <StackLayout Grid.Column="1"
+                                         Margin="15,0">
+                                <Label Text="{Binding FullName}"
+                                       FontSize="Medium"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding Username}" />
+                            </StackLayout>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+   
+</controls:GradientPage>

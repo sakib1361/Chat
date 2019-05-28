@@ -34,6 +34,7 @@ namespace ChatServer.Engine.Network
                     socket.MessageReceived += Socket_MessageReceived;
                     socket.ClientDisconnected += Socket_ClientDisconnected;
                     sockets.Add(socket);
+                    Console.WriteLine("Socket Cnnected ");
                 }
             });
         }
@@ -51,6 +52,7 @@ namespace ChatServer.Engine.Network
             {
                 sockets.Remove(socketHandler);
                 MessageHandler.BroadcastLogout(socketHandler);
+                socketHandler.Dispose();
             }
         }
 
@@ -58,7 +60,14 @@ namespace ChatServer.Engine.Network
         {
             if (sender is SocketHandler socketHandler)
             {
-                MessageHandler.MessageRecieved(socketHandler, e);
+                try
+                {
+                    MessageHandler.MessageRecieved(socketHandler, e);
+                }
+                catch(Exception ex)
+                {
+                    LogEngine.Error(ex);
+                }
             }
         }
     }

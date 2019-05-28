@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using ChatClient.Engine;
 using ChatServer.Engine.Database;
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +27,13 @@ namespace ChatServer.Engine.Network
             {
                 // User has been logged out from all instances
                 AllSocketInstances.Remove(res.Key);
+                Console.WriteLine("Logged out instance " + res.Key);
             }
         }
 
         internal void MessageRecieved(SocketHandler socketHandler, ChatObject e)
         {
+            Console.WriteLine(e.MessageType + " => "+ e.Message);
             switch (e.MessageType)
             {
                 case MessageType.EndToEnd:
@@ -52,18 +56,18 @@ namespace ChatServer.Engine.Network
 
         private async void GetUsers(SocketHandler socketHandler, ChatObject e)
         {
-            if (AllSocketInstances[e.SenderName] != null)
+            if (!string.IsNullOrWhiteSpace(e.SenderName) && AllSocketInstances[e.SenderName] != null)
             {
                 using (var db = DBHandler.Create())
                 {
                     var users = await db.Users.ToListAsync();
                     foreach (var user in users)
                     {
-                        user.Active = AllSocketInstances[user.Username] != null;
+                        user.Active = AllSocketInstances.ContainsKey(user.Username);
                     }
                     users = users.OrderByDescending(x => x.Active).ToList();
-                    var fulMessage = JsonConvert.SerializeObject(users);
-                    SendServerResponse(socketHandler, MessageType.GetHistory, fulMessage);
+                    var fullMessage = JsonConvert.SerializeObject(users);
+                    SendServerResponse(socketHandler, MessageType.GetUsers, fullMessage);
                 }
             }
         }
@@ -91,25 +95,42 @@ namespace ChatServer.Engine.Network
             }
         }
 
+        private byte[] GetHash(string inputString)
+        {
+            using (var algorithm = SHA256.Create())
+            {
+                return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+            }
+        }
+
+        private string GetHashString(string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in GetHash(inputString))
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
+        }
+
         private void SubscribeUser(SocketHandler socketHandler, ChatObject e)
         {
             var user = JsonConvert.DeserializeObject<User>(e.Message);
             using (var db = DBHandler.Create())
             {
                 var dbUser = db.Users.FirstOrDefault(x => x.Username == user.Username);
-                if (dbUser.StoredPassword == user.Password)
+                if (dbUser!=null && dbUser.StoredPassword == GetHashString(user.Password))
                 {
-                    if (AllSocketInstances[dbUser.Username] == null)
-                    {
-                        AllSocketInstances[dbUser.Username] = new List<SocketHandler> { socketHandler };
-                    }
-                    else
+                    if (AllSocketInstances.ContainsKey(dbUser.Username))
                     {
                         AllSocketInstances[dbUser.Username].Add(socketHandler);
                     }
+                    else
+                    {
+                        AllSocketInstances[dbUser.Username] = new List<SocketHandler> { socketHandler };
+                    }
                     SendServerResponse(socketHandler, MessageType.LoginSuccess);
                 }
-                else SendServerResponse(socketHandler, MessageType.LoginFailed);
+                else SendServerResponse(socketHandler, MessageType.LoginFailed,"Failed to Login User");
             }
         }
         private async void RegisterUser(SocketHandler socketHandler, ChatObject e)
@@ -120,12 +141,13 @@ namespace ChatServer.Engine.Network
                 var dbUser = db.Users.FirstOrDefault(x => x.Username == user.Username);
                 if (dbUser == null)
                 {
+                    user.StoredPassword = GetHashString(user.Password);
                     db.Users.Add(user);
                     await db.SaveChangesAsync();
                     AllSocketInstances[user.Username] = new List<SocketHandler> { socketHandler };
                     SendServerResponse(socketHandler, MessageType.LoginSuccess);
                 }
-                else SendServerResponse(socketHandler, MessageType.RegistrationFailed);
+                else SendServerResponse(socketHandler, MessageType.RegistrationFailed, "User exissts");
             }
         }
 
