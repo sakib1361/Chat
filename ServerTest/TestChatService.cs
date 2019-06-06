@@ -1,19 +1,21 @@
-﻿using Chat.PlatformService;
-using ChatClient.Engine;
-using GalaSoft.MvvmLight.Messaging;
+﻿using ChatClient.Engine;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
-namespace Chat.Services
+namespace ServerTest
 {
-    public class ChatService
+    class TestChatService
     {
+        private readonly string Username;
         private readonly ClientHandler ClientHandler;
         readonly ConcurrentDictionary<string, TaskObject> Tasks;
-        public ChatService(ClientHandler clientHandler)
+        public TestChatService(ClientHandler clientHandler, string username)
         {
+            Username = username;
             ClientHandler = clientHandler;
             Tasks = new ConcurrentDictionary<string, TaskObject>();
             ClientHandler.MessageRecieveed += ClientHandler_MessageRecieveed;
@@ -22,30 +24,24 @@ namespace Chat.Services
 
         private void ClientHandler_ClientStateChanged(object sender, string e)
         {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                UserDialogService.Instance.Toast(e);
-            });
+            Console.WriteLine(e);
         }
 
         private void ClientHandler_MessageRecieveed(object sender, ChatObject e)
         {
             if (e.MessageType == MessageType.EndToEnd || e.MessageType == MessageType.BroadCast)
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Messenger.Default.Send(e, e.MessageType);
-                });
+                Console.WriteLine(e.ToString());
             else
             {
                 if (Tasks.TryRemove(e.ChatId, out TaskObject response))
                 {
-                    if (e.ReceiverName != AppService.CurrentUser)
+                    if (e.ReceiverName != Username)
                     {
                         response.TrySetResult(new ChatObject()
                         {
                             Message = "Invalid Message",
                             SenderName = "Server",
-                            ReceiverName = AppService.CurrentUser,
+                            ReceiverName = Username,
                             MessageType = MessageType.Failed,
                             Id = e.Id,
                             ChatId = e.ChatId
@@ -65,17 +61,15 @@ namespace Chat.Services
             ClientHandler?.Close();
         }
 
-        public async Task<bool> SendMessage(ChatObject chatObject)
+        public async Task SendMessage(ChatObject chatObject)
         {
             try
             {
                 await ClientHandler.SendMessage(chatObject);
-                return true;
             }
             catch (Exception ex)
             {
                 LogEngine.Error(ex);
-                return false;
             }
         }
 
@@ -89,16 +83,8 @@ namespace Chat.Services
                 tcs.MsgFailed += Tcs_MsgFailed;
 
                 Tasks.TryAdd(packetId, tcs);
-                if (await SendMessage(chatObject))
-                {
-                    return await tcs.TaskCompletion.Task;
-                }
-                else
-                {
-                    Tasks.TryRemove(packetId, out TaskObject response);
-                    tcs.Failed();
-                    return null;
-                }
+                await SendMessage(chatObject);
+                return await tcs.TaskCompletion.Task;
             }
             catch (Exception ex)
             {

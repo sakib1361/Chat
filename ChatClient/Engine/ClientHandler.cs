@@ -90,6 +90,7 @@ namespace ChatClient.Engine
         {
             Quit = true;
             DisposeSocket();
+            IsConnecting = false;
         }
 
         private void DisposeSocket()

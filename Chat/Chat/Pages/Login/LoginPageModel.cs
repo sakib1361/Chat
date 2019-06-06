@@ -3,10 +3,7 @@ using Chat.Services;
 using Chat.ViewModels;
 using ChatClient.Engine;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Chat.Pages.Login
@@ -20,22 +17,20 @@ namespace Chat.Pages.Login
 
         public LoginPageModel(ChatService chatService)
         {
-            Messenger.Default.Register<ChatObject>(this, MessageType.LoginFailed, Login_Failed);
-            Messenger.Default.Register<ChatObject>(this, MessageType.LoginSuccess, Login_Success);
-            this.ChatService = chatService;
+            ChatService = chatService;
 #if DEBUG
             Username = "sakib51";
             Password = "1234";
 #endif
         }
 
-        private void Login_Success(ChatObject obj)
+        private void LoginSuccess(ChatObject obj)
         {
             AppService.CurrentUser = Username;
             MoveToPage(typeof(HomePage));
         }
 
-        private void Login_Failed(ChatObject obj)
+        private void LoginFailed(ChatObject obj)
         {
             IsBusy = false;
             ShowMessage(obj.Message);
@@ -62,12 +57,21 @@ namespace Chat.Pages.Login
                     Username = Username,
                     Password = Password
                 };
-                ChatService.SendMessage(new ChatObject(MessageType.Subscribe)
+                var chat = new ChatObject(MessageType.Subscribe)
                 {
+                    SenderName = Username,
                     Message = JsonConvert.SerializeObject(user)
-                });
+                };
+                AppService.CurrentUser = Username;
                 IsBusy = true;
-                await Task.Delay(5000);
+                var res = await ChatService.GetData(chat);
+                if (res != null)
+                {
+                    if (res.MessageType == MessageType.Failed) HandlerErrors(res);
+                    else if (res.MessageType == MessageType.LoginFailed) LoginFailed(res);
+                    else if (res.MessageType == MessageType.LoginSuccess) LoginSuccess(res);
+                    else ShowMessage(res.Message);
+                }
                 IsBusy = false;
             }
         }

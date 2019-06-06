@@ -1,16 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<controls:GradientPage xmlns="http://xamarin.com/schemas/2014/forms"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       mc:Ignorable="d"
-                       NavigationPage.HasNavigationBar="False"
-                       StartColor="{StaticResource primaryDarkColor}"
-                       EndColor="{StaticResource primaryColor}"
-                       xmlns:services="clr-namespace:Chat.Services"
-                       xmlns:controls="clr-namespace:Chat.Controls"
-                       BindingContext="{Binding Source={StaticResource Locator}, Path=LoginPageModel}"
-                       x:Class="Chat.Pages.Login.LoginPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             BackgroundColor="{StaticResource primaryDarkColor}"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:services="clr-namespace:Chat.Services"
+             BindingContext="{Binding Source={StaticResource Locator}, Path=LoginPageModel}"
+             x:Class="Chat.Pages.Login.LoginPage">
     <ContentPage.Content>
         <Grid x:Name="MainGrid">
             <Label HorizontalOptions="Center"
@@ -40,10 +38,8 @@
                     Text="{services:Loc Attribute=Signup}"
                     VerticalOptions="End"
                     Command="{Binding SignUpCommand}" />
-            <ActivityIndicator HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               IsRunning="{Binding IsBusy}"
-                               IsVisible="{Binding IsBusy}" />
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}" />
         </Grid>
     </ContentPage.Content>
-</controls:GradientPage>
+</ContentPage>

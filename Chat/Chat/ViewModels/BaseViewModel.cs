@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
 using Chat.Pages.Home;
+using Chat.PlatformService;
 using Chat.Services;
+using ChatClient.Engine;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using PropertyChanged;
@@ -15,7 +17,7 @@ namespace Chat.ViewModels
     public abstract class BaseViewModel : ViewModelBase
     {
         public bool IsBusy { get; set; }
-        internal IUserDialogs Dialogs => UserDialogs.Instance;
+        public bool IsRefreshing { get; set; }
         public ICommand RefreshCommand { get => new Command(RefreshAction); }
         public ICommand BackCommand { get => new Command(GoBack); }
 
@@ -35,16 +37,21 @@ namespace Chat.ViewModels
 
         }
 
-        public async void ShowMessage(string message, string title = "Error")
+        protected void HandlerErrors(ChatObject response)
+        {
+            ShowMessage(response.Message);
+        }
+
+        public void ShowMessage(string message, string title = "Error")
         {
             if (string.IsNullOrWhiteSpace(message)) return;
-            await Dialogs.AlertAsync(message, title);
+            UserDialogService.Instance.Message(message, title);
         }
 
         internal async Task<bool> ShowConfirmation(string message, string title = "Confirm")
         {
             if (string.IsNullOrWhiteSpace(message)) return false;
-            return await Dialogs.ConfirmAsync(message, title);
+            return await UserDialogService.Instance.ConfirmAsync(message, title);
         }
 
 
@@ -64,26 +71,11 @@ namespace Chat.ViewModels
             await Application.Current.SavePropertiesAsync();
         }
 
-        internal async Task<string> ShowEntryMsg(string message, bool IsCancel = true, InputType inputType = InputType.Default)
-        {
-            if (string.IsNullOrWhiteSpace(message)) return string.Empty;
-            var result = await Dialogs.PromptAsync(new PromptConfig
-            {
-                Title = message,
-                Text = "",
-                IsCancellable = IsCancel,
-                InputType = inputType
-            });
-            return result.Text;
-        }
 
-        internal void ShowToastMessage(string message, bool isShort = true)
+        internal void ShowToastMessage(string message)
         {
             if (string.IsNullOrWhiteSpace(message)) return;
-            var ts = TimeSpan.FromSeconds(2);
-            if (isShort == false)
-                ts = TimeSpan.FromSeconds(4);
-            Dialogs.Toast(message, ts);
+            UserDialogService.Instance.Toast(message);
         }
 
         public virtual void OnAppearing(params object[] parameter)

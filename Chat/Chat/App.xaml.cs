@@ -17,7 +17,7 @@ namespace Chat
         protected override void OnStart()
         {
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            chatService.Start("192.168.1.118", 1200);
+            chatService.Start("192.168.1.8", 1200);
         }
 
         protected override void OnSleep()
@@ -29,7 +29,7 @@ namespace Chat
         protected override void OnResume()
         {
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            chatService.Start("192.168.1.118", 1200);
+            chatService.Start("192.168.1.8", 1200);
             // Handle when your app resumes
         }
     }

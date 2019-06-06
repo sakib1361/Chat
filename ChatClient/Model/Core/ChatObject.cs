@@ -9,6 +9,7 @@ namespace ChatClient.Engine
     public class ChatObject
     {
         public int Id { get; set; }
+        public string ChatId { get; set; }
         public string SenderName { get; set; }
         public string ReceiverName { get; set; }
         public string Message { get; set; }
@@ -26,7 +27,7 @@ namespace ChatClient.Engine
         }
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            return string.Format("{0}=>{1} {2}", SenderName,ReceiverName, Message);
         }
 
     }
@@ -40,6 +41,8 @@ namespace ChatClient.Engine
         LoginSuccess,
         LoginFailed,
         RegistrationFailed,
-        GetUsers
+        GetUsers,
+        Failed,
+        BroadCast
     }
 }

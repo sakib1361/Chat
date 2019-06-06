@@ -1,29 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<controls:GradientPage xmlns="http://xamarin.com/schemas/2014/forms"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       mc:Ignorable="d"
-                       Title="Simple Chat"
-                       xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-                       xmlns:tr="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
-                       StartColor="{StaticResource primaryColor}"
-                       EndColor="{StaticResource primaryDarkColor}"
-                       xmlns:controls="clr-namespace:Chat.Controls"
-                       xmlns:converters="clr-namespace:Chat.Converters"
-                       BindingContext="{Binding Source={StaticResource Locator}, Path=HomePageModel}"
-                       x:Class="Chat.Pages.Home.HomePage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:helpers="clr-namespace:Chat.Helpers"
+             Title="Simple Chat"
+             xmlns:converters="clr-namespace:Chat.Converters"
+             BindingContext="{Binding Source={StaticResource Locator}, Path=HomePageModel}"
+             x:Class="Chat.Pages.Home.HomePage">
     <ContentPage.Resources>
         <converters:ProfileImageConverter x:Key="imageConverter" />
     </ContentPage.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
         <ListView HasUnevenRows="True"
-                  Grid.Row="1"
-                  SelectionMode="None"
+                  IsPullToRefreshEnabled="True"
+                  IsRefreshing="{Binding IsRefreshing}"
+                  RefreshCommand="{Binding RefreshCommand}"
+                  helpers:CommandListView.ItemTappedCommand="{Binding SelectedCommand}"
                   SeparatorColor="{StaticResource asphaltLight}"
                   ItemsSource="{Binding Users}">
             <ListView.Header>
@@ -33,13 +27,16 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <ff:CachedImage WidthRequest="60"
-                                        Source="{Binding CurrentUser.Username, 
+                        <Image WidthRequest="60"
+                               Source="{Binding CurrentUser.Username, 
+                                    Converter={StaticResource imageConverter}}" />
+                        <!--<ff:CachedImage WidthRequest="60"
+                                    Source="{Binding CurrentUser.Username, 
                                     Converter={StaticResource imageConverter}}">
-                            <ff:CachedImage.Transformations>
-                                <tr:CircleTransformation />
-                            </ff:CachedImage.Transformations>
-                        </ff:CachedImage>
+                        <ff:CachedImage.Transformations>
+                            <tr:CircleTransformation />
+                        </ff:CachedImage.Transformations>
+                    </ff:CachedImage>-->
                         <StackLayout Grid.Column="1"
                                      Margin="15,0">
                             <Label Text="{Binding CurrentUser.FullName}"
@@ -64,12 +61,14 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <ff:CachedImage WidthRequest="60"
-                                            Source="{Binding Username, Converter={StaticResource imageConverter}}">
-                                <ff:CachedImage.Transformations>
-                                    <tr:CircleTransformation />
-                                </ff:CachedImage.Transformations>
-                            </ff:CachedImage>
+                            <Image WidthRequest="60"
+                                   Source="{Binding Username, Converter={StaticResource imageConverter}}" />
+                            <!--<ff:CachedImage WidthRequest="60"
+                                        Source="{Binding Username, Converter={StaticResource imageConverter}}">
+                            <ff:CachedImage.Transformations>
+                                <tr:CircleTransformation />
+                            </ff:CachedImage.Transformations>
+                        </ff:CachedImage>-->
                             <StackLayout Grid.Column="1"
                                          Margin="15,0">
                                 <Label Text="{Binding FullName}"
@@ -82,6 +81,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" 
+                           IsRunning="{Binding IsBusy}" />
     </Grid>
-   
-</controls:GradientPage>
+</ContentPage>

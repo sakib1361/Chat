@@ -21,16 +21,7 @@ namespace Chat.Droid
 
             Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
             Acr.UserDialogs.UserDialogs.Init(this);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
-        }
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

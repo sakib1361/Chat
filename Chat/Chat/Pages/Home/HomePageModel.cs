@@ -1,11 +1,13 @@
-﻿using Chat.Services;
+﻿using Chat.Pages.ChatPages;
+using Chat.Services;
 using Chat.ViewModels;
 using ChatClient.Engine;
-using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Chat.Pages.Home
 {
@@ -15,9 +17,9 @@ namespace Chat.Pages.Home
         public User CurrentUser { get; private set; }
         public ObservableCollection<User> Users { get; private set; }
 
-        public HomePageModel( ChatService chatService)
+        public HomePageModel(ChatService chatService)
         {
-            Messenger.Default.Register<ChatObject>(this, MessageType.GetUsers, Users_Received);
+
             this.chatService = chatService;
             Users = new ObservableCollection<User>();
         }
@@ -32,7 +34,6 @@ namespace Chat.Pages.Home
         {
             try
             {
-                Users.Clear();
                 var allUsers = JsonConvert.DeserializeObject<List<User>>(obj.Message);
                 foreach (var item in allUsers)
                 {
@@ -52,16 +53,28 @@ namespace Chat.Pages.Home
             }
         }
 
-        public override void RefreshPage()
+        public async override void RefreshPage()
         {
+            IsBusy = true;
             base.RefreshPage();
+            Users.Clear();
+            IsRefreshing = false;
             var getUser = new ChatObject()
             {
                 MessageType = MessageType.GetUsers,
                 SenderName = AppService.CurrentUser
             };
-            chatService.SendMessage(getUser);
-            IsBusy = false;
+            var res = await chatService.GetData(getUser);
+            if (res.MessageType == MessageType.Failed) HandlerErrors(res);
+            else Users_Received(res);
+            IsBusy  = false;
+        }
+
+        public ICommand SelectedCommand => new RelayCommand<User>(SelectedAction);
+
+        private void SelectedAction(User user)
+        {
+            NavigateToPage(typeof(ChatPage), user.Username);
         }
     }
 }

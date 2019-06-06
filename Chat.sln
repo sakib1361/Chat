@@ -7,23 +7,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Android", "Chat\Chat.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.iOS", "Chat\Chat.iOS\Chat.iOS.csproj", "{0F0C7F11-0464-47B7-97D7-77C384E1141B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat", "Chat\Chat\Chat.csproj", "{00B35958-68E1-4F69-951A-13AAABDB1FBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat", "Chat\Chat\Chat.csproj", "{00B35958-68E1-4F69-951A-13AAABDB1FBA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{25FEEE10-510F-4672-BDBE-51BDA7C1DF80}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{45F35D11-FD58-4B95-9607-5FE1DDA183F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClient", "ChatClient\ChatClient.csproj", "{90F35868-AA8A-4467-8659-C5EE1AF3DDB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "ChatClient\ChatClient.csproj", "{90F35868-AA8A-4467-8659-C5EE1AF3DDB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ChatServer\ChatServer.csproj", "{9C481B8C-A9F3-4899-B063-C2FAABCABCE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatServer", "ChatServer\ChatServer.csproj", "{9C481B8C-A9F3-4899-B063-C2FAABCABCE2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{DF6CDD23-4C10-4967-B52A-9B3DF35D2DDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerConsole", "ServerConsole\ServerConsole.csproj", "{247BE929-3B35-493D-861B-FFF2DB9507A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerConsole", "ServerConsole\ServerConsole.csproj", "{247BE929-3B35-493D-861B-FFF2DB9507A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1B116D0A-657B-400E-98E2-BF2DB2CDE220}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTest", "ServerTest\ServerTest.csproj", "{F47320DF-DA24-4958-BF3C-945003D00679}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Wpf", "Chat\Chat\Chat.Wpf\Chat.Wpf.csproj", "{90132F49-0759-4A81-BFB2-1223BB6FFDC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +139,18 @@ Global
 		{F47320DF-DA24-4958-BF3C-945003D00679}.Release|iPhone.Build.0 = Release|Any CPU
 		{F47320DF-DA24-4958-BF3C-945003D00679}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{F47320DF-DA24-4958-BF3C-945003D00679}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Release|iPhone.Build.0 = Release|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +163,7 @@ Global
 		{9C481B8C-A9F3-4899-B063-C2FAABCABCE2} = {45F35D11-FD58-4B95-9607-5FE1DDA183F6}
 		{247BE929-3B35-493D-861B-FFF2DB9507A5} = {DF6CDD23-4C10-4967-B52A-9B3DF35D2DDD}
 		{F47320DF-DA24-4958-BF3C-945003D00679} = {1B116D0A-657B-400E-98E2-BF2DB2CDE220}
+		{90132F49-0759-4A81-BFB2-1223BB6FFDC4} = {25FEEE10-510F-4672-BDBE-51BDA7C1DF80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF4379CB-276F-4DAC-885C-12E309B9EA79}

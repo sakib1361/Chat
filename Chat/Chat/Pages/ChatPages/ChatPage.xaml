@@ -4,12 +4,68 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:converters="clr-namespace:Chat.Converters"
+             xmlns:local="clr-namespace:Chat.Pages.ChatPages"
+             BindingContext="{Binding Source={StaticResource Locator}, Path=ChatPageModel}"
              x:Class="Chat.Pages.ChatPages.ChatPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Start"
+                     VerticalOptions="Center">
+            <Image Source="{Binding Receiver, 
+                                    Converter={StaticResource imageConverter}}"
+                   HeightRequest="40"
+                   VerticalOptions="Center"/>
+            <Label VerticalOptions="Center"
+                   Margin="10,0"
+                   TextColor="White"
+                   MaxLines="1"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   LineBreakMode="TailTruncation"
+                   Text="{Binding Receiver}" />
         </StackLayout>
-    </ContentPage.Content>
+    </NavigationPage.TitleView>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ChatTemplateSelector x:Key="MessageTemplateSelector" />
+            <converters:ProfileImageConverter x:Key="imageConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListView ItemsSource="{Binding ChatObjects}"
+                  ItemTemplate="{StaticResource MessageTemplateSelector}"
+                  Margin="0"
+                  HasUnevenRows="True"
+                  VerticalOptions="FillAndExpand"
+                  SeparatorColor="Transparent" />
+        <Grid RowSpacing="0"
+              Grid.Row="1"
+              ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Entry x:Name="chatTextInput"
+                   Text="{Binding Message}"
+                   Margin="1"
+                   TextColor="Black"
+                   Keyboard="Chat"
+                   HorizontalOptions="FillAndExpand"
+                   PlaceholderColor="DarkGray"
+                   Visual="Default"
+                   Placeholder="Type your message here"
+                   Completed="Handle_Completed" />
+            <Button Text="Send"
+                    HeightRequest="40"
+                    Grid.Column="1"
+                    BackgroundColor="LightGray"
+                    TextColor="Black"
+                    Command="{Binding SendCommand}" />
+        </Grid>
+    </Grid>
 </ContentPage>

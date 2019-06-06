@@ -33,7 +33,7 @@ namespace ChatServer.Engine.Network
 
         internal void MessageRecieved(SocketHandler socketHandler, ChatObject e)
         {
-            Console.WriteLine(e.MessageType + " => "+ e.Message);
+            Console.WriteLine(e.MessageType + " => " + e.Message);
             switch (e.MessageType)
             {
                 case MessageType.EndToEnd:
@@ -67,31 +67,32 @@ namespace ChatServer.Engine.Network
                     }
                     users = users.OrderByDescending(x => x.Active).ToList();
                     var fullMessage = JsonConvert.SerializeObject(users);
-                    SendServerResponse(socketHandler, MessageType.GetUsers, fullMessage);
+                    SendServerResponse(socketHandler, MessageType.GetUsers, e, fullMessage);
                 }
             }
         }
 
-        private async void GetUserHistory(SocketHandler socketHandler, ChatObject e)
+        private async void GetUserHistory(SocketHandler socketHandler, ChatObject original)
         {
             using (var db = DBHandler.Create())
             {
                 var skip = 0;
-                if (!string.IsNullOrWhiteSpace(e.Message) && int.TryParse(e.Message, out int res))
+                if (!string.IsNullOrWhiteSpace(original.Message) &&
+                            int.TryParse(original.Message, out int res))
                 {
                     skip = res;
                 }
 
                 var messages = await db.ChatObjects
-                                 .Where(x => (x.SenderName == e.SenderName ||
-                                            x.SenderName == e.ReceiverName)
-                                     && (x.ReceiverName == x.ReceiverName ||
-                                        x.ReceiverName == x.SenderName))
+                                 .Where(x => (x.SenderName == original.SenderName ||
+                                            x.SenderName == original.ReceiverName)
+                                     && (x.ReceiverName == original.ReceiverName ||
+                                        x.ReceiverName == original.SenderName))
                                  .OrderByDescending(m => m.CreatedOn)
                                  .Skip(skip).Take(30)
                                  .ToListAsync();
                 var fulMessage = JsonConvert.SerializeObject(messages);
-                SendServerResponse(socketHandler, MessageType.GetHistory, fulMessage);
+                SendServerResponse(socketHandler, MessageType.GetHistory, original, fulMessage);
             }
         }
 
@@ -118,7 +119,7 @@ namespace ChatServer.Engine.Network
             using (var db = DBHandler.Create())
             {
                 var dbUser = db.Users.FirstOrDefault(x => x.Username == user.Username);
-                if (dbUser!=null && dbUser.StoredPassword == GetHashString(user.Password))
+                if (dbUser != null && dbUser.StoredPassword == GetHashString(user.Password))
                 {
                     if (AllSocketInstances.ContainsKey(dbUser.Username))
                     {
@@ -128,9 +129,9 @@ namespace ChatServer.Engine.Network
                     {
                         AllSocketInstances[dbUser.Username] = new List<SocketHandler> { socketHandler };
                     }
-                    SendServerResponse(socketHandler, MessageType.LoginSuccess);
+                    SendServerResponse(socketHandler, MessageType.LoginSuccess, e);
                 }
-                else SendServerResponse(socketHandler, MessageType.LoginFailed,"Failed to Login User");
+                else SendServerResponse(socketHandler, MessageType.LoginFailed, e, "Failed to Login User");
             }
         }
         private async void RegisterUser(SocketHandler socketHandler, ChatObject e)
@@ -145,24 +146,28 @@ namespace ChatServer.Engine.Network
                     db.Users.Add(user);
                     await db.SaveChangesAsync();
                     AllSocketInstances[user.Username] = new List<SocketHandler> { socketHandler };
-                    SendServerResponse(socketHandler, MessageType.LoginSuccess);
+                    SendServerResponse(socketHandler, MessageType.LoginSuccess, e);
                 }
-                else SendServerResponse(socketHandler, MessageType.RegistrationFailed, "User exissts");
+                else SendServerResponse(socketHandler, MessageType.RegistrationFailed, e, "User exissts");
             }
         }
 
 
-        private async void SendServerResponse(SocketHandler socketHandler, 
-            MessageType messageType, string message = "Server Message")
+        private async void SendServerResponse(SocketHandler socketHandler,
+            MessageType messageType,
+            ChatObject original,
+            string message = "Server Message")
         {
             try
             {
                 await socketHandler.SendMessage(new ChatObject()
                 {
+                    ChatId = original.ChatId,
                     SenderName = "Server",
+                    ReceiverName = original.SenderName,
                     MessageType = messageType,
                     Message = message
-                }) ;
+                });
             }
             catch (Exception ex)
             {
@@ -170,28 +175,34 @@ namespace ChatServer.Engine.Network
             }
         }
 
-        
+
 
         private async void SendEndToEndMessage(ChatObject e)
         {
+
             using (var db = DBHandler.Create())
             {
-                var receiverInstances = AllSocketInstances[e.ReceiverName];
-                if (receiverInstances.Count > 0)
+                if (AllSocketInstances.ContainsKey(e.ReceiverName))
                 {
-                    foreach (var item in receiverInstances)
+                    var rInstances = AllSocketInstances[e.ReceiverName];
+                    if (rInstances.Count > 0)
                     {
-                        try
+                        foreach (var item in rInstances)
                         {
-                            await item.SendMessage(e);
-                            e.Delivered = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            LogEngine.Error(ex);
+                            try
+                            {
+                                await item.SendMessage(e);
+                                e.Delivered = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                LogEngine.Error(ex);
+                            }
                         }
                     }
+
                 }
+
                 db.Add(e);
                 await db.SaveChangesAsync();
             }

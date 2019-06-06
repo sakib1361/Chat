@@ -16,5 +16,11 @@ namespace Chat.Pages.ChatPages
         {
             InitializeComponent();
         }
+
+        private void Handle_Completed(object sender, EventArgs e)
+        {
+            if (this.BindingContext is ChatPageModel pageModel)
+                pageModel.SendCommand.Execute(null);
+        }
     }
 }

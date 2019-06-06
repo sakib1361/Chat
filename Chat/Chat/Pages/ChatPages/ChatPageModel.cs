@@ -4,11 +4,9 @@ using ChatClient.Engine;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace Chat.Pages.ChatPages
@@ -24,44 +22,40 @@ namespace Chat.Pages.ChatPages
             this.chatService = chatService;
             ChatObjects = new ObservableCollection<ChatObject>();
             Messenger.Default.Register<ChatObject>(this, MessageType.EndToEnd, NewMessage);
-            Messenger.Default.Register<ChatObject>(this, MessageType.GetHistory, HistoryMessage);
         }
 
         public override void OnAppearing(params object[] parameter)
         {
             base.OnAppearing(parameter);
+            ChatObjects.Clear();
             if (parameter.Length > 0 && parameter[0] is string username)
             {
                 Receiver = username;
-                chatService.SendMessage(new ChatObject(MessageType.GetHistory)
-                {
-                    SenderName = AppService.CurrentUser,
-                    ReceiverName = Receiver
-                });
+                LoadHistory();
             }
         }
 
-        private void HistoryMessage(ChatObject obj)
+        private async void LoadHistory()
         {
-            try
+            var msg = new ChatObject(MessageType.GetHistory)
             {
-                if (obj.SenderName == Receiver)
+                SenderName = AppService.CurrentUser,
+                ReceiverName = Receiver
+            };
+            var response = await chatService.GetData(msg);
+            if (response.MessageType == MessageType.Failed) HandlerErrors(response);
+            else
+            {
+                var oldChats = JsonConvert.DeserializeObject<List<ChatObject>>(response.Message);
+                foreach (var item in oldChats)
                 {
-                    var oldChats = JsonConvert.DeserializeObject<List<ChatObject>>(obj.Message);
-                    foreach (var item in oldChats)
-                    {
-                        if (ChatObjects.Any(x => x.Id == item.Id) == false)
-                        {
-                            ChatObjects.Add(item);
-                        }
-                    }
+                    if (ChatObjects.Any(x => x.Id == item.Id) == false)
+                        ChatObjects.Add(item);
                 }
             }
-            catch (Exception ex)
-            {
-                ShowMessage(ex.Message);
-            }
         }
+
+
 
         private void NewMessage(ChatObject obj)
         {
@@ -76,7 +70,7 @@ namespace Chat.Pages.ChatPages
 
         public ICommand SendCommand => new RelayCommand(SendAction);
 
-        private void SendAction()
+        private async void SendAction()
         {
             if (!string.IsNullOrWhiteSpace(Message))
             {
@@ -86,7 +80,11 @@ namespace Chat.Pages.ChatPages
                     ReceiverName = Receiver,
                     Message = Message
                 };
-                chatService.SendMessage(chat);
+                if (await chatService.SendMessage(chat))
+                {
+                    ChatObjects.Add(chat);
+                }
+                Message = string.Empty;
             }
         }
     }

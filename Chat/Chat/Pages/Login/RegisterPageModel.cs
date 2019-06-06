@@ -1,12 +1,9 @@
-﻿using Chat.Helpers;
-using Chat.Pages.Home;
+﻿using Chat.Pages.Home;
 using Chat.Services;
 using Chat.ViewModels;
 using ChatClient.Engine;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace Chat.Pages.Login
@@ -21,8 +18,6 @@ namespace Chat.Pages.Login
 
         public RegisterPageModel(ChatService chatService)
         {
-            Messenger.Default.Register<ChatObject>(this, MessageType.RegistrationFailed, Registar_Failed);
-            Messenger.Default.Register<ChatObject>(this, MessageType.LoginSuccess, Login_Success);
             this.chatService = chatService;
         }
 
@@ -40,20 +35,10 @@ namespace Chat.Pages.Login
 #endif
         }
 
-        private void Login_Success(ChatObject obj)
-        {
-            MoveToPage(typeof(HomePage));
-            AppService.CurrentUser = Username;
-        }
-
-        private void Registar_Failed(ChatObject obj)
-        {
-            ShowMessage(obj.Message);
-        }
-
+        
         public ICommand RegisterCommand => new RelayCommand(RegisterAction);
 
-        private void RegisterAction()
+        private async void RegisterAction()
         {
             if (string.IsNullOrEmpty(Username)) ShowMessage("Invalid Username");
             else if (string.IsNullOrWhiteSpace(Password)) ShowMessage("Invaliud Password");
@@ -72,8 +57,26 @@ namespace Chat.Pages.Login
                 {
                     Message = JsonConvert.SerializeObject(user)
                 };
-                chatService.SendMessage(chat);
+                IsBusy = true;
+                var res = await chatService.GetData(chat);
+                if (res.MessageType == MessageType.Failed) HandlerErrors(res);
+                else if (res.MessageType == MessageType.LoginFailed) Registar_Failed(res);
+                else if (res.MessageType == MessageType.LoginSuccess) Login_Success(res);
+                else ShowMessage(res.Message);
+
+                IsBusy = false;
             }
         }
+        private void Login_Success(ChatObject obj)
+        {
+            MoveToPage(typeof(HomePage));
+            AppService.CurrentUser = Username;
+        }
+
+        private void Registar_Failed(ChatObject obj)
+        {
+            ShowMessage(obj.Message);
+        }
+
     }
 }
