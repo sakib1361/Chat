@@ -1,7 +1,5 @@
-﻿using Chat.Pages.ChatPages;
-using Chat.Services;
-using Chat.ViewModels;
-using ChatClient.Engine;
+﻿using ChatClient.Engine;
+using ChatEngine.Services;
 using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace Chat.Pages.Home
+namespace ChatEngine.ViewModels
 {
     public class HomePageModel : BaseViewModel
     {
@@ -65,8 +63,11 @@ namespace Chat.Pages.Home
                 SenderName = AppService.CurrentUser
             };
             var res = await chatService.GetData(getUser);
-            if (res.MessageType == MessageType.Failed) HandlerErrors(res);
-            else Users_Received(res);
+            if(res != null)
+            {
+                if (res.MessageType == MessageType.Failed) HandlerErrors(res);
+                else Users_Received(res);
+            }
             IsBusy  = false;
         }
 
@@ -74,7 +75,7 @@ namespace Chat.Pages.Home
 
         private void SelectedAction(User user)
         {
-            NavigateToPage(typeof(ChatPage), user.Username);
+            NavigateToPage(typeof(ChatPageModel), user.Username);
         }
     }
 }

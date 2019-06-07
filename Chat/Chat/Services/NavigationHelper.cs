@@ -1,22 +1,18 @@
 ﻿using Chat.ViewModels;
+using ChatEngine.Helpers;
+using ChatEngine.Services;
+using ChatEngine.ViewModels;
+using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Chat.Services
 {
-    public class NavigationHelper
+    public class NavigationHelper:BaseNaviagation, INaviagationPage
     {
         internal NavigationPage _navigation;
-        internal static NavigationHelper Instance = new NavigationHelper();
-       
-
-        public void GoBack()
-        {
-            _navigation.PopAsync();
-        }
-
-        public void Initialize(ContentPage contentPage)
+        public NavigationHelper(ContentPage contentPage)
         {
             var PrimaryDarkColor = (Color)Application.Current.Resources["primaryDarkColor"];
             _navigation = new NavigationPage(contentPage)
@@ -27,26 +23,37 @@ namespace Chat.Services
             Application.Current.MainPage = _navigation;
         }
 
+        public void GoBack()
+        {
+            _navigation.PopAsync();
+        }
+
+       
+
         public void RemovePage()
         {
             _navigation.Navigation.RemovePage(_navigation.RootPage);
         }
 
-        public async Task NavigateTo(Type pageType, params object[] parameter)
+        public async Task NavigateTo(Type vmType, params object[] parameter)
         {
+            var pageType = GetPage(vmType);
             var page = (Page)Activator.CreateInstance(pageType);
-            if (page.BindingContext is BaseViewModel viewModel)
-                viewModel.OnAppearing(parameter);
+            var viewModel = SimpleIoc.Default.GetInstance(vmType);
+            if (viewModel is BaseViewModel model)
+            {
+                model.OnAppearing(parameter);
+                page.BindingContext = model;
+            }
             await _navigation.PushAsync(page,true);
-           
         }
 
-        public async Task NavigateBindTo(BaseViewModel baseViewModel, Type pageType, object[] args)
+        public async Task NavigateBindTo(BaseViewModel baseViewModel, Type vmType, object[] args)
         {
+            var pageType = GetPage(vmType);
             var page = (Page)Activator.CreateInstance(pageType);
             page.BindingContext = baseViewModel;
             await _navigation.PushAsync(page,true);
         }
     }
-
 }

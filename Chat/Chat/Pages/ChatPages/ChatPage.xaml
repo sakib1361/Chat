@@ -6,7 +6,6 @@
              mc:Ignorable="d"
              xmlns:converters="clr-namespace:Chat.Converters"
              xmlns:local="clr-namespace:Chat.Pages.ChatPages"
-             BindingContext="{Binding Source={StaticResource Locator}, Path=ChatPageModel}"
              x:Class="Chat.Pages.ChatPages.ChatPage">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal"

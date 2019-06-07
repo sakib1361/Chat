@@ -1,12 +1,10 @@
-﻿using Chat.Pages.Home;
-using Chat.Services;
-using Chat.ViewModels;
-using ChatClient.Engine;
+﻿using ChatClient.Engine;
+using ChatEngine.Services;
 using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System.Windows.Input;
 
-namespace Chat.Pages.Login
+namespace ChatEngine.ViewModels
 {
     public class LoginPageModel : BaseViewModel
     {
@@ -27,7 +25,7 @@ namespace Chat.Pages.Login
         private void LoginSuccess(ChatObject obj)
         {
             AppService.CurrentUser = Username;
-            MoveToPage(typeof(HomePage));
+            MoveToPage(typeof(HomePageModel));
         }
 
         private void LoginFailed(ChatObject obj)
@@ -38,10 +36,16 @@ namespace Chat.Pages.Login
 
         public ICommand SignInCommand => new RelayCommand(SignInAction);
         public ICommand SignUpCommand => new RelayCommand(SignUpAction);
+        public ICommand ServerCommand => new RelayCommand(ServerAction);
+
+        private void ServerAction()
+        {
+            NavigateToPage(typeof(ServerPageModel));
+        }
 
         private void SignUpAction()
         {
-            NavigateToPage(typeof(RegisterPage));
+            NavigateToPage(typeof(RegisterPageModel));
         }
 
         private async void SignInAction()

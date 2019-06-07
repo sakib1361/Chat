@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Xamarin.Forms;
+using Chat.PlatformService;
 
 namespace Chat.Droid
 {
@@ -19,7 +21,8 @@ namespace Chat.Droid
 
             base.OnCreate(savedInstanceState);
 
-            Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
+            FormsMaterial.Init(this, savedInstanceState);
             Acr.UserDialogs.UserDialogs.Init(this);
             LoadApplication(new App());
         }

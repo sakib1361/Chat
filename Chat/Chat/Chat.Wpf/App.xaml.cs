@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Chat.Wpf.ViewModels;
+using ChatEngine.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,6 +17,7 @@ namespace Chat.Wpf
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            ViewModelLocator.InitializeNavigation(typeof(LoginPageModel), typeof(MainWindow));
             var m = new MainWindow();
             m.Show();
         }

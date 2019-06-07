@@ -1,20 +1,13 @@
-﻿using System.Windows;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.WPF;
-
-namespace Chat.Wpf
+﻿namespace Chat.Wpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : FormsApplicationPage
+    public partial class MainWindow
     {
         public MainWindow()
         {
             InitializeComponent();
-
-            Forms.Init();
-            LoadApplication(new Chat.App());
         }
     }
 }

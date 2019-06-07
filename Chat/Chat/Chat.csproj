@@ -19,7 +19,6 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.0.4" />
     <PackageReference Include="Jdenticon-net" Version="2.2.1" />
-    <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.0.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.425677" />
     <PackageReference Include="Xamarin.Forms.Visual.Material" Version="4.0.0.425677" />
@@ -27,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ChatClient\ChatClient.csproj" />
+    <ProjectReference Include="..\ChatEngine\ChatEngine.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +54,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\Login\RegisterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\Login\ServerPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\AppResources.resx">

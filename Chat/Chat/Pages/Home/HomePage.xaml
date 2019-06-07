@@ -7,10 +7,10 @@
              xmlns:helpers="clr-namespace:Chat.Helpers"
              Title="Simple Chat"
              xmlns:converters="clr-namespace:Chat.Converters"
-             BindingContext="{Binding Source={StaticResource Locator}, Path=HomePageModel}"
              x:Class="Chat.Pages.Home.HomePage">
     <ContentPage.Resources>
         <converters:ProfileImageConverter x:Key="imageConverter" />
+        <converters:BoolColorConverter x:Key="ColorConverter" />
     </ContentPage.Resources>
     <Grid>
         <ListView HasUnevenRows="True"
@@ -30,13 +30,6 @@
                         <Image WidthRequest="60"
                                Source="{Binding CurrentUser.Username, 
                                     Converter={StaticResource imageConverter}}" />
-                        <!--<ff:CachedImage WidthRequest="60"
-                                    Source="{Binding CurrentUser.Username, 
-                                    Converter={StaticResource imageConverter}}">
-                        <ff:CachedImage.Transformations>
-                            <tr:CircleTransformation />
-                        </ff:CachedImage.Transformations>
-                    </ff:CachedImage>-->
                         <StackLayout Grid.Column="1"
                                      Margin="15,0">
                             <Label Text="{Binding CurrentUser.FullName}"
@@ -63,12 +56,13 @@
                             </Grid.ColumnDefinitions>
                             <Image WidthRequest="60"
                                    Source="{Binding Username, Converter={StaticResource imageConverter}}" />
-                            <!--<ff:CachedImage WidthRequest="60"
-                                        Source="{Binding Username, Converter={StaticResource imageConverter}}">
-                            <ff:CachedImage.Transformations>
-                                <tr:CircleTransformation />
-                            </ff:CachedImage.Transformations>
-                        </ff:CachedImage>-->
+                            <Frame Padding="0"
+                                   HeightRequest="6"
+                                   WidthRequest="6"
+                                   CornerRadius="3"
+                                   BackgroundColor="{Binding IsActive, Converter={StaticResource ColorConverter}}"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="End" />
                             <StackLayout Grid.Column="1"
                                          Margin="15,0">
                                 <Label Text="{Binding FullName}"
@@ -81,7 +75,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" 
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
     </Grid>
 </ContentPage>

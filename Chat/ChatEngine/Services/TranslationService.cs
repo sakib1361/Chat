@@ -1,13 +1,10 @@
-﻿using Chat.Resources;
-using System;
+﻿using ChatEngine.Resources;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
-namespace Chat.Services
+namespace ChatEngine.Services
 {
     public class TranslationService : INotifyPropertyChanged
     {
@@ -67,24 +64,5 @@ namespace Chat.Services
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
-    [ContentProperty(nameof(Attribute))]
-    public class LocExtension : IMarkupExtension<BindingBase>
-    {
-        public string Attribute { get; set; }
-        object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider)
-        {
-            return ProvideValue(serviceProvider);
-        }
-
-        public BindingBase ProvideValue(IServiceProvider serviceProvider)
-        {
-            var binding = new Binding
-            {
-                Mode = BindingMode.OneWay,
-                Path = $"[{Attribute}]",
-                Source = TranslationService.Instance,
-            };
-            return binding;
-        }
-    }
+   
 }

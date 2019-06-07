@@ -1,5 +1,5 @@
-﻿using Chat.Services;
-using ChatClient.Engine;
+﻿using ChatClient.Engine;
+using ChatEngine.Services;
 using Xamarin.Forms;
 
 namespace Chat.Pages.ChatPages

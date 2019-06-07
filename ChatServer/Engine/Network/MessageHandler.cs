@@ -13,7 +13,7 @@ namespace ChatServer.Engine.Network
     public class MessageHandler
     {
         private readonly DBHandler DBHandler;
-        // int being userId with a list of socket instances
+        // string being userId with a list of socket instances
         private readonly Dictionary<string, List<SocketHandler>> AllSocketInstances;
         public MessageHandler(DBHandler dBHandler)
         {

@@ -1,6 +1,5 @@
-﻿using Chat.Services;
-using Chat.ViewModels;
-using ChatClient.Engine;
+﻿using ChatClient.Engine;
+using ChatEngine.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Newtonsoft.Json;
@@ -9,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace Chat.Pages.ChatPages
+namespace ChatEngine.ViewModels
 {
     public class ChatPageModel : BaseViewModel
     {

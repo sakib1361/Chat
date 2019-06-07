@@ -6,7 +6,6 @@
              mc:Ignorable="d"
              NavigationPage.HasBackButton="False"
              BackgroundColor="{StaticResource primaryDarkColor}"
-             BindingContext="{Binding Source={StaticResource Locator}, Path=RegisterPageModel}"
              xmlns:services="clr-namespace:Chat.Services"
              x:Class="Chat.Pages.Login.RegisterPage">
     <Grid x:Name="MainGrid">
@@ -19,6 +18,7 @@
             <Label Text="Simple Chat"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
+                   TextColor="White"
                    FontSize="Large" />
             <ScrollView Grid.Row="1">
                 <StackLayout VerticalOptions="Start"

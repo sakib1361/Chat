@@ -1,20 +1,20 @@
-﻿using Chat.PlatformService;
-using ChatClient.Engine;
+﻿using ChatClient.Engine;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
-namespace Chat.Services
+namespace ChatEngine.Services
 {
     public class ChatService
     {
         private readonly ClientHandler ClientHandler;
+        private readonly IUserDialogService DialogService;
         readonly ConcurrentDictionary<string, TaskObject> Tasks;
-        public ChatService(ClientHandler clientHandler)
+        public ChatService(ClientHandler clientHandler, IUserDialogService dialogService)
         {
             ClientHandler = clientHandler;
+            DialogService = dialogService;
             Tasks = new ConcurrentDictionary<string, TaskObject>();
             ClientHandler.MessageRecieveed += ClientHandler_MessageRecieveed;
             ClientHandler.ConnectionChanged += ClientHandler_ClientStateChanged;
@@ -22,19 +22,13 @@ namespace Chat.Services
 
         private void ClientHandler_ClientStateChanged(object sender, string e)
         {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                UserDialogService.Instance.Toast(e);
-            });
+            DialogService.Toast(e);
         }
 
         private void ClientHandler_MessageRecieveed(object sender, ChatObject e)
         {
             if (e.MessageType == MessageType.EndToEnd || e.MessageType == MessageType.BroadCast)
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Messenger.Default.Send(e, e.MessageType);
-                });
+                Messenger.Default.Send(e, e.MessageType);
             else
             {
                 if (Tasks.TryRemove(e.ChatId, out TaskObject response))
@@ -60,7 +54,7 @@ namespace Chat.Services
             }
         }
 
-        internal void Stop()
+        public void Stop()
         {
             ClientHandler?.Close();
         }

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             BackgroundColor="{StaticResource primaryDarkColor}"
+             Title="Server Setup"
+             x:Class="Chat.Pages.Login.ServerPage">
+    <Grid>
+        <StackLayout VerticalOptions="Center"
+                     Margin="10,0">
+            <Entry x:Name="ServerAddress"
+                   Placeholder="Server Address" />
+            <Entry x:Name="ServerPort"
+                   Placeholder="Server Port"
+                   Keyboard="Numeric" />
+        </StackLayout>
+        <Button Margin="0,20"
+                VerticalOptions="End"
+                BackgroundColor="{StaticResource primaryDarkColor}"
+                Clicked="Button_Clicked"
+                Text="Save" />
+    </Grid>
+</ContentPage>

@@ -1,29 +1,25 @@
 ﻿using Acr.UserDialogs;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ChatEngine.Services;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace Chat.PlatformService
 {
-    public class UserDialogService
+    public class UserDialogService : IUserDialogService
     {
-        public static UserDialogService Instance = DependencyService.Get<UserDialogService>();
 
-        public virtual void Toast(string message)
+        public void Toast(string message)
         {
             UserDialogs.Instance.Toast(message);
         }
 
-        public virtual void Message(string message, string title = "Error")
+        public void Message(string message, string title = "Error")
         {
             UserDialogs.Instance.Alert(message);
         }
 
-        internal Task<bool> ConfirmAsync(string message, string title)
+        public async Task<bool> ConfirmAsync(string message, string title)
         {
-            throw new NotImplementedException();
+            return await UserDialogs.Instance.ConfirmAsync(message, title);
         }
     }
 }

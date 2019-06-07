@@ -1,22 +1,24 @@
-﻿using Chat.PlatformService;
-using Chat.Wpf.PlatformService;
-using System.Windows;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.WPF;
+﻿using Chat.Wpf.PlatformService;
+using ChatEngine.Services;
+using System.Threading.Tasks;
 
-[assembly: Dependency(typeof(WpfDialogService))]
 namespace Chat.Wpf.PlatformService
 {
-    public class WpfDialogService : UserDialogService
+    public class WpfDialogService : IUserDialogService
     {
-        public override void Toast(string message)
+        public Task<bool> ConfirmAsync(string message, string title)
         {
-            MessageBox.Show(message);
+            throw new System.NotImplementedException();
         }
 
-        public override void Message(string message, string title = "Error")
+        public void Message(string message, string title)
         {
-            MessageBox.Show(message);
+            throw new System.NotImplementedException();
+        }
+
+        public void Toast(string message)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

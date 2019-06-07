@@ -1,12 +1,10 @@
-﻿using Chat.Pages.Home;
-using Chat.Services;
-using Chat.ViewModels;
-using ChatClient.Engine;
+﻿using ChatClient.Engine;
+using ChatEngine.Services;
 using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System.Windows.Input;
 
-namespace Chat.Pages.Login
+namespace ChatEngine.ViewModels
 {
     public class RegisterPageModel : BaseViewModel
     {
@@ -69,7 +67,7 @@ namespace Chat.Pages.Login
         }
         private void Login_Success(ChatObject obj)
         {
-            MoveToPage(typeof(HomePage));
+            MoveToPage(typeof(HomePageModel));
             AppService.CurrentUser = Username;
         }
 

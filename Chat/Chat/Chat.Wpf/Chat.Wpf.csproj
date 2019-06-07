@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\SettingService.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,14 +98,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms.Platform.WPF">
-      <Version>4.0.0.425677</Version>
+    <PackageReference Include="MahApps.Metro">
+      <Version>1.6.5</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chat.csproj">
-      <Project>{00b35958-68e1-4f69-951a-13aaabdb1fba}</Project>
-      <Name>Chat</Name>
+    <Folder Include="Pages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ChatClient\ChatClient.csproj">
+      <Project>{90F35868-AA8A-4467-8659-C5EE1AF3DDB8}</Project>
+      <Name>ChatClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ChatEngine\ChatEngine.csproj">
+      <Project>{F56D6877-37AD-4B18-8F10-824BA6C7E2C3}</Project>
+      <Name>ChatEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

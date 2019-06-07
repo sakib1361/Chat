@@ -7,7 +7,6 @@
              BackgroundColor="{StaticResource primaryDarkColor}"
              NavigationPage.HasNavigationBar="False"
              xmlns:services="clr-namespace:Chat.Services"
-             BindingContext="{Binding Source={StaticResource Locator}, Path=LoginPageModel}"
              x:Class="Chat.Pages.Login.LoginPage">
     <ContentPage.Content>
         <Grid x:Name="MainGrid">
@@ -38,6 +37,12 @@
                     Text="{services:Loc Attribute=Signup}"
                     VerticalOptions="End"
                     Command="{Binding SignUpCommand}" />
+            <Button HorizontalOptions="End"
+                    Margin="10"
+                    BackgroundColor="Transparent"
+                    Text="{services:Loc Attribute=Server}"
+                    VerticalOptions="End"
+                    Command="{Binding ServerCommand}" />
             <ActivityIndicator IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />
         </Grid>
