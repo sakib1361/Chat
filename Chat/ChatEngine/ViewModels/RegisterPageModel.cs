@@ -56,6 +56,7 @@ namespace ChatEngine.ViewModels
                     SenderName = Username,
                     Message = JsonConvert.SerializeObject(user)
                 };
+                AppService.CurrentUser = Username;
                 IsBusy = true;
                 var res = await chatService.GetData(chat);
                 if (res.MessageType == MessageType.Failed) HandlerErrors(res);
