@@ -17,10 +17,8 @@ namespace Chat
 
         protected override void OnStart()
         {
-            string Address = SettingService.Instance.ServerName;
-            int Port = SettingService.Instance.Port;
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            chatService.Start(Address, Port);
+            chatService.Start();
         }
 
         protected override void OnSleep()
@@ -31,10 +29,8 @@ namespace Chat
 
         protected override void OnResume()
         {
-            string Address = SettingService.Instance.ServerName;
-            int Port = SettingService.Instance.Port;
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            chatService.Start(Address, Port);
+            chatService.Start();
             // Handle when your app resumes
         }
     }

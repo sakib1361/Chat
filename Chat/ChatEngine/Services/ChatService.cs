@@ -1,4 +1,5 @@
 ﻿using ChatClient.Engine;
+using ChatEngine.Helpers;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Concurrent;
@@ -113,8 +114,10 @@ namespace ChatEngine.Services
             }
         }
 
-        public void Start(string address, int port)
+        public void Start()
         {
+            var address = SettingService.Instance.ServerName;
+            var port = SettingService.Instance.Port;
             ClientHandler.Connect(address, port);
         }
     }

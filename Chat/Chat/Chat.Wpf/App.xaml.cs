@@ -1,5 +1,8 @@
-﻿using Chat.Wpf.ViewModels;
+﻿using Chat.Wpf.Pages.Login;
+using Chat.Wpf.ViewModels;
+using ChatEngine.Services;
 using ChatEngine.ViewModels;
+using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,9 +20,16 @@ namespace Chat.Wpf
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            ViewModelLocator.InitializeNavigation(typeof(LoginPageModel), typeof(MainWindow));
-            var m = new MainWindow();
-            m.Show();
+            ViewModelLocator.InitializeNavigation(typeof(LoginPageModel), typeof(LoginWindow));
+            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            chatService.Start();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            chatService.Stop();
         }
     }
 }
