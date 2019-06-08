@@ -27,7 +27,7 @@ namespace Chat.Wpf.ViewModels
 
             var pageModel = SimpleIoc.Default.GetInstance(baseView);
             var page = Activator.CreateInstance(type) as Window;
-            var navPage = new NavigationHelper(page);
+            var navPage = new NavigationHelper(page,baseView);
             SimpleIoc.Default.Register<INaviagationPage>(() => navPage);
             if (pageModel is BaseViewModel viewModel)
             {

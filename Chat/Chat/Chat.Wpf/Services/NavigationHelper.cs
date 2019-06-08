@@ -15,16 +15,24 @@ namespace Chat.Wpf.Services
     public class NavigationHelper : BaseNaviagation, INaviagationPage
     {
         private Window MainWindow;
-
-        internal NavigationHelper(Window window)
+        private readonly IList<Type> WindowTypes = new List<Type>();
+        internal NavigationHelper(Window window, Type baseView)
         {
             this.MainWindow = window;
             MainWindow.Show();
+            WindowTypes.Add(baseView);
         }
 
-        public void GoBack()
+        public async void GoBack()
         {
-           
+            var lastWindow = WindowTypes.LastOrDefault();
+            if (lastWindow != null)
+            {
+                WindowTypes.Remove(lastWindow);
+                lastWindow = WindowTypes.LastOrDefault();
+                if (lastWindow != null)
+                    await NavigateTo(lastWindow);
+            }
         }
 
         public Task NavigateBindTo(BaseViewModel baseViewModel, Type type, object[] args)
@@ -32,7 +40,7 @@ namespace Chat.Wpf.Services
             throw new NotImplementedException();
         }
 
-        public async Task NavigateTo(Type basemodelType, object[] args)
+        public async Task NavigateTo(Type basemodelType,params object[] args)
         {
             var pageType = GetPage(basemodelType);
             var datacontext = SimpleIoc.Default.GetInstance(basemodelType);
@@ -47,12 +55,13 @@ namespace Chat.Wpf.Services
                 await Task.Delay(100);
                 MainWindow.Close();
                 MainWindow = mWindow;
+                WindowTypes.Add(basemodelType);
             }
         }
 
         public void RemovePage()
         {
-            
+            WindowTypes.Clear();
         }
     }
 }

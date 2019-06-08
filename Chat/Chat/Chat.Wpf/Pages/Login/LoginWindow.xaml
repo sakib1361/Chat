@@ -55,8 +55,15 @@
                     HorizontalAlignment="Stretch"
                     Background="Blue"
                     Style="{StaticResource AccentButton}"
-                    Command="{Binding SignInCommand}" />
+                    Command="{Binding SignUpCommand}" />
         </StackPanel>
+        <Button Grid.Row="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                Content="{services:Loc Server}"
+                Command="{Binding ServerCommand}" />
         <metro:ProgressRing Grid.Row="1"
                             IsActive="{Binding IsBusy}" />
     </Grid>
