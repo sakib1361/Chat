@@ -2,7 +2,6 @@
 using Chat.Wpf.Pages.Login;
 using Chat.Wpf.PlatformService;
 using Chat.Wpf.Services;
-using ChatClient.Engine;
 using ChatEngine.Helpers;
 using ChatEngine.Services;
 using ChatEngine.ViewModels;
@@ -16,13 +15,15 @@ namespace Chat.Wpf.ViewModels
     {
         static ViewModelLocator()
         {
-            SimpleIoc.Default.Register<IUserDialogService, WpfDialogService>();
-            AppService.Register();
-            SettingService.Instance.Init(new SettingsEngine());
+           
         }
 
         internal static void InitializeNavigation(Type baseView, Type type)
         {
+            SimpleIoc.Default.Register<IUserDialogService, WpfDialogService>();
+            SimpleIoc.Default.Register<IDispatcher, DispatcherWpf>();
+            AppService.Register();
+            SettingService.Instance.Init(new SettingsEngine());
 
             var pageModel = SimpleIoc.Default.GetInstance(baseView);
             var page = Activator.CreateInstance(type) as Window;
@@ -37,8 +38,10 @@ namespace Chat.Wpf.ViewModels
             navPage.Register(typeof(LoginWindow), typeof(LoginPageModel));
             navPage.Register(typeof(RegisterWindow), typeof(RegisterPageModel));
             navPage.Register(typeof(ChatView), typeof(ChatPageModel));
-            navPage.Register(typeof(HomePage), typeof(HomePageModel));
+            navPage.Register(typeof(HomeView), typeof(HomePageModel));
             navPage.Register(typeof(ServerWindow), typeof(ServerPageModel));
         }
+
+        public ChatPageModel ChatPageModel => SimpleIoc.Default.GetInstance<ChatPageModel>();
     }
 }

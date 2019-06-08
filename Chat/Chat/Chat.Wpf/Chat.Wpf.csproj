@@ -55,12 +55,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ColorConverter.cs" />
+    <Compile Include="Converters\ProfileImageConverter.cs" />
+    <Compile Include="Pages\ChatPages\ChatTemplateSelector.cs" />
     <Compile Include="Pages\ChatPages\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ChatPages\ChatWindowModel.cs" />
-    <Compile Include="Pages\ChatPages\HomePage.xaml.cs">
-      <DependentUpon>HomePage.xaml</DependentUpon>
+    <Compile Include="Pages\ChatPages\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ChatPages\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
@@ -71,6 +76,7 @@
     <Compile Include="Pages\Login\ServerWindow.xaml.cs">
       <DependentUpon>ServerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlatformService\DispatcherWpf.cs" />
     <Compile Include="Services\LocExtensions.cs" />
     <Compile Include="Services\NavigationHelper.cs" />
     <Compile Include="Services\SettingService.cs" />
@@ -128,7 +134,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ChatPages\HomePage.xaml">
+    <Page Include="Pages\ChatPages\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ChatPages\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

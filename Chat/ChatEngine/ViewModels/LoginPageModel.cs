@@ -12,7 +12,6 @@ namespace ChatEngine.ViewModels
         public string Username { get; set; }
         public string Password { get; set; }
 
-
         public LoginPageModel(ChatService chatService)
         {
             ChatService = chatService;

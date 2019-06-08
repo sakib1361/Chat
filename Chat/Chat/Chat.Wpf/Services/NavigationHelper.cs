@@ -2,6 +2,7 @@
 using ChatEngine.Services;
 using ChatEngine.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Chat.Wpf.Services
             if (datacontext is BaseViewModel baseView)
                 baseView.OnAppearing(args);
             
-            if(pageType == typeof(Window))
+            if(pageType.BaseType == typeof(MetroWindow))
             {
                 var mWindow = Activator.CreateInstance(pageType) as Window;
                 mWindow.DataContext = datacontext;

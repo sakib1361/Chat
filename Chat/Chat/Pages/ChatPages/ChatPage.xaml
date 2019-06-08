@@ -27,8 +27,37 @@
     </NavigationPage.TitleView>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:ChatTemplateSelector x:Key="MessageTemplateSelector" />
-            <converters:ProfileImageConverter x:Key="imageConverter" />
+            <DataTemplate x:Key="CurrentUser">
+                <ViewCell>
+                    <Frame BackgroundColor="White"
+                           CornerRadius="5"
+                           HorizontalOptions="End"
+                           Padding="30,5,5,5"
+                           HasShadow="False"
+                           Margin="80,3,10,3">
+                        <Label Text="{Binding Message}"
+                               TextColor="Black" />
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="OppositeUser">
+                <ViewCell>
+                    <Frame BackgroundColor="{StaticResource primaryColor}"
+                           CornerRadius="5"
+                           Padding="5,5,30,5"
+                           HorizontalOptions="Start"
+                           HasShadow="false"
+                           Margin="10,3,80,3">
+                        <Label Text="{Binding Message}"
+                               TextColor="White" />
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <local:ChatTemplateSelector x:Key="MessageTemplateSelector"
+                                        OutgoingDataTemplate="{StaticResource CurrentUser}"
+                                        IncomingDataTemplate="{StaticResource OppositeUser}"/>
+            <converters:ProfileImageConverter x:Key="imageConverter"
+                                             />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
@@ -39,6 +68,7 @@
         <ListView ItemsSource="{Binding ChatObjects}"
                   ItemTemplate="{StaticResource MessageTemplateSelector}"
                   Margin="0"
+                  x:Name="ChatList"
                   HasUnevenRows="True"
                   VerticalOptions="FillAndExpand"
                   SeparatorColor="Transparent" />

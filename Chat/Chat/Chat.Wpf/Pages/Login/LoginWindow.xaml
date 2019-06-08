@@ -5,13 +5,59 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:local="clr-namespace:Chat.Wpf.Pages.Login"
                    mc:Ignorable="d"
+                   xmlns:vm="clr-namespace:ChatEngine.ViewModels;assembly=ChatEngine"
+                   d:DataContext="{d:DesignInstance vm:LoginPageModel, IsDesignTimeCreatable=False}"
                    WindowStartupLocation="CenterScreen"
                    xmlns:services="clr-namespace:Chat.Wpf.Services"
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    Title="{services:Loc Login}"
+                   ResizeMode="NoResize"
                    Height="450"
-                   Width="400">
+                   Width="350">
+    <Window.Resources>
+        <Style TargetType="Label"
+               x:Key="Header">
+            <Setter Property="FontSize"
+                    Value="10" />
+            <Setter Property="Margin"
+                    Value="0,10,0,3" />
+            <Setter Property="Padding"
+                    Value="0" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Label Content="Simple Chat"
+               FontSize="18"
+               FontWeight="Bold" 
+               FontStyle="Italic"
+               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <StackPanel Grid.Row="1" Margin="10,0"
+                    metro:VisibilityHelper.IsCollapsed="{Binding IsBusy}">
+            <Label Content="{services:Loc Username}"
+                   Style="{StaticResource Header}" />
+            <TextBox Text="{Binding Username}" 
+                     metro:TextBoxHelper.Watermark="{services:Loc Username}"/>
+            <Label Content="{services:Loc Password}"
+                   Style="{StaticResource Header}" />
+            <TextBox Text="{Binding Password}"
+                     metro:TextBoxHelper.Watermark="{services:Loc Password}" />
+            <Button Margin="40,20,40,5"
+                    Content="{services:Loc Login}"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource AccentButton}"
+                    Command="{Binding SignInCommand}" />
+            <Button Margin="40,0"
+                    Content="{services:Loc Register}"
+                    HorizontalAlignment="Stretch"
+                    Background="Blue"
+                    Style="{StaticResource AccentButton}"
+                    Command="{Binding SignInCommand}" />
+        </StackPanel>
+        <metro:ProgressRing Grid.Row="1"
+                            IsActive="{Binding IsBusy}" />
     </Grid>
 </metro:MetroWindow>

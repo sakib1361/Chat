@@ -1,10 +1,8 @@
-﻿using ChatEngine.ViewModels;
+﻿using ChatEngine.Helpers;
+using ChatEngine.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,6 +14,13 @@ namespace Chat.Pages.ChatPages
         public ChatPage()
         {
             InitializeComponent();
+            Messenger.Default.Register<string>(this, AppConstants.NewMessage, NewMessagge);
+        }
+
+        private void NewMessagge(string obj)
+        {
+            var last = ChatList.ItemsSource.Cast<object>().LastOrDefault();
+            ChatList.ScrollTo(last, ScrollToPosition.MakeVisible, true);
         }
 
         private void Handle_Completed(object sender, EventArgs e)

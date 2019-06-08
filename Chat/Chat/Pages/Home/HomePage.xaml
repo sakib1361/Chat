@@ -60,7 +60,7 @@
                                    HeightRequest="6"
                                    WidthRequest="6"
                                    CornerRadius="3"
-                                   BackgroundColor="{Binding IsActive, Converter={StaticResource ColorConverter}}"
+                                   BackgroundColor="{Binding Active, Converter={StaticResource ColorConverter}}"
                                    HorizontalOptions="End"
                                    VerticalOptions="End" />
                             <StackLayout Grid.Column="1"

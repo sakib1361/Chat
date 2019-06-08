@@ -3,6 +3,7 @@ using Chat.Wpf.ViewModels;
 using ChatEngine.Services;
 using ChatEngine.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Threading;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ namespace Chat.Wpf
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            DispatcherHelper.Initialize();
             ViewModelLocator.InitializeNavigation(typeof(LoginPageModel), typeof(LoginWindow));
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
             chatService.Start();

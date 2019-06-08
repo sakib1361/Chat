@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Chat.Wpf.Pages.ChatPages
 {
     /// <summary>
-    /// Interaction logic for HomePage.xaml
+    /// Interaction logic for UserView.xaml
     /// </summary>
-    public partial class HomePage : Window
+    public partial class UserView : UserControl
     {
-        public HomePage()
+        public UserView()
         {
             InitializeComponent();
         }

@@ -23,11 +23,17 @@ namespace ChatServer.Engine.Network
         internal void BroadcastLogout(SocketHandler socketHandler)
         {
             var res = AllSocketInstances.FirstOrDefault(x => x.Value.Contains(socketHandler));
-            if (res.Value != null && res.Value.Count == 0)
+            if (res.Value != null)
             {
-                // User has been logged out from all instances
-                AllSocketInstances.Remove(res.Key);
-                Console.WriteLine("Logged out instance " + res.Key);
+                foreach (var socket in res.Value.ToList())
+                {
+                    if (!socket.IsActive) res.Value.Remove(socket);
+                }
+                if (res.Value.Count == 0)
+                {// User has been logged out from all instances
+                    AllSocketInstances.Remove(res.Key);
+                    Console.WriteLine("Logged out instance " + res.Key);
+                }
             }
         }
 
@@ -56,7 +62,7 @@ namespace ChatServer.Engine.Network
 
         private async void GetUsers(SocketHandler socketHandler, ChatObject e)
         {
-            if (!string.IsNullOrWhiteSpace(e.SenderName) && AllSocketInstances[e.SenderName] != null)
+            if (!string.IsNullOrWhiteSpace(e.SenderName) && AllSocketInstances.ContainsKey(e.SenderName))
             {
                 using (var db = DBHandler.Create())
                 {

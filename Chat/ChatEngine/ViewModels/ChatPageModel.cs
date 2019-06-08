@@ -1,4 +1,5 @@
 ﻿using ChatClient.Engine;
+using ChatEngine.Helpers;
 using ChatEngine.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -12,12 +13,14 @@ namespace ChatEngine.ViewModels
 {
     public class ChatPageModel : BaseViewModel
     {
+        private readonly IDispatcher Dispatcher;
         private readonly ChatService chatService;
         public string Receiver { get; private set; }
         public string Message { get; set; }
         public ObservableCollection<ChatObject> ChatObjects { get; private set; }
-        public ChatPageModel(ChatService chatService)
+        public ChatPageModel(ChatService chatService, IDispatcher dispatcher)
         {
+            Dispatcher = dispatcher;
             this.chatService = chatService;
             ChatObjects = new ObservableCollection<ChatObject>();
             Messenger.Default.Register<ChatObject>(this, MessageType.EndToEnd, NewMessage);
@@ -49,21 +52,24 @@ namespace ChatEngine.ViewModels
                 foreach (var item in oldChats)
                 {
                     if (ChatObjects.Any(x => x.Id == item.Id) == false)
-                        ChatObjects.Add(item);
+                        ChatObjects.Insert(0, item);
+                }
+                if (oldChats.Count > 0)
+                {
+                    Messenger.Default.Send(AppConstants.NewMessage, AppConstants.NewMessage);
                 }
             }
         }
-
-
 
         private void NewMessage(ChatObject obj)
         {
             if (obj.SenderName == Receiver)
             {
-                if (ChatObjects.Any(x => x.Id == obj.Id) == false)
+                Dispatcher.RunAsync(() =>
                 {
                     ChatObjects.Add(obj);
-                }
+                    Messenger.Default.Send(AppConstants.NewMessage, AppConstants.NewMessage);
+                });
             }
         }
 
@@ -82,6 +88,7 @@ namespace ChatEngine.ViewModels
                 if (await chatService.SendMessage(chat))
                 {
                     ChatObjects.Add(chat);
+                    Messenger.Default.Send(AppConstants.NewMessage, AppConstants.NewMessage);
                 }
                 Message = string.Empty;
             }

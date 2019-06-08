@@ -12,7 +12,8 @@ namespace Chat.Services
     public class NavigationHelper:BaseNaviagation, INaviagationPage
     {
         internal NavigationPage _navigation;
-        public NavigationHelper(ContentPage contentPage)
+
+        public void Init(ContentPage contentPage)
         {
             var PrimaryDarkColor = (Color)Application.Current.Resources["primaryDarkColor"];
             _navigation = new NavigationPage(contentPage)

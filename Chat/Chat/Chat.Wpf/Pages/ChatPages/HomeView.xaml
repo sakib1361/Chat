@@ -1,0 +1,52 @@
+﻿<metro:MetroWindow x:Class="Chat.Wpf.Pages.ChatPages.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Chat.Wpf.Pages.ChatPages"
+             xmlns:vm="clr-namespace:ChatEngine.ViewModels;assembly=ChatEngine"
+             d:DataContext="{d:DesignInstance vm:HomePageModel, IsDesignTimeCreatable=False}"
+             Background="White"
+             mc:Ignorable="d"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:services="clr-namespace:Chat.Wpf.Services"
+             xmlns:converters="clr-namespace:Chat.Wpf.Converters"
+             Title="Simple Chat"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <local:UserView DataContext="{Binding CurrentUser}" />
+            <Grid Background="Crimson"
+                  Grid.Row="1">
+                <Label Content="{services:Loc Users}"
+                       Margin="10,0"
+                       Foreground="White" />
+            </Grid>
+            <ListView Grid.Row="2"
+                      x:Name="UsersView"
+                      SelectionMode="Single"
+                      SelectionChanged="UsersView_SelectionChanged"
+                      ItemsSource="{Binding Users}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:UserView />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Grid Grid.Column="1"
+              Background="Crimson" />
+        <local:ChatView Grid.Column="2"/>
+    </Grid>
+</metro:MetroWindow>

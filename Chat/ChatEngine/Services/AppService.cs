@@ -1,6 +1,9 @@
 ﻿using ChatClient.Engine;
+using ChatEngine.Helpers;
 using ChatEngine.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
+using Jdenticon;
+using System.IO;
 
 namespace ChatEngine.Services
 {
@@ -18,6 +21,20 @@ namespace ChatEngine.Services
             SimpleIoc.Default.Register<LoginPageModel>();
             SimpleIoc.Default.Register<RegisterPageModel>();
             SimpleIoc.Default.Register<ServerPageModel>();
+        }
+
+        public static string GenerateIcon(string username)
+        {
+            var tmpdir = Path.GetTempPath();
+            var appFolder = Path.Combine(tmpdir, AppConstants.AppName);
+            Directory.CreateDirectory(appFolder);
+
+            var imgFile = Path.Combine(appFolder, username + ".png");
+            if (File.Exists(imgFile) == false)
+            {
+                Identicon.FromValue(username, 160).SaveAsPng(imgFile);
+            }
+            return imgFile;
         }
     }
 }

@@ -3,7 +3,6 @@ using Chat.Pages.Home;
 using Chat.Pages.Login;
 using Chat.PlatformService;
 using Chat.Services;
-using ChatClient.Engine;
 using ChatEngine.Helpers;
 using ChatEngine.Services;
 using ChatEngine.ViewModels;
@@ -15,10 +14,21 @@ namespace Chat.ViewModels
 {
     public class ViewModelLocator
     {
+        static readonly NavigationHelper navHelper;
         static ViewModelLocator()
         {
             SimpleIoc.Default.Register<IUserDialogService, UserDialogService>();
+            SimpleIoc.Default.Register<IDispatcher, DispatcherXamarin>();
             AppService.Register();
+
+            navHelper = new NavigationHelper();
+            SimpleIoc.Default.Register<INaviagationPage>(() => navHelper);
+            navHelper.Register(typeof(HomePage), typeof(HomePageModel));
+            navHelper.Register(typeof(ChatPage), typeof(ChatPageModel));
+            navHelper.Register(typeof(LoginPage), typeof(LoginPageModel));
+            navHelper.Register(typeof(RegisterPage), typeof(RegisterPageModel));
+            navHelper.Register(typeof(ServerPage), typeof(ServerPageModel));
+
             SettingService.Instance.Init(new SettingsEngine());
         }
 
@@ -31,14 +41,7 @@ namespace Chat.ViewModels
                 page.BindingContext = viewModel;
                 viewModel.OnAppearing();
             }
-
-            var navHelper = new NavigationHelper(page);
-            SimpleIoc.Default.Register<INaviagationPage>(() => navHelper);
-            navHelper.Register(typeof(HomePage), typeof(HomePageModel));
-            navHelper.Register(typeof(ChatPage), typeof(ChatPageModel));
-            navHelper.Register(typeof(LoginPage), typeof(LoginPageModel));
-            navHelper.Register(typeof(RegisterPage), typeof(RegisterPageModel));
-            navHelper.Register(typeof(ServerPage), typeof(ServerPageModel));
+            navHelper.Init(page);
         }
     }
 }

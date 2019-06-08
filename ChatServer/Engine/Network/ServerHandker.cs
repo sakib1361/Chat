@@ -51,8 +51,8 @@ namespace ChatServer.Engine.Network
             if(sender is SocketHandler socketHandler)
             {
                 sockets.Remove(socketHandler);
-                MessageHandler.BroadcastLogout(socketHandler);
                 socketHandler.Dispose();
+                MessageHandler.BroadcastLogout(socketHandler);
             }
         }
 

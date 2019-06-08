@@ -6,20 +6,14 @@ namespace Chat.Pages.ChatPages
 {
     class ChatTemplateSelector : DataTemplateSelector
     {
-        readonly DataTemplate incomingDataTemplate;
-        readonly DataTemplate outgoingDataTemplate;
-
-        public ChatTemplateSelector()
-        {
-            this.incomingDataTemplate = new DataTemplate(typeof(IncomingViewCell));
-            this.outgoingDataTemplate = new DataTemplate(typeof(OutgoingViewCell));
-        }
+        public DataTemplate IncomingDataTemplate { get; set; }
+        public DataTemplate OutgoingDataTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
             if (!(item is ChatObject messageVm))
                 return null;
-            return (messageVm.SenderName == AppService.CurrentUser) ? outgoingDataTemplate : incomingDataTemplate;
+            return (messageVm.SenderName == AppService.CurrentUser) ? OutgoingDataTemplate : IncomingDataTemplate;
         }
     }
 }

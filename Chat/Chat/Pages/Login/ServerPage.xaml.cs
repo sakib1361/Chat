@@ -1,4 +1,5 @@
 ﻿using Chat.Services;
+using ChatEngine.Helpers;
 using ChatEngine.Services;
 using GalaSoft.MvvmLight.Ioc;
 using System;
@@ -38,7 +39,7 @@ namespace Chat.Pages.Login
                 DisplayAlert("Success", "Settings Saved", "Ok");
                 var service = SimpleIoc.Default.GetInstance<ChatService>();
                 service.Stop();
-                service.Start(server, port);
+                service.Start();
             }
         }
     }

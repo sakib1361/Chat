@@ -3,12 +3,14 @@ using ChatEngine.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
+using PropertyChanged;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ChatEngine.ViewModels
 {
+    [AddINotifyPropertyChangedInterface]
     public abstract class BaseViewModel : ViewModelBase
     {
         public bool IsBusy { get; set; }

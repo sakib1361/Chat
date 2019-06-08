@@ -1,24 +1,26 @@
 ﻿using Chat.Wpf.PlatformService;
 using ChatEngine.Services;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Chat.Wpf.PlatformService
 {
     public class WpfDialogService : IUserDialogService
     {
-        public Task<bool> ConfirmAsync(string message, string title)
+        public async Task<bool> ConfirmAsync(string message, string title)
         {
-            throw new System.NotImplementedException();
+            await Task.Delay(50);
+            return true;
         }
 
         public void Message(string message, string title)
         {
-            throw new System.NotImplementedException();
+            MessageBox.Show(message,title);
         }
 
         public void Toast(string message)
         {
-            throw new System.NotImplementedException();
+            MessageBox.Show(message);
         }
     }
 }

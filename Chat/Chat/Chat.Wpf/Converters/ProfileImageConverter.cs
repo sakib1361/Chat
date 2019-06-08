@@ -1,18 +1,12 @@
-﻿using Chat.Helpers;
-using ChatEngine.Services;
-using Jdenticon;
+﻿using ChatEngine.Services;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Text;
-using Xamarin.Forms;
+using System.Windows.Data;
 
-namespace Chat.Converters
+namespace Chat.Wpf.Converters
 {
-    internal class ProfileImageConverter : IValueConverter
+    public class ProfileImageConverter : IValueConverter
     {
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is string username)
@@ -24,8 +18,6 @@ namespace Chat.Converters
                 return AppService.GenerateIcon("Default");
             }
         }
-
-        
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

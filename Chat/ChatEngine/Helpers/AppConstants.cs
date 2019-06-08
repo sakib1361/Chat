@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Chat.Helpers
+namespace ChatEngine.Helpers
 {
     public static class AppConstants
     {
         public const string AppName = "SimpleChat";
+        public const string NewMessage = "NewMessage";
     }
 }

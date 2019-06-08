@@ -33,7 +33,7 @@ namespace ChatEngine.ViewModels
 #endif
         }
 
-        
+
         public ICommand RegisterCommand => new RelayCommand(RegisterAction);
 
         private async void RegisterAction()
@@ -53,6 +53,7 @@ namespace ChatEngine.ViewModels
                 };
                 var chat = new ChatObject(MessageType.Register)
                 {
+                    SenderName = Username,
                     Message = JsonConvert.SerializeObject(user)
                 };
                 IsBusy = true;
@@ -67,8 +68,8 @@ namespace ChatEngine.ViewModels
         }
         private void Login_Success(ChatObject obj)
         {
-            MoveToPage(typeof(HomePageModel));
             AppService.CurrentUser = Username;
+            MoveToPage(typeof(HomePageModel));
         }
 
         private void Registar_Failed(ChatObject obj)
