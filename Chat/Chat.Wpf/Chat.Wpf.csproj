@@ -118,14 +118,13 @@
       <Version>1.6.5</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ChatClient\ChatClient.csproj">
-      <Project>{90F35868-AA8A-4467-8659-C5EE1AF3DDB8}</Project>
+    <ProjectReference Include="..\..\Core\ChatClient\ChatClient.csproj">
+      <Project>{a5ed9b3b-5b09-4622-8b08-8e307fa9519a}</Project>
       <Name>ChatClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ChatEngine\ChatEngine.csproj">
-      <Project>{F56D6877-37AD-4B18-8F10-824BA6C7E2C3}</Project>
+    <ProjectReference Include="..\..\Core\ChatEngine\ChatEngine.csproj">
+      <Project>{a32bdb2c-af47-4b5d-8d54-420004b40d82}</Project>
       <Name>ChatEngine</Name>
     </ProjectReference>
   </ItemGroup>

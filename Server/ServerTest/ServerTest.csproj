@@ -52,22 +52,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChatClient\ChatClient.csproj">
-      <Project>{90F35868-AA8A-4467-8659-C5EE1AF3DDB8}</Project>
-      <Name>ChatClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChatServer\ChatServer.csproj">
-      <Project>{9C481B8C-A9F3-4899-B063-C2FAABCABCE2}</Project>
-      <Name>ChatServer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
       <Version>2.2.4</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ChatClient\ChatClient.csproj">
+      <Project>{a5ed9b3b-5b09-4622-8b08-8e307fa9519a}</Project>
+      <Name>ChatClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

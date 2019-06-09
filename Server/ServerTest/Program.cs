@@ -1,9 +1,6 @@
 ﻿using ChatClient.Engine;
-using ChatServer.Engine.Database;
-using ChatServer.Engine.Network;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerTest
