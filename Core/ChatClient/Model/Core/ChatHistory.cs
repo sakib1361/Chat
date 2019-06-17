@@ -8,13 +8,13 @@ namespace ChatCore.Engine
     {
         public int Id { get; set; }
         public string GroupName { get; set; }
-        public User FirstUser { get; set; }
-        public User SecondUser { get; set; }
+        public ICollection<User> Users { get; set; }
         public ICollection<ChatObject> ChatObjects { get; set; }
 
         public ChatRoom()
         {
             ChatObjects = new HashSet<ChatObject>();
+            Users = new HashSet<User>();
         }
     }
 }
