@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChatClient.Engine
+namespace ChatCore.Engine
 {
     public class ChatRoom
     {

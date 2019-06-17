@@ -1,5 +1,5 @@
-﻿using ChatEngine.Helpers;
-using ChatEngine.ViewModels;
+﻿using ChatClient.Helpers;
+using ChatClient.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Linq;

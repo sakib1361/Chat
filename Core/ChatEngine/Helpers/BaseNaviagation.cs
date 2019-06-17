@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChatEngine.Helpers
+namespace ChatClient.Helpers
 {
     public abstract class BaseNaviagation
     {

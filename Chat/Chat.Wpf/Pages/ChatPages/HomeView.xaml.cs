@@ -1,5 +1,5 @@
-﻿using ChatClient.Engine;
-using ChatEngine.ViewModels;
+﻿using ChatCore.Engine;
+using ChatClient.ViewModels;
 
 namespace Chat.Wpf.Pages.ChatPages
 {

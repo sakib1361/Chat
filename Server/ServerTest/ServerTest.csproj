@@ -60,9 +60,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\ChatClient\ChatClient.csproj">
+    <ProjectReference Include="..\..\Core\ChatClient\ChatCore.csproj">
       <Project>{a5ed9b3b-5b09-4622-8b08-8e307fa9519a}</Project>
-      <Name>ChatClient</Name>
+      <Name>ChatCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

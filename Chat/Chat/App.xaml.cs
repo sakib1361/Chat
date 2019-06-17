@@ -1,7 +1,7 @@
 ﻿using Chat.Pages.Login;
 using Chat.Services;
-using ChatEngine.Services;
-using ChatEngine.ViewModels;
+using ChatClient.Services;
+using ChatClient.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
 using Xamarin.Forms;
 

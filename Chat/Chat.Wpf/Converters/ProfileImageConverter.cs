@@ -1,4 +1,4 @@
-﻿using ChatEngine.Services;
+﻿using ChatClient.Services;
 using System;
 using System.Globalization;
 using System.Windows.Data;

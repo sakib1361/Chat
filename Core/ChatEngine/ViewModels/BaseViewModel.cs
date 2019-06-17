@@ -1,5 +1,5 @@
-﻿using ChatClient.Engine;
-using ChatEngine.Services;
+﻿using ChatCore.Engine;
+using ChatClient.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ChatEngine.ViewModels
+namespace ChatClient.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public abstract class BaseViewModel : ViewModelBase

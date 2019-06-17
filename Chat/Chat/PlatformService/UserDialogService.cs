@@ -1,5 +1,5 @@
 ﻿using Acr.UserDialogs;
-using ChatEngine.Services;
+using ChatClient.Services;
 using System.Threading.Tasks;
 
 namespace Chat.PlatformService

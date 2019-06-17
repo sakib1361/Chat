@@ -1,5 +1,5 @@
-﻿using ChatClient.Engine;
-using ChatEngine.Services;
+﻿using ChatCore.Engine;
+using ChatClient.Services;
 using System.Windows;
 using System.Windows.Controls;
 

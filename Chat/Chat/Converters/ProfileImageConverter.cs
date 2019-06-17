@@ -1,5 +1,5 @@
 ﻿using Chat.Helpers;
-using ChatEngine.Services;
+using ChatClient.Services;
 using Jdenticon;
 using System;
 using System.Collections.Generic;

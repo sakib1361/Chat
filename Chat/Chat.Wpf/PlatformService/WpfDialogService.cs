@@ -1,5 +1,5 @@
 ﻿using Chat.Wpf.PlatformService;
-using ChatEngine.Services;
+using ChatClient.Services;
 using System.Threading.Tasks;
 using System.Windows;
 

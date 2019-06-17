@@ -1,7 +1,7 @@
 ﻿using Chat.Wpf.Pages.Login;
 using Chat.Wpf.ViewModels;
-using ChatEngine.Services;
-using ChatEngine.ViewModels;
+using ChatClient.Services;
+using ChatClient.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
 using System;

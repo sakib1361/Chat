@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using ChatClient.Engine;
+using ChatCore.Engine;
 using ChatServer.Engine.Database;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;

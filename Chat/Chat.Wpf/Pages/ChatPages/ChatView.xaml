@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Chat.Wpf.Pages.ChatPages"
              mc:Ignorable="d"
-             xmlns:vm="clr-namespace:ChatEngine.ViewModels;assembly=ChatEngine"
+             xmlns:vm="clr-namespace:ChatClient.ViewModels;assembly=ChatClient"
              DataContext="{Binding Source={StaticResource MKey}, Path= ChatPageModel}"
              d:DataContext="{d:DesignInstance vm:ChatPageModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="450"
