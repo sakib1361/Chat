@@ -11,6 +11,7 @@
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:services="clr-namespace:Chat.Wpf.Services"
              xmlns:converters="clr-namespace:Chat.Wpf.Converters"
+                   xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              Title="Simple Chat"
              d:DesignHeight="450"
              d:DesignWidth="800">
@@ -32,6 +33,13 @@
                 <Label Content="{services:Loc Users}"
                        Margin="10,0"
                        Foreground="White" />
+                <Button HorizontalAlignment="Right"
+                        Background="Transparent"
+                        Command="{Binding RefreshCommand}"
+                        Content="{icon:Modern Kind=Refresh}"
+                        BorderBrush="Transparent"
+                        Foreground="White"
+                        Padding="20,5"/>
             </Grid>
             <ListView Grid.Row="2"
                       x:Name="UsersView"
