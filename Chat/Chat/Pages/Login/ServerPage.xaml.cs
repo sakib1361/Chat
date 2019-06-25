@@ -1,6 +1,6 @@
 ﻿using Chat.Services;
-using ChatEngine.Helpers;
-using ChatEngine.Services;
+using ChatClient.Helpers;
+using ChatClient.Services;
 using GalaSoft.MvvmLight.Ioc;
 using System;
 

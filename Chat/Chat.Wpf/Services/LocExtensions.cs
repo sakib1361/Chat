@@ -1,4 +1,4 @@
-﻿using ChatEngine.Services;
+﻿using ChatClient.Services;
 using System.Windows.Data;
 
 namespace Chat.Wpf.Services

@@ -1,4 +1,4 @@
-﻿using ChatEngine.Helpers;
+﻿using ChatClient.Helpers;
 using System.Configuration;
 using System.Runtime.CompilerServices;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChatEngine.Helpers
+namespace ChatClient.Helpers
 {
     public static class AppConstants
     {

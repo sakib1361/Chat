@@ -1,10 +1,10 @@
-﻿using ChatClient.Engine;
-using ChatEngine.Services;
+﻿using ChatCore.Engine;
+using ChatClient.Services;
 using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System.Windows.Input;
 
-namespace ChatEngine.ViewModels
+namespace ChatClient.ViewModels
 {
     public class LoginPageModel : BaseViewModel
     {

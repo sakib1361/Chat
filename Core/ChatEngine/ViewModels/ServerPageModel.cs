@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChatEngine.ViewModels
+namespace ChatClient.ViewModels
 {
     public class ServerPageModel:BaseViewModel
     {

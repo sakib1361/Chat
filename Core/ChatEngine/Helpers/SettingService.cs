@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace ChatEngine.Helpers
+namespace ChatClient.Helpers
 {
     public class SettingService
     {

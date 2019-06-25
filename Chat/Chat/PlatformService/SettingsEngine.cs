@@ -1,4 +1,4 @@
-﻿using ChatEngine.Helpers;
+﻿using ChatClient.Helpers;
 using Xamarin.Forms;
 
 namespace Chat.PlatformService

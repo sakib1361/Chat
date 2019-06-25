@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 
-namespace ChatClient.Engine
+namespace ChatCore.Engine
 {
     public class SocketHandler : IDisposable
     {

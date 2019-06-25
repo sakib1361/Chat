@@ -1,7 +1,7 @@
 ﻿using Chat.ViewModels;
-using ChatEngine.Helpers;
-using ChatEngine.Services;
-using ChatEngine.ViewModels;
+using ChatClient.Helpers;
+using ChatClient.Services;
+using ChatClient.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Threading.Tasks;

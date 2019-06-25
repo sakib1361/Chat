@@ -1,11 +1,11 @@
-﻿using ChatClient.Engine;
-using ChatEngine.Helpers;
-using ChatEngine.ViewModels;
+﻿using ChatCore.Engine;
+using ChatClient.Helpers;
+using ChatClient.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
 using Jdenticon;
 using System.IO;
 
-namespace ChatEngine.Services
+namespace ChatClient.Services
 {
     public static class AppService
     {

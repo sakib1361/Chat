@@ -1,10 +1,10 @@
-﻿using ChatEngine.Resources;
+﻿using ChatClient.Resources;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
 
-namespace ChatEngine.Services
+namespace ChatClient.Services
 {
     public class TranslationService : INotifyPropertyChanged
     {

@@ -1,8 +1,8 @@
-﻿using ChatEngine.ViewModels;
+﻿using ChatClient.ViewModels;
 using System;
 using System.Threading.Tasks;
 
-namespace ChatEngine.Services
+namespace ChatClient.Services
 {
     public interface INaviagationPage
     {

@@ -1,4 +1,4 @@
-﻿using ChatClient.Engine;
+﻿using ChatCore.Engine;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;

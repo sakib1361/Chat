@@ -1,11 +1,11 @@
-﻿using ChatClient.Engine;
-using ChatEngine.Helpers;
+﻿using ChatCore.Engine;
+using ChatClient.Helpers;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace ChatEngine.Services
+namespace ChatClient.Services
 {
     public class ChatService
     {

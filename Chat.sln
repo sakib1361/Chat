@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1B116D0A-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{5EAC4A40-B338-4FFE-BF29-A15CBAB3425D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "Core\ChatClient\ChatClient.csproj", "{A5ED9B3B-5B09-4622-8B08-8E307FA9519A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCore", "Core\ChatClient\ChatCore.csproj", "{A5ED9B3B-5B09-4622-8B08-8E307FA9519A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Wpf", "Chat\Chat.Wpf\Chat.Wpf.csproj", "{90132F49-0759-4A81-BFB2-1223BB6FFDC4}"
 EndProject
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerConsole", "Server\Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTest", "Server\ServerTest\ServerTest.csproj", "{F47320DF-DA24-4958-BF3C-945003D00679}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatEngine", "Core\ChatEngine\ChatEngine.csproj", "{A32BDB2C-AF47-4B5D-8D54-420004B40D82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "Core\ChatEngine\ChatClient.csproj", "{A32BDB2C-AF47-4B5D-8D54-420004B40D82}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatServer", "Core\ChatServer\ChatServer.csproj", "{E7C1C087-9B38-4201-8B97-8A86DE23CE89}"
 EndProject

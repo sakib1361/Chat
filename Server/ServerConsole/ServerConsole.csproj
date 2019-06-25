@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\ChatClient\ChatClient.csproj" />
+    <ProjectReference Include="..\..\Core\ChatClient\ChatCore.csproj" />
     <ProjectReference Include="..\..\Core\ChatServer\ChatServer.csproj" />
   </ItemGroup>
 

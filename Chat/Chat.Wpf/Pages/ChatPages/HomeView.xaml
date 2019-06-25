@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Chat.Wpf.Pages.ChatPages"
-             xmlns:vm="clr-namespace:ChatEngine.ViewModels;assembly=ChatEngine"
+             xmlns:vm="clr-namespace:ChatClient.ViewModels;assembly=ChatClient"
              d:DataContext="{d:DesignInstance vm:HomePageModel, IsDesignTimeCreatable=False}"
              Background="White"
              mc:Ignorable="d"

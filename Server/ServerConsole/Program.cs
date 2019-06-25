@@ -1,4 +1,4 @@
-﻿using ChatClient.Engine;
+﻿using ChatCore.Engine;
 using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
 using System;
