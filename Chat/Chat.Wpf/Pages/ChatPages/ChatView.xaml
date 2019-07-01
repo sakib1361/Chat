@@ -78,9 +78,11 @@
                      Foreground="Black" />
             <Button Content="Send"
                     Height="40"
+                    IsDefault="True"
                     Grid.Column="1"
-                    Background="LightGray"
+                    Background="White"
                     Foreground="Black"
+                    Padding="20,0"
                     Command="{Binding SendCommand}" />
         </Grid>
     </Grid>

@@ -1,15 +1,10 @@
 ﻿using Chat.Wpf.Pages.Login;
 using Chat.Wpf.ViewModels;
+using ChatClient.Helpers;
 using ChatClient.Services;
 using ChatClient.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Threading;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Chat.Wpf
@@ -24,6 +19,9 @@ namespace Chat.Wpf
             DispatcherHelper.Initialize();
             ViewModelLocator.InitializeNavigation(typeof(LoginPageModel), typeof(LoginWindow));
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            SettingService.Instance.ServerName = "serveo.net";
+            
+            //SettingService.Instance.Port = 1361;
             chatService.Start();
         }
 

@@ -17,7 +17,7 @@ namespace Chat.Wpf.Pages.Login
     /// <summary>
     /// Interaction logic for ServerWindow.xaml
     /// </summary>
-    public partial class ServerWindow : Window
+    public partial class ServerWindow
     {
         public ServerWindow()
         {

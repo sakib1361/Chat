@@ -1,12 +1,51 @@
-﻿<Window x:Class="Chat.Wpf.Pages.Login.ServerWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Chat.Wpf.Pages.Login"
-        mc:Ignorable="d"
-        Title="ServerWindow" Height="450" Width="800">
+﻿<metro:MetroWindow x:Class="Chat.Wpf.Pages.Login.ServerWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:Chat.Wpf.Pages.Login"
+                   mc:Ignorable="d"
+                   xmlns:services="clr-namespace:Chat.Wpf.Services"
+                   xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                   Title="ServerWindow"
+                   ResizeMode="NoResize"
+                   Height="450"
+                   Width="350"
+                   WindowStartupLocation="CenterScreen"
+                   xmlns:vm="clr-namespace:ChatClient.ViewModels;assembly=ChatClient"
+                   d:DataContext="{d:DesignInstance vm:ServerPageModel, IsDesignTimeCreatable=False}">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Label Content="Server"
+               FontSize="18"
+               FontWeight="Bold"
+               FontStyle="Italic"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center" />
+        <StackPanel HorizontalAlignment="Stretch"
+                    Grid.Row="1"
+                    Margin="10,0"
+                    VerticalAlignment="Top">
+            <Label Content="Server"
+                   FontSize="10"/>
+            <TextBox Text="{Binding Servername}"
+                     metro:TextBoxHelper.Watermark="Server Name" />
+            <Label Content="Port" FontSize="10" />
+            <metro:NumericUpDown Value="{Binding Port}"
+                                 Minimum="1025"
+                                 Maximum="65000"
+                                 metro:TextBoxHelper.Watermark="Port" />
+        </StackPanel>
+        <Button Margin="40,20,40,5"
+                Content="{services:Loc Save}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                Grid.Row="1"
+                Style="{StaticResource AccentButton}"
+                Command="{Binding SaveCommand}" />
     </Grid>
-</Window>
+    
+</metro:MetroWindow>

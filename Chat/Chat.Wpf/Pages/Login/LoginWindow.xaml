@@ -46,6 +46,7 @@
             <TextBox Text="{Binding Password}"
                      metro:TextBoxHelper.Watermark="{services:Loc Password}" />
             <Button Margin="40,20,40,5"
+                    IsDefault="True"
                     Content="{services:Loc Login}"
                     HorizontalAlignment="Stretch"
                     Style="{StaticResource AccentButton}"
