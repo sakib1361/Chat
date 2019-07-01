@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace ChatServer.Engine.Database
@@ -14,7 +15,9 @@ namespace ChatServer.Engine.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=chatData.db");
+            var filePath = Path.Combine(Environment.CurrentDirectory, "chatData.db");
+            Console.WriteLine("Server Path " + filePath);
+            optionsBuilder.UseSqlite("Data Source=" + filePath);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
