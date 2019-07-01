@@ -145,7 +145,7 @@ namespace ChatServer.Engine.Network
             var user = JsonConvert.DeserializeObject<User>(e.Message);
             using (var db = DBHandler.Create())
             {
-                var dbUser = db.Users.FirstOrDefault(x => x.Username == user.Username);
+                var dbUser = db.Users.FirstOrDefault(x => x.Username.ToLower() == user.Username.ToLower());
                 if (dbUser == null)
                 {
                     user.StoredPassword = GetHashString(user.Password);

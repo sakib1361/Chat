@@ -15,7 +15,7 @@ namespace ChatClient.Helpers
 
         public int Port
         {
-            get => GetIntSetting(CallName(), 1200);
+            get => GetIntSetting(CallName(), 1361);
             set => SetSetting(CallName(), value.ToString());
         }
         #endregion

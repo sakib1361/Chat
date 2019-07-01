@@ -3,6 +3,8 @@ using ChatClient.Services;
 using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System.Windows.Input;
+using System.Diagnostics;
+using System;
 
 namespace ChatClient.ViewModels
 {
@@ -35,6 +37,12 @@ namespace ChatClient.ViewModels
 
 
         public ICommand RegisterCommand => new RelayCommand(RegisterAction);
+        public ICommand ServerCommand => new RelayCommand(ServerAction);
+
+        private void ServerAction()
+        {
+            NavigateToPage(typeof(ServerPageModel));
+        }
 
         private async void RegisterAction()
         {
@@ -59,11 +67,13 @@ namespace ChatClient.ViewModels
                 AppService.CurrentUser = Username;
                 IsBusy = true;
                 var res = await chatService.GetData(chat);
-                if (res.MessageType == MessageType.Failed) HandlerErrors(res);
-                else if (res.MessageType == MessageType.LoginFailed) Registar_Failed(res);
-                else if (res.MessageType == MessageType.LoginSuccess) Login_Success(res);
-                else ShowMessage(res.Message);
-
+                if (res != null)
+                {
+                    if (res.MessageType == MessageType.Failed) HandlerErrors(res);
+                    else if (res.MessageType == MessageType.LoginFailed) Registar_Failed(res);
+                    else if (res.MessageType == MessageType.LoginSuccess) Login_Success(res);
+                    else ShowMessage(res.Message);
+                }
                 IsBusy = false;
             }
         }
@@ -71,6 +81,7 @@ namespace ChatClient.ViewModels
         {
             AppService.CurrentUser = Username;
             MoveToPage(typeof(HomePageModel));
+            Debug.WriteLine(obj.Message);
         }
 
         private void Registar_Failed(ChatObject obj)

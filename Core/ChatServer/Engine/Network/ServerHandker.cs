@@ -18,12 +18,11 @@ namespace ChatServer.Engine.Network
             MessageHandler = messageHandler;
             sockets = new List<SocketHandler>();
             TcpListener = new TcpListener(IPAddress.Any, port);
-            
         }
 
         public async void Start()
         {
-            await Task.Run(async () =>
+            await Task.Factory.StartNew(async () =>
             {
                 TcpListener.Start();
                 while (!Quit)

@@ -114,8 +114,10 @@ namespace ChatClient.Services
             }
         }
 
-        public void Start()
+        public async void Start()
         {
+            Stop();
+            await Task.Delay(3000);
             var address = SettingService.Instance.ServerName;
             var port = SettingService.Instance.Port;
             ClientHandler.Connect(address, port);

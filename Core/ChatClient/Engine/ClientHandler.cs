@@ -31,6 +31,7 @@ namespace ChatCore.Engine
         {
             if (IsConnecting) return;
             IsConnecting = true;
+            Quit = false;
             await Task.Factory.StartNew(async () =>
             {
                 bool res = SocketHandler != null && SocketHandler.IsActive;

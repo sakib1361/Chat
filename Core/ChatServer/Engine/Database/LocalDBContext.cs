@@ -9,15 +9,19 @@ namespace ChatServer.Engine.Database
 {
     public class LocalDBContext : DbContext
     {
+        private readonly string LocalFile;
+
         public DbSet<ChatObject> ChatObjects { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ChatRoom> ChatRooms { get; set; }
 
+        public LocalDBContext(string file)
+        {
+            LocalFile = file;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var filePath = Path.Combine(Environment.CurrentDirectory, "chatData.db");
-            Console.WriteLine("Server Path " + filePath);
-            optionsBuilder.UseSqlite("Data Source=" + filePath);
+            optionsBuilder.UseSqlite("Data Source=" + LocalFile);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

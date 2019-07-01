@@ -6,8 +6,12 @@
              mc:Ignorable="d"
              BackgroundColor="{StaticResource primaryDarkColor}"
              NavigationPage.HasNavigationBar="False"
+             xmlns:converters="clr-namespace:Chat.Converters"
              xmlns:services="clr-namespace:Chat.Services"
              x:Class="Chat.Pages.Login.LoginPage">
+    <ContentPage.Resources>
+        <converters:BoolInverter x:Key="BoolInverter" />
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid x:Name="MainGrid">
             <Label HorizontalOptions="Center"
@@ -18,6 +22,7 @@
                    Margin="20"
                    VerticalOptions="Start" />
             <StackLayout VerticalOptions="Center"
+                         IsVisible="{Binding IsBusy, Converter={StaticResource BoolInverter}}"
                          Margin="30,0">
                 <Entry Placeholder="{services:Loc Attribute=Username}"
                        Text="{Binding Username}" />

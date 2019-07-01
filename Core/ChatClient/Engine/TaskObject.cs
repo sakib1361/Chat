@@ -17,7 +17,7 @@ namespace ChatCore.Engine
             Id = id;
             ChatObject = chatObject;
             TaskCompletion = new TaskCompletionSource<ChatObject>();
-            StartTimer(15000);
+            StartTimer(30000);
         }
 
         private async void StartTimer(int v)

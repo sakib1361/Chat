@@ -18,8 +18,14 @@ namespace ServerConsole
         {
             var db = new DBHandler();
             var messageHandler = new MessageHandler(db);
-            var server = new ServerHandler(messageHandler, 1200);
-            server.Start();
+            var server = new ServerHandler(messageHandler, 1361);
+            try
+            {
+                server.Start();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
             Console.WriteLine("Server Started");
         }
     }

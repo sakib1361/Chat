@@ -13,28 +13,48 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="CurrentUser">
-                <Border Background="White"   
+                <Border Background="White"
                         CornerRadius="5"
-                        Padding="30,5,5,5"
-                      HorizontalAlignment="Right"
-                      Margin="80,3,10,3">
-                    <Label Content="{Binding Message}"
-                           Foreground="Black"/>
+                        Padding="30,3,3,3"
+                        HorizontalAlignment="Right"
+                        Margin="80,3,10,3">
+                    <StackPanel>
+                        <Label HorizontalAlignment="Right"
+                               Foreground="DarkGray"
+                               FontSize="10"
+                               Padding="0"
+                               Content="{Binding CreatedOn}" />
+                        <Label Content="{Binding Message}"
+                               Foreground="Black"
+                               HorizontalAlignment="Right"
+                               Padding="0"/>
+                    </StackPanel>
+                   
                 </Border>
             </DataTemplate>
             <DataTemplate x:Key="OppositeUser">
                 <Border Background="Crimson"
                         CornerRadius="5"
-                        Padding="5,5,30,5"
+                        Padding="3,3,30,3"
                         HorizontalAlignment="Left"
                         Margin="10,3,80,3">
-                    <Label Content="{Binding Message}"
-                           Foreground="White" />
+                    <StackPanel>
+                        <Label HorizontalAlignment="Left"
+                               FontSize="10"
+                               Padding="0"
+                               Foreground="LightGray"
+                               Content="{Binding CreatedOn}" />
+                        <Label Content="{Binding Message}"
+                               Padding="0"
+                               HorizontalAlignment="Left"
+                               Foreground="White" />
+                    </StackPanel>
+                   
                 </Border>
             </DataTemplate>
-            <local:ChatTemplateSelector x:Key="MessageTemplateSelector" 
+            <local:ChatTemplateSelector x:Key="MessageTemplateSelector"
                                         OutgoingDataTemplate="{StaticResource CurrentUser}"
-                                        IncomingDataTemplate="{StaticResource OppositeUser}"/>
+                                        IncomingDataTemplate="{StaticResource OppositeUser}" />
             <!--<Style TargetType="ListViewItem">
                 <Setter Property="IsHitTestVisible"
                         Value="False" />
@@ -73,16 +93,21 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="chatTextInput"
+                     VerticalContentAlignment="Center"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
                      Text="{Binding Message}"
                      Margin="1"
                      Foreground="Black" />
             <Button Content="Send"
+                    Style="{StaticResource AccentButton}"
                     Height="40"
                     IsDefault="True"
                     Grid.Column="1"
-                    Background="White"
-                    Foreground="Black"
-                    Padding="20,0"
+                    Background="DarkRed"
+                    Foreground="White"
+                    Padding="25,0"
+                    BorderBrush="Transparent"
                     Command="{Binding SendCommand}" />
         </Grid>
     </Grid>

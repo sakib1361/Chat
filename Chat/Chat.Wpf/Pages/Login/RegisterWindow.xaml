@@ -38,6 +38,10 @@
         <StackPanel Grid.Row="1"
                     Margin="10,0"
                     metro:VisibilityHelper.IsCollapsed="{Binding IsBusy}">
+            <Label Content="{services:Loc Firstname}"
+                   Style="{StaticResource Header}" />
+            <TextBox Text="{Binding Firstname}"
+                     metro:TextBoxHelper.Watermark="{services:Loc Firstname}" />
             <Label Content="{services:Loc Lastname}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Lastname}"
@@ -50,10 +54,7 @@
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Password}"
                      metro:TextBoxHelper.Watermark="{services:Loc Password}" />
-            <Label Content="{services:Loc Firstname}"
-                   Style="{StaticResource Header}" />
-            <TextBox Text="{Binding Firstname}"
-                     metro:TextBoxHelper.Watermark="{services:Loc Password}" />
+            
             <Button Margin="40"
                     Content="{services:Loc Register}"
                     HorizontalAlignment="Stretch"
@@ -62,7 +63,7 @@
                     Command="{Binding RegisterCommand}" />
         </StackPanel>
         <Button HorizontalAlignment="Right"
-                Content="{services:Loc Service}"
+                Content="{services:Loc Server}"
                 Grid.Row="1"
                 Background="Transparent"
                 BorderBrush="Transparent"

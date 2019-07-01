@@ -19,8 +19,7 @@ namespace Chat.Wpf
             DispatcherHelper.Initialize();
             ViewModelLocator.InitializeNavigation(typeof(LoginPageModel), typeof(LoginWindow));
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            SettingService.Instance.ServerName = "serveo.net";
-            
+            //SettingService.Instance.ServerName = "serveo.net";
             //SettingService.Instance.Port = 1361;
             chatService.Start();
         }
