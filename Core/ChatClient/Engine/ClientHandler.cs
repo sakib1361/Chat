@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Net.Sockets;
+using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,18 +12,16 @@ namespace ChatCore.Engine
         SocketHandler SocketHandler;
 
         private string Address;
-        private int Port;
         private static bool Quit;
         private static bool IsConnecting;
-        private Random Random = new Random();
+        private readonly Random Random = new Random();
 
         public event EventHandler<ChatObject> MessageRecieveed;
         public event EventHandler<string> ConnectionChanged;
 
         public void Connect(string address, int port)
         {
-            Address = address;
-            Port = port;
+            Address = string.Format("ws://{0}:{1}", address,port);
             Quit = false;
             StartConnectionService();
         }
@@ -49,8 +48,8 @@ namespace ChatCore.Engine
         {
             try
             {
-                var tcp = new TcpClient();
-                await tcp.ConnectAsync(Address, Port);
+                var tcp = new ClientWebSocket();
+                await tcp.ConnectAsync(new Uri(Address),new CancellationToken());
                 DisposeSocket();
                 SocketHandler = new SocketHandler(tcp);
                 SocketHandler.MessageReceived += SocketHandler_MessageReceived;

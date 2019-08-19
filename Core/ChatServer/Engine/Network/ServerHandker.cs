@@ -3,45 +3,37 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 
 namespace ChatServer.Engine.Network
 {
     public class ServerHandler
     {
-        readonly TcpListener TcpListener;
         private bool Quit;
         private readonly MessageHandler MessageHandler;
         private readonly List<SocketHandler> sockets;
-        public ServerHandler(MessageHandler messageHandler, int port)
+        public ServerHandler(MessageHandler messageHandler)
         {
             MessageHandler = messageHandler;
             sockets = new List<SocketHandler>();
-            TcpListener = new TcpListener(IPAddress.Any, port);
         }
 
-        public async void Start()
+        public async void Start(WebSocket webSocket)
         {
-            await Task.Factory.StartNew(async () =>
-            {
-                TcpListener.Start();
-                while (!Quit)
-                {
-                    var tcp = await TcpListener.AcceptTcpClientAsync();
-                    var socket = new SocketHandler(tcp);
-                    socket.StartReceive();
-                    socket.MessageReceived += Socket_MessageReceived;
-                    socket.ClientDisconnected += Socket_ClientDisconnected;
-                    sockets.Add(socket);
-                    Console.WriteLine("Socket Cnnected ");
-                }
-            });
+            var socket = new SocketHandler(webSocket);
+            socket.StartReceive();
+            socket.MessageReceived += Socket_MessageReceived;
+            socket.ClientDisconnected += Socket_ClientDisconnected;
+            sockets.Add(socket);
+            Console.WriteLine("Socket Cnnected ");
         }
 
         public void Close()
         {
             Quit = true;
-            TcpListener.Stop();
+            foreach (var item in sockets) item.Dispose();
+            sockets.Clear();
         }
 
         private void Socket_ClientDisconnected(object sender, string e)
