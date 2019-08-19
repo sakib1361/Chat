@@ -21,7 +21,7 @@ namespace ChatCore.Engine
 
         public void Connect(string address, int port)
         {
-            Address = string.Format("ws://{0}:{1}", address,port);
+            Address = string.Format("ws://{0}:{1}/ws", address,port);
             Quit = false;
             StartConnectionService();
         }
@@ -66,6 +66,7 @@ namespace ChatCore.Engine
 
         public async Task SendMessage(ChatObject chatObject)
         {
+            if(!IsConnecting)
             await SocketHandler?.SendMessage(chatObject);
         }
 

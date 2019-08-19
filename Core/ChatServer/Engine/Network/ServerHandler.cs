@@ -19,14 +19,16 @@ namespace ChatServer.Engine.Network
             sockets = new List<SocketHandler>();
         }
 
-        public async void Start(WebSocket webSocket)
+        public async Task Start(WebSocket webSocket)
         {
+            if (Quit) return;
             var socket = new SocketHandler(webSocket);
-            socket.StartReceive();
+
             socket.MessageReceived += Socket_MessageReceived;
             socket.ClientDisconnected += Socket_ClientDisconnected;
             sockets.Add(socket);
             Console.WriteLine("Socket Cnnected ");
+            await socket.StartReceive();
         }
 
         public void Close()

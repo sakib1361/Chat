@@ -36,7 +36,15 @@ namespace ChatCore.Engine
 
         private ChatObject DeSerialize(Stream obj)
         {
-            return (ChatObject)bf.Deserialize(obj);
+            try
+            {
+                return (ChatObject)bf.Deserialize(obj);
+            }
+            catch (Exception ex)
+            {
+                LogEngine.Error(ex);
+                return null;
+            }
         }
 
         public async Task SendMessage(ChatObject chatObject)
@@ -45,7 +53,7 @@ namespace ChatCore.Engine
             await WebSocket.SendAsync(new ArraySegment<byte>(data), WebSocketMessageType.Binary, true, CToken);
         }
 
-        public async void StartReceive()
+        public async Task StartReceive()
         {
             while (WebSocket.State == WebSocketState.Open)
             {
@@ -53,16 +61,14 @@ namespace ChatCore.Engine
                 try
                 {
                     var message = await GetMessage();
-                    MessageReceived?.Invoke(this, message);
+                    if (message != null)
+                        MessageReceived?.Invoke(this, message);
                 }
                 catch (Exception ex)
                 {
                     LogEngine.Error(ex);
+                    ClientDisconnected?.Invoke(this, "Socket Disconnected");
                     break;
-                }
-                finally
-                {
-                    ClientDisconnected?.Invoke(this,"Socket Disconnected");
                 }
             }
         }

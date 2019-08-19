@@ -23,7 +23,8 @@ namespace ServerTest
 
             var username = Guid.NewGuid().ToString();
             var testService = new TestChatService(client, username);
-            testService.Start("127.0.0.1", 1200);
+            testService.Start("localhost", 50088);
+            await Task.Delay(5000);
             var res = await testService.GetData(new ChatObject()
             {
                 MessageType = MessageType.Register,
