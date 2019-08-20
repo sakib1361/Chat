@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using ChatCore.Engine;
 using ChatServer.Engine.Database;
 using Microsoft.EntityFrameworkCore;
@@ -45,36 +46,23 @@ namespace ChatServer.Engine.Network
                 case MessageType.EndToEnd:
                     SendEndToEndMessage(e);
                     break;
-                case MessageType.Register:
-                    RegisterUser(socketHandler, e);
-                    break;
                 case MessageType.Subscribe:
                     SubscribeUser(socketHandler, e);
-                    break;
-                case MessageType.GetHistory:
-                    GetUserHistory(socketHandler, e);
-                    break;
-                case MessageType.GetUsers:
-                    GetUsers(socketHandler, e);
                     break;
             }
         }
 
-        private async void GetUsers(SocketHandler socketHandler, ChatObject e)
+        private async Task<List<User>> GetUsers()
         {
-            if (!string.IsNullOrWhiteSpace(e.SenderName) && AllSocketInstances.ContainsKey(e.SenderName))
+            using (var db = DBHandler.Create())
             {
-                using (var db = DBHandler.Create())
+                var users = await db.Users.ToListAsync();
+                foreach (var user in users)
                 {
-                    var users = await db.Users.ToListAsync();
-                    foreach (var user in users)
-                    {
-                        user.Active = AllSocketInstances.ContainsKey(user.Username);
-                    }
-                    users = users.OrderByDescending(x => x.Active).ToList();
-                    var fullMessage = JsonConvert.SerializeObject(users);
-                    SendServerResponse(socketHandler, MessageType.GetUsers, e, fullMessage);
+                    user.Active = AllSocketInstances.ContainsKey(user.Username);
                 }
+                users = users.OrderByDescending(x => x.Active).ToList();
+                return users;
             }
         }
 

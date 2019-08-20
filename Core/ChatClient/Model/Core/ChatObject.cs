@@ -34,14 +34,11 @@ namespace ChatCore.Engine
 
     public enum MessageType
     {
-        Register,
         Subscribe,
-        GetHistory,
         EndToEnd,
         LoginSuccess,
         LoginFailed,
         RegistrationFailed,
-        GetUsers,
         Failed,
         BroadCast
     }
