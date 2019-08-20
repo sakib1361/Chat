@@ -1,13 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.WebSockets;
+using System.Threading.Tasks;
 using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Net.WebSockets;
 
 namespace ServerWeb
 {
@@ -29,9 +33,9 @@ namespace ServerWeb
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddSingleton(typeof(DBHandler));
-            services.AddSingleton(typeof(MessageHandler));
-            services.AddSingleton(typeof(ServerHandler));
+            services.AddSingleton<DBHandler>();
+            services.AddSingleton<MessageHandler>();
+            services.AddSingleton<ServerHandler>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -43,23 +47,23 @@ namespace ServerWeb
             {
                 app.UseDeveloperExceptionPage();
             }
-            //else
-            //{
-            //    app.UseExceptionHandler("/Error");
-            //    app.UseHsts();
-            //}
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc();
-#if Release
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            app.UseMvc(routes =>
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
-#endif
+
             var webSocketOptions = new WebSocketOptions()
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(120),
@@ -90,7 +94,6 @@ namespace ServerWeb
                 }
 
             });
-            app.UseFileServer();
         }
     }
 }

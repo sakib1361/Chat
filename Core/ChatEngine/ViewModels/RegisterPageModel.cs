@@ -5,15 +5,27 @@ using Newtonsoft.Json;
 using System.Windows.Input;
 using System.Diagnostics;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChatClient.ViewModels
 {
     public class RegisterPageModel : BaseViewModel
     {
         private readonly ChatService chatService;
+        [Required]
+        [Display(Name = "First name")]
         public string Firstname { get; set; }
+        [Required]
+        [Display(Name = "Last name")]
         public string Lastname { get; set; }
+        [Required]
+        [Display(Name = "User name")]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         public string Username { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         public RegisterPageModel(ChatService chatService)
@@ -34,8 +46,6 @@ namespace ChatClient.ViewModels
             Password = "1234";
 #endif
         }
-
-
         public ICommand RegisterCommand => new RelayCommand(RegisterAction);
         public ICommand ServerCommand => new RelayCommand(ServerAction);
 
@@ -67,6 +77,7 @@ namespace ChatClient.ViewModels
                 AppService.CurrentUser = Username;
                 IsBusy = true;
                 var res = await chatService.GetData(chat);
+               
                 if (res != null)
                 {
                     if (res.MessageType == MessageType.Failed) HandlerErrors(res);
@@ -77,6 +88,7 @@ namespace ChatClient.ViewModels
                 IsBusy = false;
             }
         }
+
         private void Login_Success(ChatObject obj)
         {
             AppService.CurrentUser = Username;

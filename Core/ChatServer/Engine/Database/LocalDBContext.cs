@@ -1,9 +1,7 @@
 ﻿using ChatCore.Engine;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace ChatServer.Engine.Database
 {
@@ -11,8 +9,8 @@ namespace ChatServer.Engine.Database
     {
         private readonly string LocalFile;
 
-        public DbSet<ChatObject> ChatObjects { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ChatObject> ChatObjects { get; set; }
         public DbSet<ChatRoom> ChatRooms { get; set; }
 
         public LocalDBContext(string file)
@@ -27,6 +25,11 @@ namespace ChatServer.Engine.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().Ignore(c => c.Password);
+        }
+
+        public LocalDBContext()
+        {
+            LocalFile = Path.Combine(Environment.CurrentDirectory, "chatData.db");
         }
     }
 }

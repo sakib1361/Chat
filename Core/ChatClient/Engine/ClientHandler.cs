@@ -54,7 +54,7 @@ namespace ChatCore.Engine
                 SocketHandler = new SocketHandler(tcp);
                 SocketHandler.MessageReceived += SocketHandler_MessageReceived;
                 SocketHandler.ClientDisconnected += SocketHandler_ClientDisconnected;
-                SocketHandler.StartReceive();
+                Recieve();
                 return true;
             }
             catch (Exception ex)
@@ -62,6 +62,11 @@ namespace ChatCore.Engine
                 LogEngine.Error(ex);
                 return false;
             }
+        }
+
+        private async void Recieve()
+        {
+            await SocketHandler.StartReceive();
         }
 
         public async Task SendMessage(ChatObject chatObject)
