@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,9 +14,11 @@ namespace ServerWeb
 {
     public class Startup
     {
+        readonly string file;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            file = Path.Combine(Environment.CurrentDirectory, "chatData.db");
         }
 
         public IConfiguration Configuration { get; }
@@ -28,7 +32,21 @@ namespace ServerWeb
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddSingleton<DBHandler>();
+            services.AddDbContext<LocalDBContext>(options =>
+                    options.UseSqlite("Data Source="+ file));
+
+            services.AddDefaultIdentity<IDUser>()
+                    .AddEntityFrameworkStores<LocalDBContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.SlidingExpiration = true;
+            });
+
+
             services.AddSingleton<MessageHandler>();
             services.AddSingleton<ServerHandler>();
 
@@ -51,6 +69,7 @@ namespace ServerWeb
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             var webSocketOptions = new WebSocketOptions()
             {

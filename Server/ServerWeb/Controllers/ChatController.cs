@@ -1,5 +1,4 @@
 ﻿using ChatCore.Engine;
-using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Mvc;
 using ServerWeb.Models;
@@ -11,12 +10,10 @@ namespace ServerWeb.Controllers
     public class ChatController : Controller
     {
         private readonly ServerHandler ServerHandler;
-        private readonly DBHandler DBHandler;
 
-        public ChatController(ServerHandler serverHandler, DBHandler dBHandler)
+        public ChatController(ServerHandler serverHandler)
         {
             ServerHandler = serverHandler;
-            DBHandler = dBHandler;
         }
         public IActionResult Index()
         {

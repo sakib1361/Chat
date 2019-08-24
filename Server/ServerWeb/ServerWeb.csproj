@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\Core\ChatServer\ChatServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Users\" />
+  </ItemGroup>
+
 </Project>

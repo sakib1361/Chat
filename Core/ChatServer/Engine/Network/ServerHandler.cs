@@ -1,8 +1,6 @@
 ﻿using ChatCore.Engine;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using ChatCore.Engine;
 using ChatServer.Engine.Database;
@@ -13,12 +11,13 @@ namespace ChatServer.Engine.Network
 {
     public class MessageHandler
     {
-        private readonly DBHandler DBHandler;
+        private readonly LocalDBContext _localDB;
+
         // string being userId with a list of socket instances
         private readonly Dictionary<string, List<SocketHandler>> AllSocketInstances;
-        public MessageHandler(DBHandler dBHandler)
+        public MessageHandler(LocalDBContext localDB)
         {
-            DBHandler = dBHandler;
+            _localDB = localDB;
             AllSocketInstances = new Dictionary<string, List<SocketHandler>>();
         }
         internal void BroadcastLogout(SocketHandler socketHandler)
@@ -52,99 +51,34 @@ namespace ChatServer.Engine.Network
             }
         }
 
-        private async Task<List<User>> GetUsers()
+        public async Task<List<IDUser>> GetUsers()
         {
-            using (var db = DBHandler.Create())
+            var users = await _localDB.Users.OfType<IDUser>().ToListAsync();
+            foreach (var user in users)
             {
-                var users = await db.Users.ToListAsync();
-                foreach (var user in users)
-                {
-                    user.Active = AllSocketInstances.ContainsKey(user.Username);
-                }
-                users = users.OrderByDescending(x => x.Active).ToList();
-                return users;
+                user.Active = AllSocketInstances.ContainsKey(user.UserName);
             }
-        }
-
-        private async void GetUserHistory(SocketHandler socketHandler, ChatObject original)
-        {
-            using (var db = DBHandler.Create())
-            {
-                var skip = 0;
-                if (!string.IsNullOrWhiteSpace(original.Message) &&
-                            int.TryParse(original.Message, out int res))
-                {
-                    skip = res;
-                }
-
-                var messages = await db.ChatObjects
-                                 .Where(x => (x.SenderName == original.SenderName ||
-                                            x.SenderName == original.ReceiverName)
-                                     && (x.ReceiverName == original.ReceiverName ||
-                                        x.ReceiverName == original.SenderName))
-                                 .OrderByDescending(m => m.CreatedOn)
-                                 .Skip(skip).Take(30)
-                                 .ToListAsync();
-                var fulMessage = JsonConvert.SerializeObject(messages);
-                SendServerResponse(socketHandler, MessageType.GetHistory, original, fulMessage);
-            }
-        }
-
-        private byte[] GetHash(string inputString)
-        {
-            using (var algorithm = SHA256.Create())
-            {
-                return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
-            }
-        }
-
-        private string GetHashString(string inputString)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in GetHash(inputString))
-                sb.Append(b.ToString("X2"));
-
-            return sb.ToString();
+            users = users.OrderByDescending(x => x.Active).ToList();
+            return users;
         }
 
         private void SubscribeUser(SocketHandler socketHandler, ChatObject e)
         {
             var user = JsonConvert.DeserializeObject<User>(e.Message);
-            using (var db = DBHandler.Create())
+            var dbUser = _localDB.Users.OfType<IDUser>()
+                                 .FirstOrDefault(x => x.UserName == user.Username);
+
+            if (AllSocketInstances.ContainsKey(dbUser.UserName))
             {
-                var dbUser = db.Users.FirstOrDefault(x => x.Username == user.Username);
-                if (dbUser != null && dbUser.StoredPassword == GetHashString(user.Password))
-                {
-                    if (AllSocketInstances.ContainsKey(dbUser.Username))
-                    {
-                        AllSocketInstances[dbUser.Username].Add(socketHandler);
-                    }
-                    else
-                    {
-                        AllSocketInstances[dbUser.Username] = new List<SocketHandler> { socketHandler };
-                    }
-                    SendServerResponse(socketHandler, MessageType.LoginSuccess, e);
-                }
-                else SendServerResponse(socketHandler, MessageType.LoginFailed, e, "Failed to Login User");
+                AllSocketInstances[dbUser.UserName].Add(socketHandler);
             }
-        }
-        private async void RegisterUser(SocketHandler socketHandler, ChatObject e)
-        {
-            var user = JsonConvert.DeserializeObject<User>(e.Message);
-            using (var db = DBHandler.Create())
+            else
             {
-                var dbUser = db.Users.FirstOrDefault(x => x.Username.ToLower() == user.Username.ToLower());
-                if (dbUser == null)
-                {
-                    user.StoredPassword = GetHashString(user.Password);
-                    db.Users.Add(user);
-                    await db.SaveChangesAsync();
-                    AllSocketInstances[user.Username] = new List<SocketHandler> { socketHandler };
-                    SendServerResponse(socketHandler, MessageType.LoginSuccess, e);
-                }
-                else SendServerResponse(socketHandler, MessageType.RegistrationFailed, e, "User exissts");
+                AllSocketInstances[dbUser.UserName] = new List<SocketHandler> { socketHandler };
             }
+            SendServerResponse(socketHandler, MessageType.LoginSuccess, e);
         }
+
 
 
         private async void SendServerResponse(SocketHandler socketHandler,
@@ -173,33 +107,29 @@ namespace ChatServer.Engine.Network
 
         private async void SendEndToEndMessage(ChatObject e)
         {
-
-            using (var db = DBHandler.Create())
+            if (AllSocketInstances.ContainsKey(e.ReceiverName))
             {
-                if (AllSocketInstances.ContainsKey(e.ReceiverName))
+                var rInstances = AllSocketInstances[e.ReceiverName];
+                if (rInstances.Count > 0)
                 {
-                    var rInstances = AllSocketInstances[e.ReceiverName];
-                    if (rInstances.Count > 0)
+                    foreach (var item in rInstances)
                     {
-                        foreach (var item in rInstances)
+                        try
                         {
-                            try
-                            {
-                                await item.SendMessage(e);
-                                e.Delivered = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                LogEngine.Error(ex);
-                            }
+                            await item.SendMessage(e);
+                            e.Delivered = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            LogEngine.Error(ex);
                         }
                     }
-
                 }
 
-                db.Add(e);
-                await db.SaveChangesAsync();
             }
+
+            _localDB.Add(e);
+            await _localDB.SaveChangesAsync();
         }
     }
 }
