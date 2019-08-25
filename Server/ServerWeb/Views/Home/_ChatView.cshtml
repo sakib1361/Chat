@@ -1,0 +1,30 @@
+﻿@using ChatCore.Engine
+@model ChatViewModel
+
+@foreach (var item in Model.ChatObjects)
+{
+    if (item.SenderName == Model.CurrentUser.UserName)
+    {
+        <div class="d-flex justify-content-end mb-4">
+            <div class="msg_cotainer_send">
+                @item.Message
+                <span class="msg_time_send">@item.CreatedOn</span>
+            </div>
+            <div class="img_cont_msg">
+                <img identicon-value="item.SenderName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-start mb-4">
+            <div class="img_cont_msg">
+                <img identicon-value="item.SenderName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
+            </div>
+            <div class="msg_cotainer">
+                @item.Message
+                <span class="msg_time">@item.CreatedOn</span>
+            </div>
+        </div>
+    }
+}

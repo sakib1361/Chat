@@ -20,16 +20,45 @@ namespace ServerWeb.Controllers
     {
         private readonly ServerHandler ServerHandler;
         private readonly UserManager<IDUser> _userManager;
+        private readonly APIHandler _apiHandler;
 
-        public HomeController(ServerHandler serverHandler, UserManager<IDUser> userManager)
+        public HomeController(ServerHandler serverHandler, UserManager<IDUser> userManager, APIHandler aPIHandler)
         {
             ServerHandler = serverHandler;
             _userManager = userManager;
+            _apiHandler = aPIHandler;
         }
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            return View(new ChatViewModel(user, new List<IDUser>()));
+            var allUser = await _apiHandler.GetUsers();
+            return View(new ChatViewModel(user, allUser));
+        }
+
+        public async Task<IActionResult> GetHistory(string receivername)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var res = await _apiHandler.GetUserHistory(user.UserName, receivername);
+
+            res = new List<ChatObject>()
+            {
+                new ChatObject(MessageType.EndToEnd)
+                {
+                    Id = 1,
+                    SenderName = user.UserName,
+                    ReceiverName = receivername,
+                    Message = "How are you"
+                },
+                new ChatObject(MessageType.EndToEnd)
+                {
+                    Id = 2,
+                    SenderName = receivername,
+                    ReceiverName = user.UserName,
+                    Message = "Fine and you?"
+                },
+            };
+            var data= PartialView("_ChatView",new ChatViewModel(user, res));
+            return data;
         }
 
         [HttpGet]

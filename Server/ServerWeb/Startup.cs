@@ -2,6 +2,7 @@
 using System.IO;
 using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
+using Jdenticon.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -55,6 +56,7 @@ namespace ServerWeb
 
             services.AddScoped<MessageHandler>();
             services.AddScoped<ServerHandler>();
+            services.AddScoped<APIHandler>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -71,6 +73,7 @@ namespace ServerWeb
                 app.UseHsts();
             }
 
+            app.UseJdenticon();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

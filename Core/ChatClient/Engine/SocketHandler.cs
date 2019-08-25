@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Net.WebSockets;
@@ -16,8 +17,6 @@ namespace ChatCore.Engine
 
         public event EventHandler<ChatObject> MessageReceived;
         public event EventHandler<string> ClientDisconnected;
-
-        readonly BinaryFormatter bf = new BinaryFormatter();
         public bool IsActive { get; private set; }
         public SocketHandler(WebSocket webSocket)
         {
@@ -25,32 +24,11 @@ namespace ChatCore.Engine
             CToken = new CancellationToken();
         }
 
-        private byte[] Serialize(object obj)
-        {
-            using (var ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                return ms.ToArray();
-            }
-        }
-
-        private ChatObject DeSerialize(Stream obj)
-        {
-            try
-            {
-                return (ChatObject)bf.Deserialize(obj);
-            }
-            catch (Exception ex)
-            {
-                LogEngine.Error(ex);
-                return null;
-            }
-        }
-
         public async Task SendMessage(ChatObject chatObject)
         {
-            var data = Serialize(chatObject);
-            await WebSocket.SendAsync(new ArraySegment<byte>(data), WebSocketMessageType.Binary, true, CToken);
+            var serialized = JsonConvert.SerializeObject(chatObject);
+            var data = Encoding.UTF8.GetBytes(serialized);
+            await WebSocket.SendAsync(new ArraySegment<byte>(data), WebSocketMessageType.Text, true, CToken);
         }
 
         public async Task StartReceive()
@@ -88,9 +66,10 @@ namespace ChatCore.Engine
 
                 ms.Seek(0, SeekOrigin.Begin);
 
-                if (result.MessageType == WebSocketMessageType.Binary)
+                if (result.MessageType == WebSocketMessageType.Text)
                 {
-                    return DeSerialize(ms);
+                    var deserialized = Encoding.UTF8.GetString(ms.ToArray());
+                    return JsonConvert.DeserializeObject<ChatObject>(deserialized);
                 }
                 else return null;
             }
