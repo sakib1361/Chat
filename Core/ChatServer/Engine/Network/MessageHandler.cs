@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ChatCore.Engine;
 using ChatServer.Engine.Database;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace ChatServer.Engine.Network
 {
     public class MessageHandler
     {
         private readonly LocalDBContext _localDB;
-
+        private readonly UserManager<IDUser> _usermanager;
         // string being userId with a list of socket instances
-        private readonly Dictionary<string, List<SocketHandler>> AllSocketInstances;
-        public MessageHandler(LocalDBContext localDB)
+        private static Dictionary<string, List<SocketHandler>> AllSocketInstances = new Dictionary<string, List<SocketHandler>>();
+        public MessageHandler(LocalDBContext localDB, UserManager<IDUser> userManager)
         {
             _localDB = localDB;
-            AllSocketInstances = new Dictionary<string, List<SocketHandler>>();
+            _usermanager = userManager;
+           // AllSocketInstances = new Dictionary<string, List<SocketHandler>>();
         }
         internal void BroadcastLogout(SocketHandler socketHandler)
         {
@@ -51,36 +50,34 @@ namespace ChatServer.Engine.Network
             }
         }
 
-        public async Task<List<IDUser>> GetUsers()
+        private async void SubscribeUser(SocketHandler socketHandler, ChatObject e)
         {
-            var users = await _localDB.Users.OfType<IDUser>().ToListAsync();
-            foreach (var user in users)
+            var dbUser = await _usermanager.FindByNameAsync(e.SenderName);
+            if (dbUser == null)
             {
-                user.Active = AllSocketInstances.ContainsKey(user.UserName);
-            }
-            users = users.OrderByDescending(x => x.Active).ToList();
-            return users;
-        }
-
-        private void SubscribeUser(SocketHandler socketHandler, ChatObject e)
-        {
-            var user = JsonConvert.DeserializeObject<User>(e.Message);
-            var dbUser = _localDB.Users.OfType<IDUser>()
-                                 .FirstOrDefault(x => x.UserName == user.Username);
-
-            if (AllSocketInstances.ContainsKey(dbUser.UserName))
-            {
-                AllSocketInstances[dbUser.UserName].Add(socketHandler);
+                SendServerResponse(socketHandler, MessageType.LoginFailed, e, "No User");
             }
             else
             {
-                AllSocketInstances[dbUser.UserName] = new List<SocketHandler> { socketHandler };
+                var verify = await _usermanager.VerifyUserTokenAsync(dbUser, "Server", "Chat", e.Message);
+                if (verify)
+                {
+                    if (AllSocketInstances.ContainsKey(dbUser.UserName))
+                    {
+                        AllSocketInstances[dbUser.UserName].Add(socketHandler);
+                    }
+                    else
+                    {
+                        AllSocketInstances[dbUser.UserName] = new List<SocketHandler> { socketHandler };
+                    }
+                    SendServerResponse(socketHandler, MessageType.LoginSuccess, e);
+                }
+                else
+                {
+                    SendServerResponse(socketHandler, MessageType.LoginFailed, e, "Login unsuccessfull");
+                }
             }
-            SendServerResponse(socketHandler, MessageType.LoginSuccess, e);
         }
-
-
-
         private async void SendServerResponse(SocketHandler socketHandler,
             MessageType messageType,
             ChatObject original,
@@ -103,8 +100,6 @@ namespace ChatServer.Engine.Network
             }
         }
 
-
-
         private async void SendEndToEndMessage(ChatObject e)
         {
             if (AllSocketInstances.ContainsKey(e.ReceiverName))
@@ -125,7 +120,6 @@ namespace ChatServer.Engine.Network
                         }
                     }
                 }
-
             }
 
             _localDB.Add(e);

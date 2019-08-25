@@ -1,7 +1,7 @@
 ﻿@using System.Linq
 @using ChatServer.Engine.Database
 @using Microsoft.AspNetCore.Identity
-@model LoginViewModel
+@model RegisterViewModel
 
 @{
 
@@ -43,6 +43,16 @@
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="Password"></label>
                         <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
@@ -51,6 +61,9 @@
                         <button type="submit" class="btn btn-success btn-block">Log in</button>
                     </div>
                     <div class="form-group text-center">
+                        <p>
+                            <a asp-action="ForgotPassword">Forgot your password?</a>
+                        </p>
                         <p>
                             <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
                         </p>

@@ -1,5 +1,6 @@
 ﻿using ChatCore.Engine;
 using ChatServer.Engine.Network;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServerWeb.Models;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServerWeb.Controllers
 {
+    //[Authorize]
     public class ChatController : Controller
     {
         private readonly ServerHandler ServerHandler;

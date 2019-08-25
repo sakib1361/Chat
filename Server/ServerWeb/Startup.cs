@@ -47,8 +47,8 @@ namespace ServerWeb
             });
 
 
-            services.AddSingleton<MessageHandler>();
-            services.AddSingleton<ServerHandler>();
+            services.AddScoped<MessageHandler>();
+            services.AddScoped<ServerHandler>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

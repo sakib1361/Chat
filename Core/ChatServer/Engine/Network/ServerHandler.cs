@@ -10,11 +10,10 @@ namespace ChatServer.Engine.Network
     {
         private bool Quit;
         private readonly MessageHandler MessageHandler;
-        private readonly List<SocketHandler> sockets;
+        private static readonly List<SocketHandler> sockets = new List<SocketHandler>();
         public ServerHandler(MessageHandler messageHandler)
         {
             MessageHandler = messageHandler;
-            sockets = new List<SocketHandler>();
         }
 
         public async Task Start(WebSocket webSocket)

@@ -51,7 +51,7 @@ namespace ServerWeb.Controllers
                 var result = await _signInManager.PasswordSignInAsync(username, password, true, true);
                 if (result.Succeeded)
                 {
-                    RedirectToAction(nameof(ChatController));
+                    return RedirectToAction("Index", nameof(ChatController));
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace ServerWeb.Controllers
                 var result = await Register(model.FirstName, model.LastName, model.UserName, model.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(ChatController));
+                    return RedirectToAction("Index", nameof(ChatController));
                 }
                 AddError(result,ModelState);
             }

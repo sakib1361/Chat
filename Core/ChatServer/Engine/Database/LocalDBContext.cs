@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChatServer.Engine.Database
 {
-    public class LocalDBContext : IdentityDbContext
+    public class LocalDBContext : IdentityDbContext<IDUser>
     {
         public DbSet<ChatObject> ChatObjects { get; set; }
 
@@ -14,17 +14,17 @@ namespace ChatServer.Engine.Database
 
         public LocalDBContext(DbContextOptions<LocalDBContext> opt) : base(opt)
         {
-
+            this.Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
