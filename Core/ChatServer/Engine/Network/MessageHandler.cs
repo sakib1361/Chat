@@ -59,7 +59,7 @@ namespace ChatServer.Engine.Network
             }
             else
             {
-                var verify = await _usermanager.VerifyUserTokenAsync(dbUser, "Server", "Chat", e.Message);
+                var verify = await _usermanager.VerifyUserTokenAsync(dbUser, "Default", "Chat", e.Message);
                 if (verify)
                 {
                     if (AllSocketInstances.ContainsKey(dbUser.UserName))

@@ -11,10 +11,13 @@ namespace ChatClient.Services
     {
         public static string CurrentUser;
 
+        public static string Token { get; internal set; }
+
         public static void Register()
         {
             SimpleIoc.Default.Register<ClientHandler>();
             SimpleIoc.Default.Register<ChatService>();
+            SimpleIoc.Default.Register<APIService>();
 
             SimpleIoc.Default.Register<HomePageModel>();
             SimpleIoc.Default.Register<ChatPageModel>();

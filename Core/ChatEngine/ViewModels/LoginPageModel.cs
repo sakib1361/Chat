@@ -8,29 +8,18 @@ namespace ChatClient.ViewModels
 {
     public class LoginPageModel : BaseViewModel
     {
-        private readonly ChatService ChatService;
+        private readonly APIService _apiService;
+
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public LoginPageModel(ChatService chatService)
+        public LoginPageModel(APIService aPIService)
         {
-            ChatService = chatService;
+            _apiService = aPIService;
 #if DEBUG
             Username = "sakib51";
-            Password = "1234";
+            Password = "pass_WORD1234";
 #endif
-        }
-
-        private void LoginSuccess(ChatObject obj)
-        {
-            AppService.CurrentUser = Username;
-            MoveToPage(typeof(HomePageModel));
-        }
-
-        private void LoginFailed(ChatObject obj)
-        {
-            IsBusy = false;
-            ShowMessage(obj.Message);
         }
 
         public ICommand SignInCommand => new RelayCommand(SignInAction);
@@ -60,20 +49,17 @@ namespace ChatClient.ViewModels
                     Username = Username,
                     Password = Password
                 };
-                var chat = new ChatObject(MessageType.Subscribe)
-                {
-                    SenderName = Username,
-                    Message = JsonConvert.SerializeObject(user)
-                };
-                AppService.CurrentUser = Username;
                 IsBusy = true;
-                var res = await ChatService.GetData(chat);
-                if (res != null)
+                var res = await _apiService.Login(user);
+                if (string.IsNullOrWhiteSpace(res))
                 {
-                    if (res.MessageType == MessageType.Failed) HandlerErrors(res);
-                    else if (res.MessageType == MessageType.LoginFailed) LoginFailed(res);
-                    else if (res.MessageType == MessageType.LoginSuccess) LoginSuccess(res);
-                    else ShowMessage(res.Message);
+                    ShowMessage(WorkerService.Instance.ErrorMessage);
+                }
+                else
+                {
+                    AppService.CurrentUser = Username;
+                    AppService.Token = res;
+                    MoveToPage(typeof(HomePageModel));
                 }
                 IsBusy = false;
             }

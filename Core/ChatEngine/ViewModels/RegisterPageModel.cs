@@ -1,36 +1,22 @@
 ﻿using ChatCore.Engine;
 using ChatClient.Services;
 using GalaSoft.MvvmLight.Command;
-using Newtonsoft.Json;
 using System.Windows.Input;
-using System.Diagnostics;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ChatClient.ViewModels
 {
     public class RegisterPageModel : BaseViewModel
     {
-        private readonly ChatService chatService;
-        [Required]
-        [Display(Name = "First name")]
+        private readonly APIService _apiService;
+
         public string Firstname { get; set; }
-        [Required]
-        [Display(Name = "Last name")]
         public string Lastname { get; set; }
-        [Required]
-        [Display(Name = "User name")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         public string Username { get; set; }
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        public RegisterPageModel(ChatService chatService)
+        public RegisterPageModel(APIService aPIService)
         {
-            this.chatService = chatService;
+            _apiService = aPIService;
         }
 
         public override void OnAppearing(params object[] parameter)
@@ -69,37 +55,20 @@ namespace ChatClient.ViewModels
                     Firstname = Firstname,
                     Lastname = Lastname
                 };
-                var chat = new ChatObject(MessageType.Register)
-                {
-                    SenderName = Username,
-                    Message = JsonConvert.SerializeObject(user)
-                };
-                AppService.CurrentUser = Username;
                 IsBusy = true;
-                var res = await chatService.GetData(chat);
-               
-                if (res != null)
+                var res = await _apiService.Register(user);
+                if (string.IsNullOrEmpty(res))
                 {
-                    if (res.MessageType == MessageType.Failed) HandlerErrors(res);
-                    else if (res.MessageType == MessageType.LoginFailed) Registar_Failed(res);
-                    else if (res.MessageType == MessageType.LoginSuccess) Login_Success(res);
-                    else ShowMessage(res.Message);
+                    ShowMessage(WorkerService.Instance.ErrorMessage);
+                }
+                else
+                {
+                    AppService.CurrentUser = Username;
+                    AppService.Token = res;
+                    MoveToPage(typeof(HomePageModel));
                 }
                 IsBusy = false;
             }
         }
-
-        private void Login_Success(ChatObject obj)
-        {
-            AppService.CurrentUser = Username;
-            MoveToPage(typeof(HomePageModel));
-            Debug.WriteLine(obj.Message);
-        }
-
-        private void Registar_Failed(ChatObject obj)
-        {
-            ShowMessage(obj.Message);
-        }
-
     }
 }

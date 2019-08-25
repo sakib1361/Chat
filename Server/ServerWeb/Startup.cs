@@ -40,7 +40,8 @@ namespace ServerWeb
                     options.UseSqlite("Data Source="+ file));
 
             services.AddIdentity<IDUser, IdentityRole>(options => { })
-                    .AddEntityFrameworkStores<LocalDBContext>();
+                    .AddEntityFrameworkStores<LocalDBContext>()
+                    .AddDefaultTokenProviders();
             //services.AddDefaultIdentity<IDUser>()
             //        .AddEntityFrameworkStores<LocalDBContext>();
 

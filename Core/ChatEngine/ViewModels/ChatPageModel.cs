@@ -14,14 +14,18 @@ namespace ChatClient.ViewModels
     public class ChatPageModel : BaseViewModel
     {
         private readonly IDispatcher Dispatcher;
-        private readonly ChatService chatService;
+        private readonly ChatService _chatService;
+        private readonly APIService _apiService;
+
         public string Receiver { get; private set; }
         public string Message { get; set; }
         public ObservableCollection<ChatObject> ChatObjects { get; private set; }
-        public ChatPageModel(ChatService chatService, IDispatcher dispatcher)
+        public ChatPageModel(ChatService chatService,APIService aPIService, IDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
-            this.chatService = chatService;
+            _chatService = chatService;
+            _apiService = aPIService;
+            _chatService.Start();
             ChatObjects = new ObservableCollection<ChatObject>();
             Messenger.Default.Register<ChatObject>(this, MessageType.EndToEnd, NewMessage);
         }
@@ -39,22 +43,19 @@ namespace ChatClient.ViewModels
 
         private async void LoadHistory()
         {
-            var msg = new ChatObject(MessageType.GetHistory)
+            var response = await _apiService.GetHistory(Receiver);
+            if (response == null)
             {
-                SenderName = AppService.CurrentUser,
-                ReceiverName = Receiver
-            };
-            var response = await chatService.GetData(msg);
-            if (response.MessageType == MessageType.Failed) HandlerErrors(response);
+                ShowMessage(WorkerService.Instance.ErrorMessage);
+            }
             else
             {
-                var oldChats = JsonConvert.DeserializeObject<List<ChatObject>>(response.Message);
-                foreach (var item in oldChats)
+                foreach (var item in response)
                 {
                     if (ChatObjects.Any(x => x.Id == item.Id) == false)
                         ChatObjects.Insert(0, item);
                 }
-                if (oldChats.Count > 0)
+                if (response.Count > 0)
                 {
                     Messenger.Default.Send(AppConstants.NewMessage, AppConstants.NewMessage);
                 }
@@ -85,7 +86,7 @@ namespace ChatClient.ViewModels
                     ReceiverName = Receiver,
                     Message = Message
                 };
-                if (await chatService.SendMessage(chat))
+                if (await _chatService.SendMessage(chat))
                 {
                     ChatObjects.Add(chat);
                     Messenger.Default.Send(AppConstants.NewMessage, AppConstants.NewMessage);

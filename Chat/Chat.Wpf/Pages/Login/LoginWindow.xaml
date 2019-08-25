@@ -1,20 +1,19 @@
 ﻿<Window x:Class="Chat.Wpf.Pages.Login.LoginWindow"
-                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:local="clr-namespace:Chat.Wpf.Pages.Login"
-                   mc:Ignorable="d"
-                   WindowState="Maximized"
-                   WindowStyle="None"
-                   xmlns:vm="clr-namespace:ChatClient.ViewModels;assembly=ChatClient"
-                   d:DataContext="{d:DesignInstance vm:LoginPageModel, IsDesignTimeCreatable=False}"
-                   WindowStartupLocation="CenterScreen"
-                   xmlns:services="clr-namespace:Chat.Wpf.Services"
-                   xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-                   Title="{services:Loc Login}"
-                   Height="450"
-                   Width="350">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Chat.Wpf.Pages.Login"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        xmlns:vm="clr-namespace:ChatClient.ViewModels;assembly=ChatClient"
+        d:DataContext="{d:DesignInstance vm:LoginPageModel, IsDesignTimeCreatable=False}"
+        WindowStartupLocation="CenterScreen"
+        xmlns:services="clr-namespace:Chat.Wpf.Services"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="{services:Loc Login}"
+        Height="450"
+        Width="350">
     <Window.Resources>
         <Style TargetType="Label"
                x:Key="Header">
@@ -33,15 +32,17 @@
         </Grid.RowDefinitions>
         <Label Content="Simple Chat"
                FontSize="18"
-               FontWeight="Bold" 
+               FontWeight="Bold"
                FontStyle="Italic"
-               VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <StackPanel Grid.Row="1" Margin="10,0"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center" />
+        <StackPanel Grid.Row="1"
+                    Margin="10,0"
                     metro:VisibilityHelper.IsCollapsed="{Binding IsBusy}">
             <Label Content="{services:Loc Username}"
                    Style="{StaticResource Header}" />
-            <TextBox Text="{Binding Username}" 
-                     metro:TextBoxHelper.Watermark="{services:Loc Username}"/>
+            <TextBox Text="{Binding Username}"
+                     metro:TextBoxHelper.Watermark="{services:Loc Username}" />
             <Label Content="{services:Loc Password}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Password}"

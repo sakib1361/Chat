@@ -32,6 +32,12 @@ namespace ServerWeb.Controllers
             return Ok(_apiHandler.GetUsers());
         }
 
+        [Authorize]
+        public async Task<IActionResult> GetHistory(string username, string receivername)
+        {
+            return null;
+        }
+
         public async Task<IActionResult> Login(string username, string password)
         {
             var res = await _signinManager
@@ -39,10 +45,28 @@ namespace ServerWeb.Controllers
             if (res == Microsoft.AspNetCore.Identity.SignInResult.Success)
             {
                 var user = await _usermanager.FindByNameAsync(username);
-                var token = await _usermanager.GenerateUserTokenAsync(user, "Server", "Chat");
+                var token = await _usermanager.GenerateUserTokenAsync(user, "Default", "Chat");
                 return Ok(token);
             }
             else return BadRequest();
+        }
+
+        public async Task<IActionResult> Register(string firstname, string lastname, string username, string password)
+        {
+            var user = new IDUser()
+            {
+                FirstName = firstname,
+                LastName = lastname,
+                UserName = username,
+            };
+            var res = await _usermanager.CreateAsync(user, password);
+            if (res == IdentityResult.Success)
+            {
+                var dbUser = await _usermanager.FindByNameAsync(username);
+                var token = await _usermanager.GenerateUserTokenAsync(dbUser, "Default", "Chat");
+                return Ok(token);
+            }
+            else return BadRequest(res.Errors);
         }
     }
 }

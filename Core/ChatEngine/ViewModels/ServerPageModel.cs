@@ -34,7 +34,6 @@ namespace ChatClient.ViewModels
             {
                 SettingService.Instance.Port = Port;
                 SettingService.Instance.ServerName = Servername;
-                ChatService.Start();
                 MoveToPage(typeof(LoginPageModel));
             }
         }

@@ -25,26 +25,7 @@ namespace ServerTest
             var testService = new TestChatService(client, username);
             testService.Start("localhost", 50088);
             await Task.Delay(5000);
-            var res = await testService.GetData(new ChatObject()
-            {
-                MessageType = MessageType.Subscribe,
-                SenderName = username,
-                ReceiverName = "Server",
-                Message = JsonConvert.SerializeObject(new User()
-                {
-                    Username = username,
-                    Password = "1234"
-                })
-            });
-       
-            var allUsers = await testService.GetData(new ChatObject()
-            {
-                SenderName = username,
-                MessageType = MessageType.Subscribe
-                ,
-            });
-            Console.WriteLine(allUsers);
-            
+           
         }
     }
 }

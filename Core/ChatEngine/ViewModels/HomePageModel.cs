@@ -11,14 +11,16 @@ namespace ChatClient.ViewModels
 {
     public class HomePageModel : BaseViewModel
     {
-        private readonly ChatService chatService;
         public User CurrentUser { get; private set; }
+
+        private readonly APIService _apiService;
+
         public ObservableCollection<User> Users { get; private set; }
 
-        public HomePageModel(ChatService chatService)
+        public HomePageModel(APIService aPIService)
         {
 
-            this.chatService = chatService;
+            _apiService = aPIService;
             Users = new ObservableCollection<User>();
         }
 
@@ -28,12 +30,21 @@ namespace ChatClient.ViewModels
             RefreshPage();
         }
 
-        private void Users_Received(ChatObject obj)
+        public async override void RefreshPage()
         {
-            try
+            IsBusy = true;
+            base.RefreshPage();
+            Users.Clear();
+            IsRefreshing = false;
+
+            var res = await _apiService.GetUsers();
+            if(res == null)
             {
-                var allUsers = JsonConvert.DeserializeObject<List<User>>(obj.Message);
-                foreach (var item in allUsers)
+                ShowMessage(WorkerService.Instance.ErrorMessage);
+            }
+            else
+            {
+                foreach (var item in res)
                 {
                     if (item.Username == AppService.CurrentUser)
                     {
@@ -44,29 +55,6 @@ namespace ChatClient.ViewModels
                         Users.Add(item);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                ShowMessage(ex.Message);
-            }
-        }
-
-        public async override void RefreshPage()
-        {
-            IsBusy = true;
-            base.RefreshPage();
-            Users.Clear();
-            IsRefreshing = false;
-            var getUser = new ChatObject()
-            {
-                MessageType = MessageType.GetUsers,
-                SenderName = AppService.CurrentUser
-            };
-            var res = await chatService.GetData(getUser);
-            if(res != null)
-            {
-                if (res.MessageType == MessageType.Failed) HandlerErrors(res);
-                else Users_Received(res);
             }
             IsBusy  = false;
         }
