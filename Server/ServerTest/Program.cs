@@ -27,7 +27,7 @@ namespace ServerTest
             await Task.Delay(5000);
             var res = await testService.GetData(new ChatObject()
             {
-                MessageType = MessageType.Register,
+                MessageType = MessageType.Subscribe,
                 SenderName = username,
                 ReceiverName = "Server",
                 Message = JsonConvert.SerializeObject(new User()
@@ -40,7 +40,8 @@ namespace ServerTest
             var allUsers = await testService.GetData(new ChatObject()
             {
                 SenderName = username,
-                MessageType = MessageType.GetUsers,
+                MessageType = MessageType.Subscribe
+                ,
             });
             Console.WriteLine(allUsers);
             

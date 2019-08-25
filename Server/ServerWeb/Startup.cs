@@ -5,6 +5,7 @@ using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,12 +32,16 @@ namespace ServerWeb
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+       
             });
+
             services.AddDbContext<LocalDBContext>(options =>
                     options.UseSqlite("Data Source="+ file));
 
-            services.AddDefaultIdentity<IDUser>()
+            services.AddIdentity<IDUser, IdentityRole>(options => { })
                     .AddEntityFrameworkStores<LocalDBContext>();
+            //services.AddDefaultIdentity<IDUser>()
+            //        .AddEntityFrameworkStores<LocalDBContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -44,12 +49,12 @@ namespace ServerWeb
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 options.SlidingExpiration = true;
+                options.LoginPath = "/Accounts/Login";
             });
 
 
             services.AddScoped<MessageHandler>();
             services.AddScoped<ServerHandler>();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
