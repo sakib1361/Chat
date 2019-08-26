@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using ChatCore.Engine;
 using ChatServer.Engine.Database;
 using Microsoft.AspNetCore.Identity;
@@ -59,7 +60,8 @@ namespace ChatServer.Engine.Network
             }
             else
             {
-                var verify = await _usermanager.VerifyUserTokenAsync(dbUser, "Default", "Chat", e.Message);
+                var token = HttpUtility.UrlDecode(e.Message);
+                var verify = await _usermanager.VerifyUserTokenAsync(dbUser, "Default", "Chat", token);
                 if (verify)
                 {
                     if (AllSocketInstances.ContainsKey(dbUser.UserName))

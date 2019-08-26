@@ -6,20 +6,27 @@
              xmlns:local="clr-namespace:Chat.Wpf.Pages.ChatPages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="10">
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Image Width="60"
-               Source="{Binding Username, Converter={StaticResource imageConverter}}" />
+        <Border CornerRadius="25" Height="50" Width="50">
+            <Border.Background>
+                <ImageBrush Stretch="Fill"
+                            ImageSource="{Binding Username, Converter={StaticResource imageConverter}}" />
+            </Border.Background>
+        </Border>
+        
+        <!--<Image Width="50"
+               Source="{Binding Username, Converter={StaticResource imageConverter}}" />-->
         <Ellipse Height="6"
                  Width="6"
                  Fill="{Binding Active, Converter={StaticResource ColorConverter}}"
                  HorizontalAlignment="Right"
                  VerticalAlignment="Bottom" />
         <StackPanel Grid.Column="1"
-                    Margin="15,0">
+                    Margin="10,0">
             <Label Content="{Binding FullName}"
                    FontSize="12"
                    FontWeight="Bold" />

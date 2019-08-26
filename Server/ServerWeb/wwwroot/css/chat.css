@@ -172,6 +172,7 @@
     }
 
 .msg_cotainer {
+    min-width: 120px;
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 10px;
@@ -182,6 +183,7 @@
 }
 
 .msg_cotainer_send {
+    min-width: 120px;
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 10px;

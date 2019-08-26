@@ -15,20 +15,35 @@
                    d:DesignHeight="450"
                    d:DesignWidth="800">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="1,0.5"
+                                 StartPoint="0,0.5">
+                <GradientStop Color="#91EAE4"
+                              Offset="0" />
+                <GradientStop Color="#86A8E7"
+                              Offset="0.5" />
+                <GradientStop Color="#7F7FD5"
+                              Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="2" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <Grid>
+        <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Border Background="Black"
+                    Grid.RowSpan="3"
+                    CornerRadius="10"
+                    Opacity="0.5" />
             <local:UserView DataContext="{Binding CurrentUser}" />
-            <Grid Background="Crimson"
-                  Grid.Row="1">
+            <Grid Grid.Row="1">
+                <Grid Background="Black"
+                      Opacity="0.2" />
                 <Label Content="{services:Loc Users}"
                        HorizontalAlignment="Left"
                        Margin="10,0"
@@ -43,10 +58,20 @@
                         Padding="10,0" />
             </Grid>
             <ListView Grid.Row="2"
+                      Margin="0,0,0,10"
                       x:Name="UsersView"
                       SelectionMode="Single"
+                      Background="Transparent"
                       SelectionChanged="UsersView_SelectionChanged"
                       ItemsSource="{Binding Users}">
+                <ListView.Resources>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Background"
+                                Value="Transparent" />
+                        <Setter Property="Margin"
+                                Value="1" />
+                    </Style>
+                </ListView.Resources>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <local:UserView />
@@ -54,8 +79,13 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <Grid Grid.Column="1"
-              Background="Crimson" />
-        <local:ChatView Grid.Column="2" />
+        <Grid Margin="10" Grid.Column="1">
+            <Border Background="Black"
+                    Opacity="0.5"
+                    CornerRadius="10" />
+            <local:ChatView Grid.Column="1"
+                            Margin="10,10,10,5"/>
+        </Grid>
+       
     </Grid>
 </metro:MetroWindow>

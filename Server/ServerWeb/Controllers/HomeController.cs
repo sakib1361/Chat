@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using ChatCore.Engine;
 using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
@@ -32,15 +29,19 @@ namespace ServerWeb.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var allUser = await _apiHandler.GetUsers();
-            return View(new ChatViewModel(user, allUser));
+            var token = await _userManager.GenerateUserTokenAsync(user, "Default", "Chat");
+            
+            return View(new ChatViewModel(user, allUser, HttpUtility.UrlEncode(token)));
         }
 
         public async Task<IActionResult> GetHistory(string receivername)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var res = await _apiHandler.GetUserHistory(user.UserName, receivername);
-
-            res = new List<ChatObject>()
+            var receiver = await _userManager.FindByNameAsync(receivername);
+            if (res == null || res.Count == 0)
+            {
+                res = new List<ChatObject>()
             {
                 new ChatObject(MessageType.EndToEnd)
                 {
@@ -57,11 +58,26 @@ namespace ServerWeb.Controllers
                     Message = "Fine and you?"
                 },
             };
-            var data= PartialView("_ChatView",new ChatViewModel(user, res));
+            }
+            var data= PartialView("_ChatView",new ChatViewModel(user, receiver, res));
             return data;
         }
 
+        public async Task<IActionResult> GetChatView(ChatObject chatObject)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (chatObject.SenderName == user.UserName)
+            {
+                return PartialView("_senderChat", chatObject);
+            }
+            else
+            {
+                return PartialView("_receiverChat", chatObject);
+            }
+        }
+
         [HttpGet]
+        [AllowAnonymous]
         public async Task GetSocket()
         {
             var context = ControllerContext.HttpContext;

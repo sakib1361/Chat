@@ -4,6 +4,8 @@ using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using System.Net.WebSockets;
+using System.Diagnostics;
 
 namespace ChatClient.Services
 {
@@ -19,9 +21,19 @@ namespace ChatClient.Services
             ClientHandler.ConnectionChanged += ClientHandler_ClientStateChanged;
         }
 
-        private void ClientHandler_ClientStateChanged(object sender, string e)
+        private async void ClientHandler_ClientStateChanged(object sender, WebSocketState e)
         {
-            DialogService.Toast(e);
+            DialogService.Toast("Client State Changed" + e.ToString());
+            if (e == WebSocketState.Open)
+            {
+                await Task.Delay(2000);
+                var res = await SendMessage(new ChatObject(MessageType.Subscribe)
+                {
+                    Message = AppService.Token,
+                    SenderName = AppService.CurrentUser
+                });
+                Debug.WriteLine(res);
+            }
         }
 
         private void ClientHandler_MessageRecieveed(object sender, ChatObject e)
@@ -49,10 +61,9 @@ namespace ChatClient.Services
             }
         }
 
-        public async void Start()
+        public void Start()
         {
             Stop();
-            await Task.Delay(3000);
             var address = SettingService.Instance.ServerName;
             var port = SettingService.Instance.Port;
             ClientHandler.Connect(address, port);

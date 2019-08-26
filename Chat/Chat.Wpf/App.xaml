@@ -8,6 +8,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="MKey" />
+            <SolidColorBrush x:Key="LightColor"
+                             Color="#91EAE4" />
+            <SolidColorBrush x:Key="NormalColor"
+                             Color="#86A8E7" />
+            <SolidColorBrush x:Key="DarkColor"
+                             Color="#7F7FD5" />
             <converters:BoolColorConverter x:Key="ColorConverter" />
             <converters:ProfileImageConverter x:Key="imageConverter" />
             <Style TargetType="Button"
@@ -19,8 +25,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <!-- Accent and AppTheme setting -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Crimson.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>

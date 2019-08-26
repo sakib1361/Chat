@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Web;
 using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Authorization;
@@ -27,15 +28,15 @@ namespace ServerWeb.Controllers
         }
 
         [Authorize]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            return Ok(_apiHandler.GetUsers());
+            return Ok(await _apiHandler.GetUsers());
         }
 
         [Authorize]
         public async Task<IActionResult> GetHistory(string username, string receivername)
         {
-            return null;
+            return Ok(await _apiHandler.GetUserHistory(username, receivername));
         }
 
         public async Task<IActionResult> Login(string username, string password)
@@ -46,7 +47,7 @@ namespace ServerWeb.Controllers
             {
                 var user = await _usermanager.FindByNameAsync(username);
                 var token = await _usermanager.GenerateUserTokenAsync(user, "Default", "Chat");
-                return Ok(token);
+                return Ok(HttpUtility.UrlEncode(token));
             }
             else return BadRequest();
         }
@@ -64,7 +65,7 @@ namespace ServerWeb.Controllers
             {
                 var dbUser = await _usermanager.FindByNameAsync(username);
                 var token = await _usermanager.GenerateUserTokenAsync(dbUser, "Default", "Chat");
-                return Ok(token);
+                return Ok(HttpUtility.UrlEncode(token));
             }
             else return BadRequest(res.Errors);
         }

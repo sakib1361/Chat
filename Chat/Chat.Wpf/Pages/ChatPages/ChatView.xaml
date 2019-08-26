@@ -13,44 +13,63 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="CurrentUser">
-                <Border Background="White"
-                        CornerRadius="5"
-                        Padding="30,3,3,3"
-                        HorizontalAlignment="Right"
-                        Margin="80,3,10,3">
+                <StackPanel HorizontalAlignment="Right"
+                            Margin="5,3"
+                            Orientation="Horizontal">
                     <StackPanel>
+                        <Border Background="LightGreen"
+                                CornerRadius="20"
+                                Padding="10">
+                            <Label Content="{Binding Message}"
+                                   Foreground="Black"
+                                   FontSize="16"
+                                   HorizontalAlignment="Right"
+                                   Padding="0" />
+                        </Border>
                         <Label HorizontalAlignment="Right"
-                               Foreground="DarkGray"
                                FontSize="10"
                                Padding="0"
                                Content="{Binding CreatedOn}" />
-                        <Label Content="{Binding Message}"
-                               Foreground="Black"
-                               HorizontalAlignment="Right"
-                               Padding="0"/>
                     </StackPanel>
-                   
-                </Border>
+                    <Border Height="40"
+                            Width="40"
+                            Margin="15,5,5,5"
+                            VerticalAlignment="Top"
+                            CornerRadius="20">
+                        <Border.Background>
+                            <ImageBrush Stretch="Fill"
+                                        ImageSource="{Binding SenderName, Converter={StaticResource imageConverter}}" />
+                        </Border.Background>
+                    </Border>
+                </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="OppositeUser">
-                <Border Background="Crimson"
-                        CornerRadius="5"
-                        Padding="3,3,30,3"
-                        HorizontalAlignment="Left"
-                        Margin="10,3,80,3">
+                <StackPanel Margin="5,3"
+                            Orientation="Horizontal">
+                    <Border Height="40"
+                            Width="40"
+                            Margin="5,5,15,5"
+                            VerticalAlignment="Top"
+                            CornerRadius="20">
+                        <Border.Background>
+                            <ImageBrush Stretch="Fill"
+                                        ImageSource="{Binding ReceiverName, Converter={StaticResource imageConverter}}" />
+                        </Border.Background>
+                    </Border>
                     <StackPanel>
-                        <Label HorizontalAlignment="Left"
-                               FontSize="10"
+                        <Border Background="LightBlue"
+                                CornerRadius="20"
+                                Padding="10">
+                            <Label Content="{Binding Message}"
+                                   Foreground="Black"
+                                   FontSize="16"
+                                   Padding="0" />
+                        </Border>
+                        <Label FontSize="8"
                                Padding="0"
-                               Foreground="LightGray"
                                Content="{Binding CreatedOn}" />
-                        <Label Content="{Binding Message}"
-                               Padding="0"
-                               HorizontalAlignment="Left"
-                               Foreground="White" />
                     </StackPanel>
-                   
-                </Border>
+                </StackPanel>
             </DataTemplate>
             <local:ChatTemplateSelector x:Key="MessageTemplateSelector"
                                         OutgoingDataTemplate="{StaticResource CurrentUser}"
@@ -70,7 +89,7 @@
         </Grid.RowDefinitions>
         <ListView ItemsSource="{Binding ChatObjects}"
                   x:Name="ChatList"
-                  Background="GhostWhite"
+                  Background="Transparent"
                   Margin="0"
                   ItemTemplateSelector="{StaticResource MessageTemplateSelector}">
             <ListView.ItemContainerStyle>
@@ -98,13 +117,14 @@
                      AcceptsReturn="True"
                      Text="{Binding Message}"
                      Margin="1"
+                     Background="Transparent"
                      Foreground="Black" />
             <Button Content="Send"
                     Style="{StaticResource AccentButton}"
                     Height="40"
+                    Background="Transparent"
                     IsDefault="True"
                     Grid.Column="1"
-                    Background="DarkRed"
                     Foreground="White"
                     Padding="25,0"
                     BorderBrush="Transparent"

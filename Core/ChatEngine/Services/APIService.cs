@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ChatClient.Helpers;
 using ChatCore.Engine;
@@ -27,7 +25,10 @@ namespace ChatClient.Services
 
         internal Task<List<ChatObject>> GetHistory(string receiver)
         {
-            
+            var req = new HttpRequest("GetHistory");
+            req.AddParameter("username", AppService.CurrentUser);
+            req.AddParameter("receivername", receiver);
+            return HttpWorker.RunWorker<List<ChatObject>>(req);
         }
 
         internal Task<string> Login(User user)

@@ -17,11 +17,11 @@ namespace ChatCore.Engine
         private readonly Random Random = new Random();
 
         public event EventHandler<ChatObject> MessageRecieveed;
-        public event EventHandler<string> ConnectionChanged;
+        public event EventHandler<WebSocketState> ConnectionChanged;
 
         public void Connect(string address, int port)
         {
-            Address = string.Format("ws://{0}:{1}/home/GetSocket", address,port);
+            Address = string.Format("wss://{0}:{1}/home/GetSocket", address,port);
             Quit = false;
             StartConnectionService();
         }
@@ -37,7 +37,7 @@ namespace ChatCore.Engine
                 while (!res && !Quit)
                 {
                     res = await TryConnect();
-                    if (res) ConnectionChanged?.Invoke(this, "Client Connected");
+                    if (res) ConnectionChanged?.Invoke(this, WebSocketState.Open);
                     else await Task.Delay(10000);
                 }
                 IsConnecting = false;
@@ -80,7 +80,7 @@ namespace ChatCore.Engine
             SocketHandler?.Dispose();
             if (!Quit)
             {
-                ConnectionChanged?.Invoke(this, "Server Diconnected");
+                ConnectionChanged?.Invoke(this, WebSocketState.Closed);
                 var randomeDelay = Random.Next(2000, 10000);
                 await Task.Delay(randomeDelay);
                 StartConnectionService();
