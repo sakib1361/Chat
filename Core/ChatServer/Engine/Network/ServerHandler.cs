@@ -24,7 +24,7 @@ namespace ChatServer.Engine.Network
             socket.MessageReceived += Socket_MessageReceived;
             socket.ClientDisconnected += Socket_ClientDisconnected;
             sockets.Add(socket);
-            Console.WriteLine("Socket Cnnected ");
+            Console.WriteLine("Socket Connected ");
             await socket.StartReceive();
         }
 

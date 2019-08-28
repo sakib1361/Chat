@@ -39,26 +39,6 @@ namespace ServerWeb.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var res = await _apiHandler.GetUserHistory(user.UserName, receivername);
             var receiver = await _userManager.FindByNameAsync(receivername);
-            if (res == null || res.Count == 0)
-            {
-                res = new List<ChatObject>()
-            {
-                new ChatObject(MessageType.EndToEnd)
-                {
-                    Id = 1,
-                    SenderName = user.UserName,
-                    ReceiverName = receivername,
-                    Message = "How are you"
-                },
-                new ChatObject(MessageType.EndToEnd)
-                {
-                    Id = 2,
-                    SenderName = receivername,
-                    ReceiverName = user.UserName,
-                    Message = "Fine and you?"
-                },
-            };
-            }
             var data= PartialView("_ChatView",new ChatViewModel(user, receiver, res));
             return data;
         }
