@@ -1,8 +1,10 @@
-﻿using ChatServer.Engine.Database;
+﻿using ChatCore.Model.Core;
+using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ServerWeb.Engine.Database;
 using ServerWeb.Models;
 using System.Threading.Tasks;
 
@@ -11,15 +13,11 @@ namespace ServerWeb.Controllers
     [Authorize]
     public class AccountsController : Controller
     {
-        private readonly UserManager<IDUser> _userManager;
-        private readonly SignInManager<IDUser> _signInManager;
+        private readonly APIHandler _apiHandler;
 
-        public AccountsController(
-            UserManager<IDUser> userManager,
-            SignInManager<IDUser> signInManager)
+        public AccountsController(APIHandler handler)
         {
-            _userManager = userManager;
-            _signInManager = signInManager; 
+            _apiHandler = handler;
         }
 
         [HttpGet]
@@ -44,14 +42,14 @@ namespace ServerWeb.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var username = model.UserName.Trim();
-                var password = model.Password.Trim();
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(username, password, true, true);
+                var result = await _apiHandler.Login(model.UserName, model.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var role = await _apiHandler.GetRole(model.UserName);
+                    if (role == ChatConstants.AdminRole)
+                        RedirectToAction("Index", "Admin");
+                    else
+                        return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -87,38 +85,25 @@ namespace ServerWeb.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await Register(model.FirstName, model.LastName, model.UserName, model.Password);
+                var result = await _apiHandler.Register(model.FirstName, model.LastName, model.UserName, model.Password);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                AddError(result,ModelState);
+                AddError(result, ModelState);
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-        private async Task<IdentityResult> Register(
-            string firstname,
-            string lastname,
-            string username,
-            string password)
-        {
-            var user = new IDUser
-            {
-                FirstName = firstname,
-                LastName = lastname,
-                UserName = username
-            };
-            return await _userManager.CreateAsync(user, password);
-        }
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _apiHandler.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 

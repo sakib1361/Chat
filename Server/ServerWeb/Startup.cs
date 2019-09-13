@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using ChatServer.Engine.Database;
+using ChatCore.Model.Core;
 using ChatServer.Engine.Network;
 using Jdenticon.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServerWeb.Engine.Database;
 
 namespace ServerWeb
 {
@@ -40,7 +41,15 @@ namespace ServerWeb
             services.AddDbContext<LocalDBContext>(options =>
                     options.UseSqlite("Data Source="+ file));
 
-            services.AddIdentity<IDUser, IdentityRole>(options => { })
+            services.AddIdentity<IDUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
                     .AddEntityFrameworkStores<LocalDBContext>()
                     .AddDefaultTokenProviders();
             //services.AddDefaultIdentity<IDUser>()
@@ -60,7 +69,40 @@ namespace ServerWeb
             services.AddScoped<ServerHandler>();
             services.AddScoped<APIHandler>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var serviceProvider = ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(services);
+            CreateUserRoles(serviceProvider);
         }
+
+        private async void CreateUserRoles(ServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<IDUser>>();
+
+            var adminRole = await roleManager.FindByNameAsync(ChatConstants.AdminRole);
+            if (adminRole == null)
+            {
+                adminRole = new IdentityRole(ChatConstants.AdminRole);
+                //create the roles and seed them to the database
+                await roleManager.CreateAsync(adminRole);
+                await roleManager.CreateAsync(new IdentityRole(ChatConstants.MemberRole));
+            }
+            //Assign Admin role to the main User here we have given our newly registered 
+            //login id for Admin management
+            var user = await userManager.FindByNameAsync("admin");
+            if (user == null)
+            {
+
+                user = new IDUser()
+                {
+                    UserName = "admin",
+                    Email = "sakib.buet51@outlook.com",
+                };
+                await userManager.CreateAsync(user, "pass_WORD_1234");
+                await userManager.AddToRoleAsync(user, ChatConstants.AdminRole);
+            }
+          
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -99,7 +141,6 @@ namespace ServerWeb
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
         }
     }
 }

@@ -46,7 +46,7 @@ namespace ChatClient.ViewModels
             {
                 var user = new User()
                 {
-                    Username = Username,
+                    UserName = Username,
                     Password = Password
                 };
                 IsBusy = true;

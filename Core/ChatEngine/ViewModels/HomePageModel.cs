@@ -46,7 +46,7 @@ namespace ChatClient.ViewModels
             {
                 foreach (var item in res)
                 {
-                    if (item.Username == AppService.CurrentUser)
+                    if (item.UserName == AppService.CurrentUser)
                     {
                         CurrentUser = item;
                     }
@@ -63,7 +63,7 @@ namespace ChatClient.ViewModels
 
         private void SelectedAction(User user)
         {
-            NavigateToPage(typeof(ChatPageModel), user.Username);
+            NavigateToPage(typeof(ChatPageModel), user.UserName);
         }
     }
 }

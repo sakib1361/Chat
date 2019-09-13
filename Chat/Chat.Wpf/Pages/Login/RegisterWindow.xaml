@@ -3,7 +3,6 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:local="clr-namespace:Chat.Wpf.Pages.Login"
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:services="clr-namespace:Chat.Wpf.Services"
                    mc:Ignorable="d"
@@ -25,10 +24,26 @@
         </Style>
     </Window.Resources>
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="1,0.5"
+                                 StartPoint="0,0.5">
+                <GradientStop Color="#91EAE4"
+                              Offset="0" />
+                <GradientStop Color="#86A8E7"
+                              Offset="0.5" />
+                <GradientStop Color="#7F7FD5"
+                              Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
+        <Border Background="Black"
+                Opacity="0.3"
+                Grid.RowSpan="2"
+                Margin="10"
+                CornerRadius="10" />
         <Label Content="Simple Chat"
                FontSize="18"
                FontWeight="Bold"
@@ -36,25 +51,28 @@
                VerticalAlignment="Center"
                HorizontalAlignment="Center" />
         <StackPanel Grid.Row="1"
-                    Margin="10,0"
+                    Margin="20,0"
                     metro:VisibilityHelper.IsCollapsed="{Binding IsBusy}">
             <Label Content="{services:Loc Firstname}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Firstname}"
+                     Background="Transparent"
                      metro:TextBoxHelper.Watermark="{services:Loc Firstname}" />
             <Label Content="{services:Loc Lastname}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Lastname}"
+                     Background="Transparent"
                      metro:TextBoxHelper.Watermark="{services:Loc Password}" />
             <Label Content="{services:Loc Username}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Username}"
+                     Background="Transparent"
                      metro:TextBoxHelper.Watermark="{services:Loc Username}" />
             <Label Content="{services:Loc Password}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Password}"
-                     metro:TextBoxHelper.Watermark="{services:Loc Password}" />
-            
+                     metro:TextBoxHelper.Watermark="{services:Loc Password}"
+                     Background="Transparent" />
             <Button Margin="40"
                     Content="{services:Loc Register}"
                     HorizontalAlignment="Stretch"
@@ -65,6 +83,7 @@
         <Button HorizontalAlignment="Right"
                 Content="{services:Loc Server}"
                 Grid.Row="1"
+                Margin="20"
                 Background="Transparent"
                 BorderBrush="Transparent"
                 Command="{Binding ServerCommand}"
@@ -72,6 +91,7 @@
         <Button HorizontalAlignment="Left"
                 Content="{services:Loc Login}"
                 Grid.Row="1"
+                Margin="20"
                 Background="Transparent"
                 BorderBrush="Transparent"
                 Command="{Binding BackCommand}"

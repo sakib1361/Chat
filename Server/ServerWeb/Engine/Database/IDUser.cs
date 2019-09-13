@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ChatServer.Engine.Database
+namespace ServerWeb.Engine.Database
 {
     public class IDUser : IdentityUser
     {

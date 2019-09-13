@@ -72,7 +72,6 @@ namespace ChatClient.Helpers
                     }
                     else
                     {
-
                         worker.ErrorCode = 1;
                         worker.ErrorMessage = string.IsNullOrWhiteSpace(strContent) ? strResponse.ReasonPhrase : strContent;
                     }

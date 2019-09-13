@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChatServer.Engine.Database
+namespace ServerWeb.Engine.Database
 {
     public class LocalDBContext : IdentityDbContext<IDUser>
     {

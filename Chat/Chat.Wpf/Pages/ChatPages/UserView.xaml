@@ -14,7 +14,7 @@
         <Border CornerRadius="25" Height="50" Width="50">
             <Border.Background>
                 <ImageBrush Stretch="Fill"
-                            ImageSource="{Binding Username, Converter={StaticResource imageConverter}}" />
+                            ImageSource="{Binding UserName, Converter={StaticResource imageConverter}}" />
             </Border.Background>
         </Border>
         

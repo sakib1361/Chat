@@ -26,10 +26,26 @@
         </Style>
     </Window.Resources>
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="1,0.5"
+                                 StartPoint="0,0.5">
+                <GradientStop Color="#91EAE4"
+                              Offset="0" />
+                <GradientStop Color="#86A8E7"
+                              Offset="0.5" />
+                <GradientStop Color="#7F7FD5"
+                              Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
+        <Border Background="Black"
+                Margin="10"
+                CornerRadius="10"
+              Grid.RowSpan="2"
+              Opacity="0.2" />
         <Label Content="Simple Chat"
                FontSize="18"
                FontWeight="Bold"
@@ -37,15 +53,19 @@
                VerticalAlignment="Center"
                HorizontalAlignment="Center" />
         <StackPanel Grid.Row="1"
-                    Margin="10,0"
+                    Margin="20,0"
                     metro:VisibilityHelper.IsCollapsed="{Binding IsBusy}">
             <Label Content="{services:Loc Username}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Username}"
+                     Background="White"
+                     Foreground="Black"
                      metro:TextBoxHelper.Watermark="{services:Loc Username}" />
             <Label Content="{services:Loc Password}"
                    Style="{StaticResource Header}" />
             <TextBox Text="{Binding Password}"
+                     Background="White"
+                     Foreground="Black"
                      metro:TextBoxHelper.Watermark="{services:Loc Password}" />
             <Button Margin="40,20,40,5"
                     IsDefault="True"
@@ -61,6 +81,7 @@
                     Command="{Binding SignUpCommand}" />
         </StackPanel>
         <Button Grid.Row="1"
+                Margin="20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 BorderBrush="Transparent"

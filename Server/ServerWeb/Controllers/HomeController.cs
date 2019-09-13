@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using ChatCore.Engine;
-using ChatServer.Engine.Database;
 using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServerWeb.Engine.Database;
 using ServerWeb.Models;
 
 namespace ServerWeb.Controllers
@@ -28,10 +27,11 @@ namespace ServerWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return RedirectToAction("Login", "Accounts");
             var allUser = await _apiHandler.GetUsers();
             var token = await _userManager.GenerateUserTokenAsync(user, "Default", "Chat");
-            
-            return View(new ChatViewModel(user, allUser, HttpUtility.UrlEncode(token)));
+            var shadowUser = new User(user.UserName, user.FirstName, user.LastName);
+            return View(new ChatViewModel(shadowUser, allUser, HttpUtility.UrlEncode(token)));
         }
 
         public async Task<IActionResult> GetHistory(string receivername)
@@ -39,7 +39,9 @@ namespace ServerWeb.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var res = await _apiHandler.GetUserHistory(user.UserName, receivername);
             var receiver = await _userManager.FindByNameAsync(receivername);
-            var data= PartialView("_ChatView",new ChatViewModel(user, receiver, res));
+            var shadowUser = new User(user.UserName, user.FirstName, user.LastName);
+            var shadowReciever = new User(receiver.UserName, receiver.FirstName, receiver.LastName);
+            var data= PartialView("_ChatView",new ChatViewModel(shadowUser, shadowReciever, res));
             return data;
         }
 

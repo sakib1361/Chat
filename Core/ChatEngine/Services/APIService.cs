@@ -10,9 +10,9 @@ namespace ChatClient.Services
         internal Task<string> Register(User user)
         {
             var req = new HttpRequest("register");
-            req.AddParameter("username", user.Username);
-            req.AddParameter("firstname", user.Firstname);
-            req.AddParameter("lastname", user.Lastname);
+            req.AddParameter("username", user.UserName);
+            req.AddParameter("firstname", user.FirstName);
+            req.AddParameter("lastname", user.LastName);
             req.AddParameter("password", user.Password);
             return HttpWorker.RunWorker<string>(req);
         }
@@ -34,7 +34,7 @@ namespace ChatClient.Services
         internal Task<string> Login(User user)
         {
             var req = new HttpRequest("login");
-            req.AddParameter("username", user.Username);
+            req.AddParameter("username", user.UserName);
             req.AddParameter("password", user.Password);
             return HttpWorker.RunWorker<string>(req);
         }

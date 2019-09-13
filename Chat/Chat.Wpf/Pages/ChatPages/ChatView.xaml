@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Chat.Wpf.Pages.ChatPages"
              mc:Ignorable="d"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:vm="clr-namespace:ChatClient.ViewModels;assembly=ChatClient"
              DataContext="{Binding Source={StaticResource MKey}, Path= ChatPageModel}"
              d:DataContext="{d:DesignInstance vm:ChatPageModel, IsDesignTimeCreatable=False}"
@@ -111,14 +112,21 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="chatTextInput"
-                     VerticalContentAlignment="Center"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     Text="{Binding Message}"
-                     Margin="1"
-                     Background="Transparent"
-                     Foreground="Black" />
+            <Border Margin="3"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    CornerRadius="3">
+                <TextBox x:Name="chatTextInput"
+                         VerticalContentAlignment="Center"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Text="{Binding Message}"
+                         Margin="1"
+                         Background="Transparent"
+                         BorderBrush="Transparent"
+                         Foreground="White" />
+            </Border>
+            
             <Button Content="Send"
                     Style="{StaticResource AccentButton}"
                     Height="40"

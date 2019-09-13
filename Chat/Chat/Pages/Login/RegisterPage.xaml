@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              NavigationPage.HasBackButton="False"
-             BackgroundColor="{StaticResource primaryDarkColor}"
+             BackgroundColor="{StaticResource primaryColor}"
              xmlns:services="clr-namespace:Chat.Services"
              x:Class="Chat.Pages.Login.RegisterPage">
     <Grid x:Name="MainGrid">
@@ -40,7 +40,7 @@
                     Margin="20"
                     BorderWidth="1"
                     Grid.Row="2"
-                    BackgroundColor="Transparent"
+                    BackgroundColor="{StaticResource primaryDarkColor}"
                     Text="{services:Loc Attribute=Submit}" />
         </Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"

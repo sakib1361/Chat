@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using ChatCore.Engine;
-using ChatServer.Engine.Database;
 using Microsoft.AspNetCore.Identity;
+using ServerWeb.Engine.Database;
 
 namespace ChatServer.Engine.Network
 {
@@ -13,12 +13,11 @@ namespace ChatServer.Engine.Network
         private readonly LocalDBContext _localDB;
         private readonly UserManager<IDUser> _usermanager;
         // string being userId with a list of socket instances
-        private static Dictionary<string, List<SocketHandler>> AllSocketInstances = new Dictionary<string, List<SocketHandler>>();
+        private static readonly Dictionary<string, List<SocketHandler>> AllSocketInstances = new Dictionary<string, List<SocketHandler>>();
         public MessageHandler(LocalDBContext localDB, UserManager<IDUser> userManager)
         {
             _localDB = localDB;
             _usermanager = userManager;
-           // AllSocketInstances = new Dictionary<string, List<SocketHandler>>();
         }
         internal void BroadcastLogout(SocketHandler socketHandler)
         {
@@ -126,6 +125,11 @@ namespace ChatServer.Engine.Network
 
             _localDB.Add(e);
             await _localDB.SaveChangesAsync();
+        }
+
+        internal bool IsLoggedIn(IDUser iDUser)
+        {
+            return AllSocketInstances.ContainsKey(iDUser.UserName);
         }
     }
 }

@@ -50,10 +50,10 @@ namespace ChatClient.ViewModels
             {
                 var user = new User()
                 {
-                    Username = Username,
+                    UserName = Username,
                     Password = Password,
-                    Firstname = Firstname,
-                    Lastname = Lastname
+                    FirstName = Firstname,
+                    LastName = Lastname
                 };
                 IsBusy = true;
                 var res = await _apiService.Register(user);
