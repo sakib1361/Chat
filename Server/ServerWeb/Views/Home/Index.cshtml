@@ -63,7 +63,7 @@
             var allUsers = '@Model.AllUser';
             console.log(userName);
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
-            var wsUri = protocol + "//" + window.location.host + "//home//getSocket";
+            var wsUri = protocol + "//" + window.location.host + "/home/getSocket";
             var socket = new WebSocket(wsUri);
             socket.onopen = e => {
                 console.log("socket opened", e);

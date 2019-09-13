@@ -11,6 +11,7 @@ namespace ChatClient.ViewModels
 
         public string Servername { get; set; }
         public int Port { get; set; }
+        public bool AllowSSL { get; set; } = true;
         public ServerPageModel(ChatService chatService)
         {
             ChatService = chatService;
@@ -20,6 +21,7 @@ namespace ChatClient.ViewModels
             base.OnAppearing(parameter);
             Servername = SettingService.Instance.ServerName;
             Port = SettingService.Instance.Port;
+            AllowSSL = SettingService.Instance.AllowSSL;
         }
 
         public ICommand SaveCommand => new RelayCommand(SaveAction);
@@ -28,13 +30,14 @@ namespace ChatClient.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Servername))
                 ShowToastMessage(Translate("Invalid_Servername"));
-            else if (Port < 22)
+            else if (Port < 70)
                 ShowToastMessage(Translate("Invalid_Port"));
             else
             {
                 SettingService.Instance.Port = Port;
                 SettingService.Instance.ServerName = Servername;
-                GoBack();
+                SettingService.Instance.AllowSSL = AllowSSL;
+                MoveToPage(typeof(LoginPageModel));
             }
         }
     }

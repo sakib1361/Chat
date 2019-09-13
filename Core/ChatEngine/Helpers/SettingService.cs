@@ -18,6 +18,13 @@ namespace ChatClient.Helpers
             get => GetIntSetting(CallName(), 1361);
             set => SetSetting(CallName(), value.ToString());
         }
+
+        public bool AllowSSL
+        {
+            get => GetBoolSetting(CallName(), true);
+            set => SetSetting(CallName(), value.ToString());
+        }
+
         #endregion
 
         #region Engine
@@ -28,6 +35,15 @@ namespace ChatClient.Helpers
         private string CallName([CallerMemberName]string name = "")
         {
             return name;
+        }
+
+        private bool GetBoolSetting(string key, bool defaultVal)
+        {
+            var s = GetSettings(key, "");
+            if (!string.IsNullOrWhiteSpace(s) && bool.TryParse(s, out bool res))
+                return res;
+            else
+                return defaultVal;
         }
 
         private int GetIntSetting(string key, int defaultVal)

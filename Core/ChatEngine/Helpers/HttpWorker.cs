@@ -24,10 +24,17 @@ namespace ChatClient.Helpers
             var worker = WorkerService.Instance;
             worker.ErrorCode = 0;
             var s = SettingService.Instance;
-            var urlString = string.Format("http://{0}:{1}/api/{2}",
-                                   s.ServerName,
-                                   s.Port,
-                                   httpRequest.UrlPath);
+            string urlString;
+            if (SettingService.Instance.AllowSSL)
+            {
+                urlString = string.Format("https://{0}/api/{1}",
+                    s.ServerName,httpRequest.UrlPath);
+            }
+            else
+            {
+                urlString = string.Format("https://{0}:{1}/api/{2}",
+                    s.ServerName,s.Port, httpRequest.UrlPath);
+            }
             Console.WriteLine(urlString);
             
             try

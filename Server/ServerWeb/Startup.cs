@@ -72,7 +72,7 @@ namespace ServerWeb
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                //app.UseHsts();
             }
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -81,7 +81,7 @@ namespace ServerWeb
 
 
             app.UseJdenticon();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();

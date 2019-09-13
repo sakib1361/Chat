@@ -35,9 +35,11 @@
                      metro:TextBoxHelper.Watermark="Server Name" />
             <Label Content="Port" FontSize="10" />
             <metro:NumericUpDown Value="{Binding Port}"
-                                 Minimum="22"
+                                 Minimum="70"
                                  Maximum="65000"
                                  metro:TextBoxHelper.Watermark="Port" />
+            <CheckBox Content="{services:Loc Allow_SSL}"
+                      IsChecked="{Binding AllowSSL}" />
         </StackPanel>
         <Button Margin="40,20,40,5"
                 Content="{services:Loc Save}"
