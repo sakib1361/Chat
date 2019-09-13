@@ -35,7 +35,7 @@
                      metro:TextBoxHelper.Watermark="Server Name" />
             <Label Content="Port" FontSize="10" />
             <metro:NumericUpDown Value="{Binding Port}"
-                                 Minimum="1025"
+                                 Minimum="22"
                                  Maximum="65000"
                                  metro:TextBoxHelper.Watermark="Port" />
         </StackPanel>

@@ -17,21 +17,21 @@ namespace Chat
 
         protected override void OnStart()
         {
-            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            chatService.Start();
+            base.OnStart();
         }
 
         protected override void OnSleep()
         {
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
             chatService.Stop();
+            base.OnSleep();
         }
 
         protected override void OnResume()
         {
             var chatService = SimpleIoc.Default.GetInstance<ChatService>();
             chatService.Start();
-            // Handle when your app resumes
+            base.OnResume();
         }
     }
 }

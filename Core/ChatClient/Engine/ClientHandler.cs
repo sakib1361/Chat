@@ -21,7 +21,7 @@ namespace ChatCore.Engine
 
         public void Connect(string address, int port)
         {
-            Address = string.Format("wss://{0}:{1}/home/GetSocket", address,port);
+            Address = string.Format("ws://{0}:{1}/home/getSocket", address,port);
             Quit = false;
             StartConnectionService();
         }

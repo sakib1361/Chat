@@ -28,13 +28,13 @@ namespace ChatClient.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Servername))
                 ShowToastMessage(Translate("Invalid_Servername"));
-            else if (Port < 1024)
+            else if (Port < 22)
                 ShowToastMessage(Translate("Invalid_Port"));
             else
             {
                 SettingService.Instance.Port = Port;
                 SettingService.Instance.ServerName = Servername;
-                MoveToPage(typeof(LoginPageModel));
+                GoBack();
             }
         }
     }
