@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ChatClient.Helpers;
 using ChatCore.Engine;
@@ -37,6 +38,12 @@ namespace ChatClient.Services
             req.AddParameter("username", user.UserName);
             req.AddParameter("password", user.Password);
             return HttpWorker.RunWorker<string>(req);
+        }
+
+        internal async void Logout()
+        {
+            var req = new HttpRequest("Logout");
+            await HttpWorker.RunWorker<string>(req);
         }
     }
 }

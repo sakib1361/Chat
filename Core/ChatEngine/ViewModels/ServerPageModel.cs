@@ -12,6 +12,7 @@ namespace ChatClient.ViewModels
         public string Servername { get; set; }
         public int Port { get; set; }
         public bool AllowSSL { get; set; } = true;
+        public bool AllowPort { get; set; } = false;
         public ServerPageModel(ChatService chatService)
         {
             ChatService = chatService;
@@ -22,6 +23,7 @@ namespace ChatClient.ViewModels
             Servername = SettingService.Instance.ServerName;
             Port = SettingService.Instance.Port;
             AllowSSL = SettingService.Instance.AllowSSL;
+            AllowPort = SettingService.Instance.AllowPort;
         }
 
         public ICommand SaveCommand => new RelayCommand(SaveAction);
@@ -37,6 +39,7 @@ namespace ChatClient.ViewModels
                 SettingService.Instance.Port = Port;
                 SettingService.Instance.ServerName = Servername;
                 SettingService.Instance.AllowSSL = AllowSSL;
+                SettingService.Instance.AllowPort = true;
                 MoveToPage(typeof(LoginPageModel));
             }
         }

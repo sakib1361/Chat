@@ -26,5 +26,7 @@ namespace ServerWeb.Engine.Database
         {
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<ChatCore.Engine.User> User { get; set; }
     }
 }

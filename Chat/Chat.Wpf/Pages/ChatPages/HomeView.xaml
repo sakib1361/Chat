@@ -12,8 +12,17 @@
                    xmlns:services="clr-namespace:Chat.Wpf.Services"
                    xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                    Title="Simple Chat"
+                   WindowStartupLocation="CenterScreen"
                    d:DesignHeight="450"
                    d:DesignWidth="800">
+    <metro:MetroWindow.RightWindowCommands>
+        <metro:WindowCommands>
+            <Menu Background="Transparent">
+                <MenuItem Header="Logout" 
+                          Command="{Binding LogOutCommand}"/>
+            </Menu>
+        </metro:WindowCommands>
+    </metro:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="1,0.5"

@@ -19,17 +19,19 @@ namespace ChatCore.Engine
         public event EventHandler<ChatObject> MessageRecieveed;
         public event EventHandler<WebSocketState> ConnectionChanged;
 
-        public void Connect(string address, int port, bool ssl)
+        public void Connect(string address, int port, bool ssl, bool allowPort)
         {
-            if (ssl)
+            var socket = ssl ? "wss" : "ws";
+
+            if (allowPort)
             {
-                Address = string.Format("wss://{0}/home/getSocket", address);
+                Address = string.Format("{0}://{1}:{2}/home/getSocket", socket, address, port);
             }
             else
             {
-                Address = string.Format("wss://{0}:{1}/home/getSocket", address,port);
+                Address = string.Format("{0}://{1}/home/getSocket", socket, address);
             }
-            
+
             Quit = false;
             StartConnectionService();
         }

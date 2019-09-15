@@ -106,8 +106,8 @@
 }
 
 .user_img {
-    height: 70px;
-    width: 70px;
+    height: 50px;
+    width: 50px;
     border: 1.5px solid #f5f6fa;
 }
 
@@ -119,8 +119,8 @@
 
 .img_cont {
     position: relative;
-    height: 70px;
-    width: 70px;
+    height: 50px;
+    width: 50px;
 }
 
 .img_cont_msg {
@@ -134,8 +134,8 @@
     width: 15px;
     background-color: #4cd137;
     border-radius: 50%;
-    bottom: 0.2em;
-    right: 0.4em;
+    bottom: 0.05em;
+    right: 0.15em;
     border: 1.5px solid white;
 }
 
@@ -150,7 +150,7 @@
 }
 
     .user_info span {
-        font-size: 20px;
+        font-size: 16px;
         color: white;
     }
 

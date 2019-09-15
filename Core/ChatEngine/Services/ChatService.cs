@@ -67,7 +67,9 @@ namespace ChatClient.Services
             var address = SettingService.Instance.ServerName;
             var port = SettingService.Instance.Port;
             var ssl = SettingService.Instance.AllowSSL;
-            ClientHandler.Connect(address, port, ssl);
+            var allowPort = SettingService.Instance.AllowPort;
+
+            ClientHandler.Connect(address, port, ssl,allowPort);
         }
     }
 }

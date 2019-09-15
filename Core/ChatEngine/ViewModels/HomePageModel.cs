@@ -38,7 +38,7 @@ namespace ChatClient.ViewModels
             IsRefreshing = false;
 
             var res = await _apiService.GetUsers();
-            if(res == null)
+            if (res == null)
             {
                 ShowMessage(WorkerService.Instance.ErrorMessage);
             }
@@ -56,10 +56,17 @@ namespace ChatClient.ViewModels
                     }
                 }
             }
-            IsBusy  = false;
+            IsBusy = false;
         }
 
         public ICommand SelectedCommand => new RelayCommand<User>(SelectedAction);
+        public ICommand LogOutCommand => new RelayCommand(LogoutAction);
+
+        private void LogoutAction()
+        {
+            _apiService.Logout();
+            NavigateToPage(typeof(LoginPageModel));
+        }
 
         private void SelectedAction(User user)
         {

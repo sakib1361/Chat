@@ -59,5 +59,11 @@ namespace ServerWeb.Controllers
             }
             else return BadRequest(res.Errors);
         }
+
+        [Authorize]
+        public async void Logout()
+        {
+            await _apiHandler.SignOutAsync();
+        }
     }
 }

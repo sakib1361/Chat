@@ -20,23 +20,23 @@ namespace ChatClient.Helpers
             if (!string.IsNullOrWhiteSpace(AppService.Token))
                 httpRequest.AddParameter("access_token", AppService.Token);
             var httpPost = httpRequest.GenrateRequest();
-           
+
             var worker = WorkerService.Instance;
             worker.ErrorCode = 0;
             var s = SettingService.Instance;
             string urlString;
-            if (SettingService.Instance.AllowSSL)
+            var httpHeader = SettingService.Instance.AllowSSL ? "https" : "http";
+            if (SettingService.Instance.AllowPort)
             {
-                urlString = string.Format("https://{0}/api/{1}",
-                    s.ServerName,httpRequest.UrlPath);
+                urlString = string.Format("{0}://{1}:{2}/api/{3}",
+                 httpHeader, s.ServerName, s.Port, httpRequest.UrlPath);
             }
             else
             {
-                urlString = string.Format("https://{0}:{1}/api/{2}",
-                    s.ServerName,s.Port, httpRequest.UrlPath);
+                urlString = string.Format("{0}://{1}/api/{2}",
+                  httpHeader, s.ServerName, httpRequest.UrlPath);
             }
             Console.WriteLine(urlString);
-            
             try
             {
                 using (var strResponse = await HttpClient.PostAsync(urlString, httpPost))
@@ -50,11 +50,11 @@ namespace ChatClient.Helpers
                         try
                         {
                             Debug.WriteLine(strContent);
-                            if(typeof(T) == typeof(string))
+                            if (typeof(T) == typeof(string))
                             {
                                 return (T)(object)strContent;
                             }
-                            else if(typeof(T)== typeof(bool))
+                            else if (typeof(T) == typeof(bool))
                             {
                                 return (T)(object)true;
                             }

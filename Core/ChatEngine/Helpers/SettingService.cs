@@ -25,6 +25,12 @@ namespace ChatClient.Helpers
             set => SetSetting(CallName(), value.ToString());
         }
 
+        public bool AllowPort
+        {
+            get => GetBoolSetting(CallName(), true);
+            set => SetSetting(CallName(), value.ToString());
+        }
+
         #endregion
 
         #region Engine

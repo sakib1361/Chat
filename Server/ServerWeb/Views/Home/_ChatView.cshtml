@@ -12,7 +12,11 @@
             <p>@Model.ChatObjects.Count Messages</p>
         </div>
     </div>
-    <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+    <span id="action_menu_btn">
+        <a asp-action="Logout" asp-controller="Accounts">
+            <i class="fas fa-ellipsis-v"></i>
+        </a>
+    </span>
     <div class="action_menu">
         <ul>
             <li><i class="fas fa-user-circle"></i> View profile</li>
@@ -23,7 +27,7 @@
     </div>
 </div>
 <div id="messageContainer" class="card-body msg_card_body">
-    @foreach (var item in Model.ChatObjects.OrderBy(x=>x.CreatedOn))
+    @foreach (var item in Model.ChatObjects.OrderBy(x => x.CreatedOn))
     {
         if (item.SenderName == Model.CurrentUser.UserName)
         {

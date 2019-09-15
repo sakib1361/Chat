@@ -47,7 +47,7 @@ namespace ServerWeb.Controllers
                 {
                     var role = await _apiHandler.GetRole(model.UserName);
                     if (role == ChatConstants.AdminRole)
-                        RedirectToAction("Index", "Admin");
+                        return RedirectToAction("Index", "Admin");
                     else
                         return RedirectToAction("Index", "Home");
                 }
@@ -99,8 +99,7 @@ namespace ServerWeb.Controllers
 
        
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _apiHandler.SignOutAsync();

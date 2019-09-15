@@ -1,4 +1,64 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<ServerWeb.Engine.Database.IDUser>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="chat-background h-100 w-100">
+    <div class="p-5 text-center">
+        <div class="card">
+            <div class="card-header bg-white border-0">
+                <div class="row align-items-center">
+                    <div>
+                        <h3 class="mb-0">Current Users</h3>
+                    </div>
+                </div>
+                <div class="float-right">
+                    <a class="btn" asp-action="Logout" asp-controller="Accounts">
+                        Logout
+                    </a>
+                </div>
+            </div>
+            <table border="1" class="card-body table table-responsive">
+                <thead>
+                    <tr>
+                        <th class="col-4">
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th class="col-3">
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th class="col-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex bd-highlight btn">
+                                    <div class="img_cont">
+                                        <img identicon-value="@item.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
+                                        <span class="online_icon"></span>
+                                    </div>
+                                    <div class="user_info align-self-center">
+                                        <span class="align-self-center">@item.FullName</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+
+                            <td>
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>
+

@@ -33,6 +33,8 @@
                    FontSize="10"/>
             <TextBox Text="{Binding Servername}"
                      metro:TextBoxHelper.Watermark="Server Name" />
+            <CheckBox Content="{services:Loc Allow_PORT}"
+                      IsChecked="{Binding AllowPort}" />
             <Label Content="Port" FontSize="10" />
             <metro:NumericUpDown Value="{Binding Port}"
                                  Minimum="70"
