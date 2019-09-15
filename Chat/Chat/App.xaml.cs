@@ -29,8 +29,8 @@ namespace Chat
 
         protected override void OnResume()
         {
-            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            chatService.Start();
+            //var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            //chatService.Start();
             base.OnResume();
         }
     }

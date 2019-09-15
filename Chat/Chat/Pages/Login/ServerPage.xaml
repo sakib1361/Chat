@@ -12,9 +12,21 @@
                      Margin="10,0">
             <Entry x:Name="ServerAddress"
                    Placeholder="Server Address" />
+            <StackLayout Orientation="Horizontal">
+                <CheckBox x:Name="PortCheckBox" />
+                <Label Text="Enable Port"
+                       VerticalOptions="Center"
+                       TextColor="White" />
+            </StackLayout>
             <Entry x:Name="ServerPort"
                    Placeholder="Server Port"
                    Keyboard="Numeric" />
+            <StackLayout Orientation="Horizontal">
+                <CheckBox x:Name="SSLCheckBox" />
+                <Label Text="Enable SSL"
+                       VerticalOptions="Center"
+                       TextColor="White" />
+            </StackLayout>
         </StackLayout>
         <Button Margin="0,20"
                 VerticalOptions="End"

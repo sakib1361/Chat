@@ -1,52 +1,63 @@
 ﻿@model ChatViewModel
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<div class="chat-background container-fluid h-100">
-    <div class="row justify-content-center mt-2 ml-2 mr-2 h-100">
-        <div class="col-3 chat">
-            <div class="card contacts_card">
-                <div class="card-header">
-                    <div class="d-flex bd-highlight btn">
-                        <div class="img_cont">
-                            <img identicon-value="@Model.CurrentUser.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
-                            <span class="online_icon"></span>
-                        </div>
-                        <div class="user_info">
-                            <span>@Model.CurrentUser.FullName</span>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/chat.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+</head>
+<body class="chat-background">
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center mt-2 ml-2 mr-2 h-100">
+            <div class="col-3 chat">
+                <div class="card contacts_card">
+                    <div class="card-header">
+                        <div class="d-flex bd-highlight btn">
+                            <div class="img_cont">
+                                <img identicon-value="@Model.CurrentUser.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info align-self-center">
+                                <span class="align-self-center">@Model.CurrentUser.FullName</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body contacts_body">
-                    <ul class="contacts">
-                        @foreach (var item in @Model.AllUser)
-                        {
-                            <li onclick="userclick('@item.UserName')" class="@(item.Active ? "active" : "")">
-                                <div class="d-flex bd-highlight btn">
-                                    <div class="img_cont">
-                                        <img identicon-value="item.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
-                                        <span class="online_icon"></span>
+                    <div class="card-body contacts_body">
+                        <ul class="contacts">
+                            @foreach (var item in @Model.AllUser)
+                            {
+                                <li onclick="userclick('@item.UserName')" class="@(item.Active ? "active" : "")">
+                                    <div class="d-flex bd-highlight btn">
+                                        <div class="img_cont">
+                                            <img identicon-value="item.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
+                                            <span class="online_icon"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            <span>@item.FullName</span>
+                                        </div>
                                     </div>
-                                    <div class="user_info">
-                                        <span>@item.FullName</span>
-                                    </div>
-                                </div>
-                            </li>
-                        }
-                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-footer"></div>
                 </div>
-                <div class="card-footer"></div>
             </div>
-        </div>
-        <div class="col-9 chat">
-            <div class="card" id="chatContainer">
+            <div class="col-9 chat">
+                <div class="card" id="chatContainer">
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-@section Scripts{
+    <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
     <script type="text/javascript">
         var receiver;
         $(function () {
@@ -138,6 +149,7 @@
             });
         };
     </script>
-}
 
+</body>
+</html>
 

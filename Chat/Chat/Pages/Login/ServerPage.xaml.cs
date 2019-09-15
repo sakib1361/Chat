@@ -22,6 +22,8 @@ namespace Chat.Pages.Login
             base.OnAppearing();
             ServerAddress.Text = SettingService.Instance.ServerName;
             ServerPort.Text = SettingService.Instance.Port.ToString();
+            SSLCheckBox.IsChecked = SettingService.Instance.AllowSSL;
+            PortCheckBox.IsChecked = SettingService.Instance.AllowPort;
         }
 
         private void Button_Clicked(object sender, EventArgs e)
@@ -36,6 +38,8 @@ namespace Chat.Pages.Login
             {
                 SettingService.Instance.ServerName = server;
                 SettingService.Instance.Port = port;
+                SettingService.Instance.AllowPort = PortCheckBox.IsChecked;
+                SettingService.Instance.AllowSSL = SSLCheckBox.IsChecked;
                 DisplayAlert("Success", "Settings Saved", "Ok");
                 var service = SimpleIoc.Default.GetInstance<ChatService>();
                 service.Stop();
