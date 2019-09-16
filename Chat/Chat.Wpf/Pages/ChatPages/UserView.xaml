@@ -30,7 +30,7 @@
             <Label Content="{Binding FullName}"
                    FontSize="12"
                    FontWeight="Bold" />
-            <Label Content="{Binding Username}" />
+            <Label Content="{Binding UserName}" />
         </StackPanel>
     </Grid>
 </UserControl>

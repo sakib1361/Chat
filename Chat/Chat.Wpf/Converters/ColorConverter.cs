@@ -10,7 +10,7 @@ namespace Chat.Wpf.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is bool data && data)
-                return Brushes.Green;
+                return Brushes.LightGreen;
             else return Brushes.Red;
         }
 

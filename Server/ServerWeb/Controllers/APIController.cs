@@ -45,7 +45,7 @@ namespace ServerWeb.Controllers
                 var token = await _usermanager.GenerateUserTokenAsync(user, "Default", "Chat");
                 return Ok(HttpUtility.UrlEncode(token));
             }
-            else return BadRequest();
+            else return Unauthorized();
         }
 
         public async Task<IActionResult> Register(string firstname, string lastname, string username, string password)

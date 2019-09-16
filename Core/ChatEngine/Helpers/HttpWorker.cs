@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Net.Http;
 using ChatClient.Services;
+using Newtonsoft.Json.Linq;
 
 namespace ChatClient.Helpers
 {
@@ -73,7 +74,16 @@ namespace ChatClient.Helpers
                     else
                     {
                         worker.ErrorCode = 1;
-                        worker.ErrorMessage = string.IsNullOrWhiteSpace(strContent) ? strResponse.ReasonPhrase : strContent;
+                        worker.ErrorMessage = strResponse.ReasonPhrase;
+                        if (!string.IsNullOrWhiteSpace(strContent))
+                        {
+                           var data = JArray.Parse(strContent);
+                            var mData = data.First.SelectToken("description");
+                            if (mData!=null)
+                            {
+                                worker.ErrorMessage = mData.ToString();
+                            }
+                        }
                     }
                 }
             }

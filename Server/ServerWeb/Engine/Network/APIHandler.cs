@@ -76,6 +76,7 @@ namespace ChatServer.Engine.Network
             var res = await _manager.CreateAsync(user, password);
             if (res.Succeeded)
             {
+                await _signInManager.RefreshSignInAsync(user);
                 await _manager.AddToRoleAsync(user, ChatConstants.MemberRole);
             }
             return res;
