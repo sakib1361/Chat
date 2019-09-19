@@ -15,23 +15,18 @@ namespace Chat
             ViewModels.ViewModelLocator.InitializeNavigation(typeof(LoginPageModel),typeof(LoginPage));
         }
 
-        protected override void OnStart()
-        {
-            base.OnStart();
-        }
-
         protected override void OnSleep()
         {
-            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            chatService.Stop();
             base.OnSleep();
+            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            chatService.Pause();
         }
 
         protected override void OnResume()
         {
-            //var chatService = SimpleIoc.Default.GetInstance<ChatService>();
-            //chatService.Start();
             base.OnResume();
+            var chatService = SimpleIoc.Default.GetInstance<ChatService>();
+            chatService.Resume();
         }
     }
 }

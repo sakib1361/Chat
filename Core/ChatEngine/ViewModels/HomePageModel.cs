@@ -29,7 +29,7 @@ namespace ChatClient.ViewModels
         public override void OnAppearing(params object[] parameter)
         {
             base.OnAppearing(parameter);
-            _chatService.Resume();
+            _chatService.Start();
             RefreshPage();
         }
 

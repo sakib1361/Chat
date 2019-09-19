@@ -13,6 +13,7 @@ namespace ChatClient.Services
     {
         private readonly ClientHandler ClientHandler;
         private readonly IUserDialogService DialogService;
+        public bool IsPaused { get; private set; } 
         public ChatService(ClientHandler clientHandler, IUserDialogService dialogService)
         {
             ClientHandler = clientHandler;
@@ -35,10 +36,22 @@ namespace ChatClient.Services
                 Debug.WriteLine(res);
             }
         }
-
-        internal void Resume()
+        public void Pause()
         {
-            if (ClientHandler.IsActive == false) Start();
+            if (ClientHandler.IsActive)
+            {
+                IsPaused = true;
+                Stop();
+            }
+        }
+
+        public void Resume()
+        {
+            if (IsPaused)
+            {
+                Start();
+                IsPaused = false;
+            }
         }
 
         private void ClientHandler_MessageRecieveed(object sender, ChatObject e)
@@ -68,13 +81,16 @@ namespace ChatClient.Services
 
         public void Start()
         {
-            Stop();
-            var address = SettingService.Instance.ServerName;
-            var port = SettingService.Instance.Port;
-            var ssl = SettingService.Instance.AllowSSL;
-            var allowPort = SettingService.Instance.AllowPort;
+            if (ClientHandler.IsActive == false)
+            {
+                Stop();
+                var address = SettingService.Instance.ServerName;
+                var port = SettingService.Instance.Port;
+                var ssl = SettingService.Instance.AllowSSL;
+                var allowPort = SettingService.Instance.AllowPort;
 
-            ClientHandler.Connect(address, port, ssl,allowPort);
+                ClientHandler.Connect(address, port, ssl, allowPort);
+            }
         }
     }
 }

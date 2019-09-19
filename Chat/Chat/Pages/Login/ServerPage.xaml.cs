@@ -41,9 +41,6 @@ namespace Chat.Pages.Login
                 SettingService.Instance.AllowPort = PortCheckBox.IsChecked;
                 SettingService.Instance.AllowSSL = SSLCheckBox.IsChecked;
                 DisplayAlert("Success", "Settings Saved", "Ok");
-                var service = SimpleIoc.Default.GetInstance<ChatService>();
-                service.Stop();
-                service.Start();
             }
         }
     }
