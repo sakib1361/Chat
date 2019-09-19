@@ -14,19 +14,22 @@ namespace ChatClient.ViewModels
         public User CurrentUser { get; private set; }
 
         private readonly APIService _apiService;
+        private readonly ChatService _chatService;
 
         public ObservableCollection<User> Users { get; private set; }
 
-        public HomePageModel(APIService aPIService)
+        public HomePageModel(APIService aPIService, ChatService chatService)
         {
 
             _apiService = aPIService;
+            _chatService = chatService;
             Users = new ObservableCollection<User>();
         }
 
         public override void OnAppearing(params object[] parameter)
         {
             base.OnAppearing(parameter);
+            _chatService.Resume();
             RefreshPage();
         }
 
@@ -65,6 +68,7 @@ namespace ChatClient.ViewModels
         private void LogoutAction()
         {
             _apiService.Logout();
+            _chatService.Stop();
             NavigateToPage(typeof(LoginPageModel));
         }
 

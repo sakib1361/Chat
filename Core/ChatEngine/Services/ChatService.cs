@@ -36,6 +36,11 @@ namespace ChatClient.Services
             }
         }
 
+        internal void Resume()
+        {
+            if (ClientHandler.IsActive == false) Start();
+        }
+
         private void ClientHandler_MessageRecieveed(object sender, ChatObject e)
         {
             if (e.MessageType == MessageType.EndToEnd || e.MessageType == MessageType.BroadCast)

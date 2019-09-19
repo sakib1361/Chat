@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Net.Sockets;
 using System.Net.WebSockets;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +12,7 @@ namespace ChatCore.Engine
     {
         private readonly WebSocket WebSocket;
         private readonly CancellationToken CToken;
-
+        public string Id { get; private set; }
         public event EventHandler<ChatObject> MessageReceived;
         public event EventHandler<string> ClientDisconnected;
         public bool IsActive { get; private set; }
@@ -22,6 +20,7 @@ namespace ChatCore.Engine
         {
             WebSocket = webSocket;
             CToken = new CancellationToken();
+            Id = Guid.NewGuid().ToString();
         }
 
         public async Task SendMessage(ChatObject chatObject)
@@ -39,12 +38,20 @@ namespace ChatCore.Engine
                 try
                 {
                     var message = await GetMessage();
-                    if (message != null)
+                    if (message == null)
+                    {
+                        IsActive = false;
+                        ClientDisconnected?.Invoke(this, "Socket Disconnected");
+                    }
+                    else
+                    {
                         MessageReceived?.Invoke(this, message);
+                    }
                 }
                 catch (Exception ex)
                 {
                     LogEngine.Error(ex);
+                    IsActive = false;
                     ClientDisconnected?.Invoke(this, "Socket Disconnected");
                     break;
                 }

@@ -23,7 +23,7 @@ namespace ChatClient.ViewModels
             Dispatcher = dispatcher;
             _chatService = chatService;
             _apiService = aPIService;
-            _chatService.Start();
+            
             ChatObjects = new ObservableCollection<ChatObject>();
             Messenger.Default.Register<ChatObject>(this, MessageType.EndToEnd, NewMessage);
         }
@@ -62,7 +62,8 @@ namespace ChatClient.ViewModels
 
         private void NewMessage(ChatObject obj)
         {
-            if (obj.SenderName == Receiver)
+            if (obj.SenderName == Receiver || 
+                (obj.SenderName == AppService.CurrentUser && obj.ReceiverName == Receiver))
             {
                 Dispatcher.RunAsync(() =>
                 {

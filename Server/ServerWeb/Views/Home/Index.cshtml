@@ -55,9 +55,7 @@
         var receiver;
         var container;
         $(function () {
-            var userName = '@Model.CurrentUser';
             var token = '@Model.Token';
-            console.log(userName);
             new PerfectScrollbar("#contact_container");
 
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
@@ -83,6 +81,8 @@
                 console.log(e);
                 var obj = JSON.parse(e.data);
                 if (obj.SenderName == receiver) {
+                    appendChat(obj);
+                } else if (obj.ReceiverName == receiver && obj.SenderName == '@Model.CurrentUser.UserName') {
                     appendChat(obj);
                 }
             };

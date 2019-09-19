@@ -26,7 +26,8 @@ namespace ChatServer.Engine.Network
             {
                 foreach (var socket in res.Value.ToList())
                 {
-                    if (!socket.IsActive) res.Value.Remove(socket);
+                    if (!socket.IsActive)
+                        res.Value.Remove(socket);
                 }
                 if (res.Value.Count == 0)
                 {// User has been logged out from all instances
@@ -42,7 +43,7 @@ namespace ChatServer.Engine.Network
             switch (e.MessageType)
             {
                 case MessageType.EndToEnd:
-                    SendEndToEndMessage(e);
+                    SendEndToEndMessage(socketHandler,e);
                     break;
                 case MessageType.Subscribe:
                     SubscribeUser(socketHandler, e);
@@ -101,28 +102,34 @@ namespace ChatServer.Engine.Network
             }
         }
 
-        private async void SendEndToEndMessage(ChatObject e)
+        private async void SendEndToEndMessage(SocketHandler socketHandler, ChatObject e)
         {
+            var receiverInstances = new List<SocketHandler>();
             if (AllSocketInstances.ContainsKey(e.ReceiverName))
             {
                 var rInstances = AllSocketInstances[e.ReceiverName];
-                if (rInstances.Count > 0)
-                {
-                    foreach (var item in rInstances)
-                    {
-                        try
-                        {
-                            await item.SendMessage(e);
-                            e.Delivered = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            LogEngine.Error(ex);
-                        }
-                    }
-                }
+                receiverInstances.AddRange(rInstances);
             }
 
+            if (AllSocketInstances.ContainsKey(e.SenderName))
+            {
+                var sInstances = AllSocketInstances[e.SenderName]
+                                         .Where(x => x.Id != socketHandler.Id);
+                receiverInstances.AddRange(sInstances);
+            }
+
+            foreach (var item in receiverInstances.Where(m=>m.IsActive))
+            {
+                try
+                {
+                    await item.SendMessage(e);
+                    e.Delivered = true;
+                }
+                catch (Exception ex)
+                {
+                    LogEngine.Error(ex);
+                }
+            }
             _localDB.Add(e);
             await _localDB.SaveChangesAsync();
         }

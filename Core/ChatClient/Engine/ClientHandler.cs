@@ -15,6 +15,7 @@ namespace ChatCore.Engine
         private static bool Quit;
         private static bool IsConnecting;
         private readonly Random Random = new Random();
+        public bool IsActive => SocketHandler != null && SocketHandler.IsActive;
 
         public event EventHandler<ChatObject> MessageRecieveed;
         public event EventHandler<WebSocketState> ConnectionChanged;
@@ -113,10 +114,14 @@ namespace ChatCore.Engine
         {
             try
             {
-                SocketHandler?.Dispose();
-                SocketHandler.MessageReceived -= SocketHandler_MessageReceived;
-                SocketHandler.ClientDisconnected -= SocketHandler_ClientDisconnected;
-                SocketHandler = null;
+                if (SocketHandler != null)
+                {
+                    SocketHandler.MessageReceived -= SocketHandler_MessageReceived;
+                    SocketHandler.ClientDisconnected -= SocketHandler_ClientDisconnected;
+                    SocketHandler?.Dispose();
+                    SocketHandler = null;
+                }
+                
             }
             catch { }
         }
