@@ -35,9 +35,11 @@
                      metro:TextBoxHelper.Watermark="Server Name" />
             <CheckBox Content="{services:Loc Allow_PORT}"
                       IsChecked="{Binding AllowPort}" />
-            <Label Content="Port" FontSize="10" />
+            <Label Content="Port" FontSize="10"
+                   metro:VisibilityHelper.IsVisible="{Binding AllowPort}" />
             <metro:NumericUpDown Value="{Binding Port}"
                                  Minimum="70"
+                                 metro:VisibilityHelper.IsVisible="{Binding AllowPort}"
                                  Maximum="65000"
                                  metro:TextBoxHelper.Watermark="Port" />
             <CheckBox Content="{services:Loc Allow_SSL}"
