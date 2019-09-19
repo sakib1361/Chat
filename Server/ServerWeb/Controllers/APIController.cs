@@ -25,17 +25,20 @@ namespace ServerWeb.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> GetUsers()
         {
             return Ok(await _apiHandler.GetUsers());
         }
 
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> GetHistory(string username, string receivername)
         {
             return Ok(await _apiHandler.GetUserHistory(username, receivername));
         }
 
+        [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
             var res = await _apiHandler.Login(username, password);
@@ -48,6 +51,7 @@ namespace ServerWeb.Controllers
             else return Unauthorized();
         }
 
+        [HttpPost]
         public async Task<IActionResult> Register(string firstname, string lastname, string username, string password)
         {
             var res = await _apiHandler.Register(firstname, lastname, username, password);

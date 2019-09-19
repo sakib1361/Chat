@@ -39,7 +39,7 @@ namespace ChatClient.ViewModels
                 SettingService.Instance.Port = Port;
                 SettingService.Instance.ServerName = Servername;
                 SettingService.Instance.AllowSSL = AllowSSL;
-                SettingService.Instance.AllowPort = true;
+                SettingService.Instance.AllowPort = AllowPort;
                 MoveToPage(typeof(LoginPageModel));
             }
         }

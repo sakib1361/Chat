@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 using ChatCore.Engine;
+using ChatCore.Model.Core;
 using ChatServer.Engine.Network;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,14 +25,23 @@ namespace ServerWeb.Controllers
             _userManager = userManager;
             _apiHandler = aPIHandler;
         }
+
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user == null) return RedirectToAction("Login", "Accounts");
-            var allUser = await _apiHandler.GetUsers();
-            var token = await _userManager.GenerateUserTokenAsync(user, "Default", "Chat");
-            var shadowUser = new User(user.UserName, user.FirstName, user.LastName);
-            return View(new ChatViewModel(shadowUser, allUser, HttpUtility.UrlEncode(token)));
+            if (user == null)
+                return RedirectToAction("Login", "Accounts");
+
+            var role = await _userManager.GetRolesAsync(user);
+            if (role.Contains(ChatConstants.AdminRole))
+                return RedirectToAction("Index", "Admin");
+            else
+            {
+                var allUser = await _apiHandler.GetUsers();
+                var token = await _userManager.GenerateUserTokenAsync(user, "Default", "Chat");
+                var shadowUser = new User(user.UserName, user.FirstName, user.LastName);
+                return View(new ChatViewModel(shadowUser, allUser, HttpUtility.UrlEncode(token)));
+            }
         }
 
         public async Task<IActionResult> GetHistory(string receivername)

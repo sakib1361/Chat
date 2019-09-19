@@ -58,7 +58,7 @@
         var receiver;
         $(function () {
             var userName = '@Model.CurrentUser';
-            var allUsers = '@Model.AllUser';
+            var token = '@Model.Token';
             console.log(userName);
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsUri = protocol + "//" + window.location.host + "/home/getSocket";
@@ -69,7 +69,7 @@
                     ChatId: Math.random().toString(36).substring(7),
                     SenderName:'@Model.CurrentUser.UserName',
                     ReceiverName: "Server",
-                    Message: '@Model.Token',
+                    Message: token,
                     MessageType: 0
                 };
                 socket.send(JSON.stringify(chObject));
