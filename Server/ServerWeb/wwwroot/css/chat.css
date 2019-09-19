@@ -19,12 +19,13 @@
 
 .contacts_body {
     padding: 0.75rem 0 !important;
-    overflow-y: auto;
     white-space: nowrap;
+    position: relative;
 }
 
 .msg_card_body {
-    overflow-y: auto;
+    position: relative;
+    overflow-y: auto
 }
 
 .card-header {

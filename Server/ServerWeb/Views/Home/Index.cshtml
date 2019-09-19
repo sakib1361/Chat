@@ -5,13 +5,11 @@
 
 @section Styles{
     <link rel="stylesheet" href="~/css/chat.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 }
 
-<div class="container-fluid chat-background h-100">
+<div class="container-fluid">
     <div class="row justify-content-center mt-2 ml-2 mr-2 h-100">
-        <div class="col-3 chat">
+        <div class="col-lg-3 col-md-4 chat">
             <div class="card contacts_card">
                 <div class="card-header">
                     <div class="d-flex bd-highlight btn">
@@ -24,42 +22,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body contacts_body">
+                <div id="contact_container" class="card-body contacts_body">
                     <ul class="contacts">
                         @foreach (var item in @Model.AllUser)
                         {
-                            <li onclick="userclick('@item.UserName')">
-                                <div class="d-flex bd-highlight btn">
-                                    <div class="img_cont">
-                                        <img identicon-value="item.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
-                                        <span class="@(item.Active?"online_icon":"offline")"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>@item.FullName</span>
-                                    </div>
+                        <li id="@item.UserName" class="contacts-item">
+                            <div class="d-flex bd-highlight btn">
+                                <div class="img_cont">
+                                    <img identicon-value="item.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
+                                    <span class="@(item.Active?"online_icon":"offline")"></span>
                                 </div>
-                            </li>
+                                <div class="user_info">
+                                    <span>@item.FullName</span>
+                                </div>
+                            </div>
+                        </li>
                         }
                     </ul>
                 </div>
                 <div class="card-footer"></div>
             </div>
         </div>
-        <div class="col-9 chat">
+        <div class="col-lg-9 col-md-8 chat">
             <div class="card" id="chatContainer">
             </div>
         </div>
     </div>
 </div>
 @section Scripts{
-    <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+    <script src="~/lib/jquery.perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script type="text/javascript">
         var receiver;
+        var container;
         $(function () {
             var userName = '@Model.CurrentUser';
             var token = '@Model.Token';
             console.log(userName);
+            new PerfectScrollbar("#contact_container");
+
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsUri = protocol + "//" + window.location.host + "/home/getSocket";
             var socket = new WebSocket(wsUri);
@@ -102,6 +102,28 @@
                 console.log("Click");
                 sendMessage(socket);
             });
+
+            $(".contacts-item").click(function () {
+                receiver = $(this).attr("id");
+                $.ajax({
+                    url: '@Url.Action("GetHistory", "Home")',
+                    data: { receivername: receiver },
+                    cache: false,
+                    success: function (html) {
+                        $('#chatContainer').html(html);
+                        if (container != null) {
+                            container.destroy();
+                            container = null;
+                        }
+                        const msg_cont = document.querySelector('#messageContainer');
+                        container = new PerfectScrollbar(msg_cont);
+                        msg_cont.scrollTop = msg_cont.scrollHeight;
+                        container.update();
+                        $(".contacts-item").removeClass("active");
+                        $("#"+receiver).addClass("active");
+                    }
+                });
+            })
         });
 
         function sendMessage(socket) {
@@ -121,19 +143,6 @@
             appendChat(chObject);
         }
 
-        function userclick(username) {
-            console.log(username);
-            receiver = username;
-            $.ajax({
-                url: '@Url.Action("GetHistory", "Home")',
-                data: { receivername: username },
-                cache: false,
-                success: function (html) {
-                    $('#chatContainer').html(html);
-                }
-            });
-        }
-
         function appendChat(chat) {
             $.ajax({
                 url: '@Url.Action("GetChatView", "Home")',
@@ -141,6 +150,11 @@
                 cache: false,
                 success: function (html) {
                     $('#messageContainer').append(html);
+                    if (container != null) {
+                       const msg_cont = document.querySelector('#messageContainer');
+                       msg_cont.scrollTop = msg_cont.scrollHeight;
+                       container.update();
+                    }
                 }
             });
         };

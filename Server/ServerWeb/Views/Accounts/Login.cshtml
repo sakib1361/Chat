@@ -8,34 +8,32 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="chat-background vh-100">
-    <div class="container-fluid pt-5" style="width:360px">
-        <section>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <h3 class="text-center">SignIn</h3>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="UserName"></label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-block">Log in</button>
-                </div>
-                <div class="form-group text-center">
-                    <p>
-                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
+<div class="container-fluid pt-5" style="width:360px">
+    <section>
+        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <h3 class="text-center">SignIn</h3>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block">Log in</button>
+            </div>
+            <div class="form-group text-center">
+                <p>
+                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                </p>
+            </div>
+        </form>
+    </section>
 </div>
 
 @section Scripts {
