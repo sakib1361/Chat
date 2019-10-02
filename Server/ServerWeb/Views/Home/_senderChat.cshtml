@@ -6,6 +6,6 @@
         <span class="msg_time_send">@Model.CreatedOn</span>
     </div>
     <div class="img_cont_msg">
-        <img identicon-value="Model.SenderName" class="rounded-circle user_img_msg" width="60" height="60" alt="Identicon" />
+        @Html.Identicon(Model.SenderName, 60)
     </div>
 </div>

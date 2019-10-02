@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<ServerWeb.Engine.Database.IDUser>
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -37,8 +36,8 @@
                         <tr>
                             <td>
                                 <div class="d-flex bd-highlight btn">
-                                    <div class="img_cont">
-                                        <img identicon-value="@item.UserName" class="rounded-circle user_img" width="60" height="60" alt="Identicon" />
+                                    <div class="img_cont rounded user_img">
+                                        @Html.Identicon(item.UserName,60,alt:"Identicon")
                                         <span class="online_icon"></span>
                                     </div>
                                     <div class="user_info align-self-center">

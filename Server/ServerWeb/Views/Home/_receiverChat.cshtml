@@ -2,7 +2,7 @@
 @model ChatObject
 <div class="d-flex justify-content-start mb-4">
     <div class="img_cont_msg">
-        <img identicon-value="Model.SenderName" class="rounded-circle user_img_msg" width="60" height="60" alt="Identicon" />
+        @Html.Identicon(Model.ReceiverName, 60)
     </div>
     <div class="msg_cotainer">
         @Model.Message

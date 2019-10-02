@@ -4,7 +4,10 @@
 <div class="card-header msg_head">
     <div class="d-flex bd-highlight">
         <div class="img_cont">
-            <img identicon-value="Model.ReceiverUser.UserName" class="rounded-circle user_img" />
+            <div class="rounded-circle user_img">
+                @Html.Identicon(Model.ReceiverUser.UserName,60)
+            </div>
+            @*<img identicon-value="Model.ReceiverUser.UserName" class="rounded-circle user_img" />*@
             <span class="online_icon"></span>
         </div>
         <div class="user_info">

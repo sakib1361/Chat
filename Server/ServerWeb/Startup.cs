@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using ServerWeb.Engine.Database;
 
 namespace ServerWeb
@@ -38,10 +39,10 @@ namespace ServerWeb
        
             });
 
-            //services.AddDbContext<LocalDBContext>(options =>
-            //        options.UseSqlite("Data Source="+ file));
             services.AddDbContext<LocalDBContext>(options =>
-                   options.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\sakib\Documents\ChatServer.mdf;Integrated Security=True;Connect Timeout=30"));
+                    options.UseSqlite("Data Source=" + file));
+            //services.AddDbContext<LocalDBContext>(options =>
+            //       options.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\sakib\Documents\ChatServer.mdf;Integrated Security=True;Connect Timeout=30"));
 
             services.AddIdentity<IDUser, IdentityRole>(options =>
             {
@@ -70,12 +71,10 @@ namespace ServerWeb
             services.AddScoped<MessageHandler>();
             services.AddScoped<ServerHandler>();
             services.AddScoped<APIHandler>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var serviceProvider = ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(services);
-            CreateUserRoles(serviceProvider);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
-        private async void CreateUserRoles(ServiceProvider serviceProvider)
+        private async void CreateUserRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<IDUser>>();
@@ -107,7 +106,7 @@ namespace ServerWeb
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -118,6 +117,8 @@ namespace ServerWeb
                 app.UseExceptionHandler("/Home/Error");
                 //app.UseHsts();
             }
+
+            CreateUserRoles(serviceProvider);
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -127,7 +128,8 @@ namespace ServerWeb
             app.UseJdenticon();
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseAuthorization();
+            app.UseRouting();
             app.UseAuthentication();
 
             var webSocketOptions = new WebSocketOptions()
@@ -136,12 +138,11 @@ namespace ServerWeb
                 ReceiveBufferSize = 4 * 1024
             };
             app.UseWebSockets(webSocketOptions);
-
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
