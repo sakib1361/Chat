@@ -38,8 +38,10 @@ namespace ServerWeb
        
             });
 
+            //services.AddDbContext<LocalDBContext>(options =>
+            //        options.UseSqlite("Data Source="+ file));
             services.AddDbContext<LocalDBContext>(options =>
-                    options.UseSqlite("Data Source="+ file));
+                   options.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\sakib\Documents\ChatServer.mdf;Integrated Security=True;Connect Timeout=30"));
 
             services.AddIdentity<IDUser, IdentityRole>(options =>
             {
