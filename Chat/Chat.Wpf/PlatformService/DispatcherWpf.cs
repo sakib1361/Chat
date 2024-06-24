@@ -1,7 +1,4 @@
 ﻿using ChatClient.Services;
-using GalaSoft.MvvmLight.Threading;
-using System;
-using System.Threading.Tasks;
 
 namespace Chat.Wpf.PlatformService
 {
@@ -9,7 +6,7 @@ namespace Chat.Wpf.PlatformService
     {
         public async void RunAsync(Action action)
         {
-            await DispatcherHelper.RunAsync(action);
+            await App.Current.Dispatcher.InvokeAsync(action);
         }
     }
 }
