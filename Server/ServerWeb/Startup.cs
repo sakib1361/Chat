@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +38,8 @@ namespace ServerWeb
        
             });
 
+            services.AddAuthorization();
+            services.AddControllersWithViews();
             services.AddDbContext<LocalDBContext>(options =>
                     options.UseSqlite("Data Source=" + file));
             //services.AddDbContext<LocalDBContext>(options =>
@@ -71,7 +72,6 @@ namespace ServerWeb
             services.AddScoped<MessageHandler>();
             services.AddScoped<ServerHandler>();
             services.AddScoped<APIHandler>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         private async void CreateUserRoles(IServiceProvider serviceProvider)
@@ -128,14 +128,13 @@ namespace ServerWeb
             app.UseJdenticon();
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseAuthorization();
+            
             app.UseRouting();
             app.UseAuthentication();
-
+            app.UseAuthorization();
             var webSocketOptions = new WebSocketOptions()
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(120),
-                ReceiveBufferSize = 4 * 1024
             };
             app.UseWebSockets(webSocketOptions);
             app.UseEndpoints(endpoints =>

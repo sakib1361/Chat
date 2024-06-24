@@ -13,8 +13,7 @@ namespace ServerWeb.Controllers
         private readonly APIHandler _apiHandler;
         private readonly UserManager<IDUser> _usermanager;
 
-        public APIController(APIHandler aPIHandler,
-            UserManager<IDUser> userManager)
+        public APIController(APIHandler aPIHandler,UserManager<IDUser> userManager)
         {
             _apiHandler = aPIHandler;
             _usermanager = userManager;

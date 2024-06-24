@@ -1,6 +1,7 @@
 ﻿using ChatCore.Engine;
 using System;
 using System.Collections.Concurrent;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 
 namespace ServerTest
@@ -17,7 +18,7 @@ namespace ServerTest
             ClientHandler.ConnectionChanged += ClientHandler_ClientStateChanged;
         }
 
-        private void ClientHandler_ClientStateChanged(object sender, string e)
+        private void ClientHandler_ClientStateChanged(object sender, WebSocketState e)
         {
             Console.WriteLine(e);
         }
@@ -48,7 +49,7 @@ namespace ServerTest
 
         public void Start(string address, int port)
         {
-            ClientHandler.Connect(address, port);
+            ClientHandler.Connect(address, port, false, true);
         }
     }
 }
